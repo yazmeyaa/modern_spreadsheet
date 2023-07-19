@@ -1,7 +1,12 @@
+import { Spreadsheet } from "../main"
+
 export class Header {
     element: HTMLHeadElement
-    constructor() {
+    root: Spreadsheet
+    constructor(root: Spreadsheet) {
+        this.root = root
         const headerElement = document.createElement('header')
+        headerElement.classList.add()
         this.element = headerElement
     }
 }

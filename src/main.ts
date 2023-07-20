@@ -5,13 +5,13 @@ import { Sheet } from "./components/sheet";
 import { Table } from "./components/table";
 import { Toolbar } from "./components/toolbar";
 import { Cell } from "./modules/cell";
-import { Config, ConfigProperties } from "./modules/config";
+import { Config, ViewProperties } from "./modules/config";
 import { Styles } from "./modules/styles";
 import './scss/main.scss'
-import { createSampleConfig, createSampleData, makeSpreadsheetConfigAndData } from "./utils/createData";
+import { createSampleConfig, createSampleData } from "./utils/createData";
 
 /*
- * Component structure
+ ! Component structure
     <Table>
         <Toolbar />
         <Content>   //* Abstract
@@ -21,6 +21,11 @@ import { createSampleConfig, createSampleData, makeSpreadsheetConfigAndData } fr
         <Scroller />
     </Table>
 */
+
+interface SpreadsheetConstructorProperties {
+    config?: Omit<Config, 'view'>   // Not optional.
+    view?: ViewProperties
+}
 
 export class Spreadsheet {
     private table: Table
@@ -33,23 +38,23 @@ export class Spreadsheet {
     public config: Config
     public data: Cell[][]
 
-
-
-    constructor(target: string | HTMLElement, config?: ConfigProperties) {
+    constructor(target: string | HTMLElement, props?: SpreadsheetConstructorProperties) {
+        const config = createSampleConfig(40, 40)
+        if(props?.view) {
+            config.view = props.view
+        }
+        
+        this.config = new Config(config)
+        this.sheet = new Sheet(this)
         const data = createSampleData(40, 40)
-        this.data = data
-
-        this.config = new Config(config ?? createSampleConfig(40, 40))
-
-        this.styles = new Styles()
-
         this.table = new Table(this)
         this.scroller = new Scroller(this)
         this.toolbar = new Toolbar(this)
         this.header = new Header(this)
-        this.sheet = new Sheet(this)
         this.editor = new Editor(this)
-
+        
+        this.data = data
+        this.styles = new Styles()
         this.buildComponent()
         this.appendTableToTarget(target)
     }
@@ -90,12 +95,17 @@ export class Spreadsheet {
     }
 
     renderCell(row: number, col: number) {
-        this.data[row][col].render(this.ctx, this.config)
+        this.data[row][col].render(this)
     }
 }
 
 
 
-const spreadsheet = new Spreadsheet('#spreadsheet')
+const spreadsheet = new Spreadsheet('#spreadsheet', {
+    view: {
+        height: 400,
+        width: 1200
+    },
+})
 spreadsheet.renderSheet()
 console.log(spreadsheet)

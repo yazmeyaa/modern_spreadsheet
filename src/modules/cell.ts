@@ -1,4 +1,5 @@
-import { Config } from "./config"
+import { Spreadsheet } from "../main"
+import { RenderBox } from "./renderBox"
 
 export type CellConstructorProps = {
     value: string
@@ -29,8 +30,12 @@ export class Cell {
         this.position = props.position
     }
 
-    render(ctx: CanvasRenderingContext2D, config: Config) {
-        ctx.fillStyle = 'black'
-        ctx.fillRect(0, 0, 20, 20)
+    render(root: Spreadsheet) {
+        const {height, width, x, y} = new RenderBox(root.config, this.position)
+        const { ctx } = root
+        ctx.fillStyle = 'white'
+        ctx.strokeStyle = 'black'
+        ctx.fillRect(x + 1, y + 1, width - 1, height - 1)
+        ctx.strokeRect(x, y, width, height)
     }
 }

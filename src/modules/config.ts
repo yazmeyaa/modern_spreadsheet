@@ -13,9 +13,9 @@ export type ConfigProperties = {
      * 
      *      'test_'
      *      'google_' */
-    rows?: Row[]
-    columns?: Column[]
-    view?: ViewProperties
+    rows: Row[]
+    columns: Column[]
+    view: ViewProperties
 }
 
 
@@ -32,9 +32,8 @@ export class Config {
         height: 600,
     }
     constructor(props: ConfigProperties) {
-        // Override default config by users config
-        Object.assign(this, props)
-        this.rows = props.rows ?? []
-        this.columns = props.columns ?? []
+            this.columns = props.columns
+            this.rows = props.rows
+            this.view = props.view
     }
 }

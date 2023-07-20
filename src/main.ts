@@ -4,9 +4,11 @@ import { Scroller } from "./components/scroller";
 import { Sheet } from "./components/sheet";
 import { Table } from "./components/table";
 import { Toolbar } from "./components/toolbar";
+import { Cell } from "./modules/cell";
 import { Config, ConfigProperties } from "./modules/config";
 import { Styles } from "./modules/styles";
 import './scss/main.scss'
+import { createSampleConfig, createSampleData, makeSpreadsheetConfigAndData } from "./utils/createData";
 
 /*
  * Component structure
@@ -28,19 +30,17 @@ export class Spreadsheet {
     private sheet: Sheet
     private editor: Editor
     public styles: Styles
-    private config: Config
+    public config: Config
+    public data: Cell[][]
 
 
-    get viewProps() {
-        return this.config.view
-    }
 
     constructor(target: string | HTMLElement, config?: ConfigProperties) {
-        let defaultConfig: ConfigProperties = {
-            columns: [],
-            rows: []
-        }
-        this.config = new Config(config ? config : defaultConfig)
+        const data = createSampleData(40, 40)
+        this.data = data
+
+        this.config = new Config(config ?? createSampleConfig(40, 40))
+
         this.styles = new Styles()
 
         this.table = new Table(this)
@@ -49,7 +49,6 @@ export class Spreadsheet {
         this.header = new Header(this)
         this.sheet = new Sheet(this)
         this.editor = new Editor(this)
-        // this.viewport = new Viewport()
 
         this.buildComponent()
         this.appendTableToTarget(target)
@@ -77,9 +76,26 @@ export class Spreadsheet {
             target.append(this.table.element)
         }
     }
+
+    get ctx() {
+        return this.sheet.ctx
+    }
+
+    get viewProps() {
+        return this.config.view
+    }
+
+    renderSheet() {
+        this.sheet.renderSheet()
+    }
+
+    renderCell(row: number, col: number) {
+        this.data[row][col].render(this.ctx, this.config)
+    }
 }
 
-const spreadsheet = new Spreadsheet('#spreadsheet', {
-})
 
+
+const spreadsheet = new Spreadsheet('#spreadsheet')
+spreadsheet.renderSheet()
 console.log(spreadsheet)

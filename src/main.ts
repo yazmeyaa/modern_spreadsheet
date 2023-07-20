@@ -41,14 +41,14 @@ export class Spreadsheet {
     public viewport: Viewport
 
     constructor(target: string | HTMLElement, props?: SpreadsheetConstructorProperties) {
-        const config = createSampleConfig(150, 150)
+        const config = createSampleConfig(750, 750)
         if(props?.view) {
             config.view = props.view
         }
         
         this.config = new Config(config)
         this.sheet = new Sheet(this)
-        const data = createSampleData(150, 150)
+        const data = createSampleData(750, 750)
         this.table = new Table(this)
         this.scroller = new Scroller(this)
         this.toolbar = new Toolbar(this)
@@ -107,8 +107,8 @@ export class Spreadsheet {
 
 const spreadsheet = new Spreadsheet('#spreadsheet', {
     view: {
-        height: 400,
-        width: 1200
+        height: window.innerHeight,
+        width: window.innerWidth
     },
 })
 spreadsheet.renderSheet()

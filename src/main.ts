@@ -107,8 +107,8 @@ export class Spreadsheet {
 
 const spreadsheet = new Spreadsheet('#spreadsheet', {
     view: {
-        height: window.innerHeight,
-        width: window.innerWidth
+        height: 600,
+        width: 800
     },
 })
 spreadsheet.renderSheet()

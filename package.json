@@ -3,16 +3,21 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://yazmeyaa.github.io/spreadsheet_2",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run dist",
+    "deploy": "gh-pages -d dist"
+
   },
   "devDependencies": {
     "typescript": "^5.0.2",
     "vite": "^4.4.0"
   },
   "dependencies": {
+    "gh-pages": "^5.0.0",
     "sass": "^1.63.6"
   }
 }

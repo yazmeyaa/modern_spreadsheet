@@ -31,11 +31,22 @@ export class Cell {
     }
 
     render(root: Spreadsheet) {
-        const {height, width, x, y} = new RenderBox(root.config, this.position)
+        let {height, width, x, y} = new RenderBox(root.config, this.position)
         const { ctx } = root
+
+        y -= root.viewport.top
+        x -= root.viewport.left
+
+        ctx.clearRect(x, y, width, height)
         ctx.fillStyle = 'white'
         ctx.strokeStyle = 'black'
         ctx.fillRect(x + 1, y + 1, width - 1, height - 1)
         ctx.strokeRect(x, y, width, height)
+
+        ctx.fillStyle = 'black'
+        ctx.textAlign = 'left'
+        ctx.font = '16px Arial'
+        ctx.textBaseline = 'middle'
+        ctx.fillText(this.displayValue, x + 2, y + height / 2, width)
     }
 }

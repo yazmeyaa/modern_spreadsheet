@@ -7,6 +7,7 @@ import { Toolbar } from "./components/toolbar";
 import { Cell } from "./modules/cell";
 import { Config, ViewProperties } from "./modules/config";
 import { Styles } from "./modules/styles";
+import { Viewport } from "./modules/viewport";
 import './scss/main.scss'
 import { createSampleConfig, createSampleData } from "./utils/createData";
 
@@ -37,22 +38,25 @@ export class Spreadsheet {
     public styles: Styles
     public config: Config
     public data: Cell[][]
+    public viewport: Viewport
 
     constructor(target: string | HTMLElement, props?: SpreadsheetConstructorProperties) {
-        const config = createSampleConfig(40, 40)
+        const config = createSampleConfig(150, 150)
         if(props?.view) {
             config.view = props.view
         }
         
         this.config = new Config(config)
         this.sheet = new Sheet(this)
-        const data = createSampleData(40, 40)
+        const data = createSampleData(150, 150)
         this.table = new Table(this)
         this.scroller = new Scroller(this)
         this.toolbar = new Toolbar(this)
         this.header = new Header(this)
         this.editor = new Editor(this)
-        
+        this.viewport = new Viewport(this, this.scroller.getViewportBoundlingRect())
+
+
         this.data = data
         this.styles = new Styles()
         this.buildComponent()

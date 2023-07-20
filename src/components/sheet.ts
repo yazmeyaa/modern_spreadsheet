@@ -33,15 +33,27 @@ export class Sheet {
     }
 
     renderSheet() {
-        const {columns, rows} = this.root.config
-        const lastColIdx = columns.length - 1
-        const lastRowIdx = rows.length - 1
+        const firstRowIdx = this.root.viewport.firstRow
+        const lastColIdx = this.root.viewport.lastCol + 3
+        const lastRowIdx = this.root.viewport.lastRow + 3
+        const firstColIdx = this.root.viewport.firstCol
 
-        for(let row = 0; row <= lastRowIdx; row++) {
-            for(let col = 0; col <= lastColIdx; col++ ) {
+        console.log()
+
+        let rowsCount = 0
+
+        for(let row = firstRowIdx; row <= lastRowIdx; row++) {
+
+            for(let col = firstColIdx; col <= lastColIdx; col++ ) {
+                if(!this.root.config.columns[col] || !this.root.config.rows[row]) break;  //* Prevent read undefined
+
                 this.renderCell({column: col, row})
             }
+
+            rowsCount++;
         }
+
+        console.log(`Rendered ${rowsCount} rows!`)
     }
 
 }

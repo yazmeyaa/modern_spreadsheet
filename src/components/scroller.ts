@@ -1,5 +1,12 @@
 import { Spreadsheet } from "../main"
 
+export interface ViewportRect {
+    top: number
+    left: number
+    right: number
+    bottom: number
+}
+
 export class Scroller {
     element: HTMLDivElement
     private verticalScroller: HTMLDivElement
@@ -8,7 +15,7 @@ export class Scroller {
 
     constructor(root: Spreadsheet) {
         this.root = root
-        const {horizontalScroller, scroller, verticalScroller} = this.buildComponent()
+        const { horizontalScroller, scroller, verticalScroller } = this.buildComponent()
         this.element = scroller
         this.verticalScroller = verticalScroller
         this.horizontalScroller = horizontalScroller
@@ -17,6 +24,29 @@ export class Scroller {
         this.element.style.width = this.root.config.view.width + 'px'
 
         this.updateScrollerSize()   //* Init size set
+
+        this.element.addEventListener('scroll', this.handleScroll)
+    }
+
+    handleScroll = () => {
+        const rect = this.getViewportBoundlingRect()
+        this.root.viewport.updateValues(rect)
+
+        this.root.renderSheet()
+    }
+
+    getViewportBoundlingRect(): ViewportRect {
+        const { scrollTop, scrollLeft } = this.element
+        const { height, width } = this.element.getBoundingClientRect()
+        const bottom = scrollTop + height
+        const right = scrollLeft + width
+
+        return {
+            top: scrollTop,
+            left: scrollLeft,
+            bottom,
+            right
+        }
     }
 
     buildComponent() {
@@ -30,18 +60,18 @@ export class Scroller {
         verticalScroller.style.pointerEvents = 'none'
 
         horizontalScroller.style.pointerEvents = 'none'
-        
+
         groupScrollers.style.display = 'flex'
 
         stack.appendChild(verticalScroller)
         stack.appendChild(horizontalScroller)
         groupScrollers.appendChild(stack)
         this.verticalScroller = verticalScroller
-        this.horizontalScroller  = horizontalScroller
+        this.horizontalScroller = horizontalScroller
         scroller.appendChild(groupScrollers)
         scroller.classList.add('scroller')
 
-        return {scroller, verticalScroller, horizontalScroller}
+        return { scroller, verticalScroller, horizontalScroller }
     }
 
     getActualHeight() {

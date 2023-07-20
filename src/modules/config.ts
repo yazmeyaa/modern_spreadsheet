@@ -1,3 +1,11 @@
+import { Column } from "./column"
+import { Row } from "./row"
+
+export interface ViewProperties {
+    width: number
+    height: number
+}
+
 export type ConfigProperties = {
     /** Please, end it with '_' symbol. 
      * 
@@ -5,13 +13,28 @@ export type ConfigProperties = {
      * 
      *      'test_'
      *      'google_' */
-    css_prefix?: string
+    rows?: Row[]
+    columns?: Column[]
+    view?: ViewProperties
+}
+
+
+export type SheetConfigConstructorProps = {
+    rows: Row[]
+    columns: Column[]
 }
 
 export class Config {
-    css_prefix: string = 'zmeya_'
-    constructor(props?: ConfigProperties) {
+    rows: Row[]
+    columns: Column[]
+    view: ViewProperties = {
+        width: 800,
+        height: 600,
+    }
+    constructor(props: ConfigProperties) {
         // Override default config by users config
         Object.assign(this, props)
+        this.rows = props.rows ?? []
+        this.columns = props.columns ?? []
     }
 }

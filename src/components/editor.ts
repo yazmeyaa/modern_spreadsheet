@@ -7,10 +7,11 @@ export class Editor {
         this.root = root
         const element = document.createElement('input')
         this.element = element
+        this.hide()
     }
     
     hide() {
-        this.element.style.display = 'hidden'
+        this.element.style.display = 'none'
     }
     show() {
         this.element.style.display = 'block'

@@ -4,9 +4,9 @@ import { Scroller } from "./components/scroller";
 import { Sheet } from "./components/sheet";
 import { Table } from "./components/table";
 import { Toolbar } from "./components/toolbar";
-// import { Viewport } from "./components/viewport";
 import { Config, ConfigProperties } from "./modules/config";
 import { Styles } from "./modules/styles";
+import './scss/main.scss'
 
 /*
  * Component structure
@@ -27,26 +27,27 @@ export class Spreadsheet {
     private header: Header
     private sheet: Sheet
     private editor: Editor
-    // private viewport: Viewport
     public styles: Styles
     private config: Config
 
-    get cssPrefix() {
-        return this.config.css_prefix
+
+    get viewProps() {
+        return this.config.view
     }
 
     constructor(target: string | HTMLElement, config?: ConfigProperties) {
-        this.config = new Config(config)
+        let defaultConfig: ConfigProperties = {
+            columns: [],
+            rows: []
+        }
+        this.config = new Config(config ? config : defaultConfig)
         this.styles = new Styles()
 
         this.table = new Table(this)
         this.scroller = new Scroller(this)
         this.toolbar = new Toolbar(this)
         this.header = new Header(this)
-        this.sheet = new Sheet(this, {
-            columns: [],
-            rows: []
-        })
+        this.sheet = new Sheet(this)
         this.editor = new Editor(this)
         // this.viewport = new Viewport()
 
@@ -56,7 +57,7 @@ export class Spreadsheet {
 
     private buildComponent(): void {
         const content = document.createElement('div')   //* Abstract
-        content.classList.add(this.cssPrefix + 'content')
+        content.classList.add('content')
         content.appendChild(this.header.element)
         content.appendChild(this.sheet.element)
 
@@ -78,5 +79,7 @@ export class Spreadsheet {
     }
 }
 
-const spreadsheet = new Spreadsheet('#spreadsheet')
-console.log(spreadsheet.cssPrefix)
+const spreadsheet = new Spreadsheet('#spreadsheet', {
+})
+
+console.log(spreadsheet)

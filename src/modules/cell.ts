@@ -34,18 +34,19 @@ export class Cell {
         let {height, width, x, y} = new RenderBox(root.config, this.position)
         const { ctx } = root
 
+        const isCellSelected = (root.selection.selectedCell?.row === this.position.row && root.selection.selectedCell.column === this.position.column)
         y -= root.viewport.top
         x -= root.viewport.left
 
         ctx.clearRect(x, y, width, height)
-        ctx.fillStyle = 'white'
+        ctx.fillStyle = isCellSelected ? 'red' : 'white'
         ctx.strokeStyle = 'black'
-        ctx.fillRect(x + 1, y + 1, width - 1, height - 1)
+        ctx.fillRect(x, y, width - 1, height - 1)
         ctx.strokeRect(x, y, width, height)
 
         ctx.fillStyle = 'black'
         ctx.textAlign = 'left'
-        ctx.font = '16px Arial'
+        ctx.font = `16px Arial`
         ctx.textBaseline = 'middle'
         ctx.fillText(this.displayValue, x + 2, y + height / 2, width)
     }

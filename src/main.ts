@@ -6,6 +6,7 @@ import { Table } from "./components/table";
 import { Toolbar } from "./components/toolbar";
 import { Cell } from "./modules/cell";
 import { Config, ViewProperties } from "./modules/config";
+import { Selection } from "./modules/selection";
 import { Styles } from "./modules/styles";
 import { Viewport } from "./modules/viewport";
 import './scss/main.scss'
@@ -39,6 +40,7 @@ export class Spreadsheet {
     public config: Config
     public data: Cell[][]
     public viewport: Viewport
+    public selection: Selection
 
     constructor(target: string | HTMLElement, props?: SpreadsheetConstructorProperties) {
         const config = createSampleConfig(750, 750)
@@ -55,6 +57,7 @@ export class Spreadsheet {
         this.header = new Header(this)
         this.editor = new Editor(this)
         this.viewport = new Viewport(this, this.scroller.getViewportBoundlingRect())
+        this.selection = new Selection()
 
 
         this.data = data
@@ -92,6 +95,10 @@ export class Spreadsheet {
 
     get viewProps() {
         return this.config.view
+    }
+
+    getCellByCoords(x: number, y: number) {
+        return this.sheet.getCellByCoords(x, y)
     }
 
     renderSheet() {

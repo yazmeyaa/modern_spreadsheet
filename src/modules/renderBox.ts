@@ -7,6 +7,7 @@ export class RenderBox {
     width: number
     height: number
     constructor(config: Config, cellPosition: Position) {
+
         this.x = this.getXCoord(cellPosition.column, config)
         this.y = this.getYCoord(cellPosition.row, config)
         this.width = config.columns[cellPosition.column].width
@@ -16,7 +17,7 @@ export class RenderBox {
     private getXCoord(column: number, config: Config): number {
         let x = 0;
 
-        for(let i = 0; i < column; i++) {
+        for (let i = 0; i < column; i++) {
             x += config.columns[i].width
         }
 
@@ -25,7 +26,7 @@ export class RenderBox {
 
     private getYCoord(row: number, config: Config): number {
         let y = 0
-        for(let i = 0; i < row; i++) {
+        for (let i = 0; i < row; i++) {
             y += config.rows[i].height
         }
         return y

@@ -12,6 +12,8 @@ export class Scroller {
     private verticalScroller: HTMLDivElement
     private horizontalScroller: HTMLDivElement
     private root: Spreadsheet
+    
+    private isSelecting = false
 
     constructor(root: Spreadsheet) {
         this.root = root
@@ -26,16 +28,45 @@ export class Scroller {
         this.updateScrollerSize()   //* Init size set
 
         this.element.addEventListener('scroll', this.handleScroll)
+
+        this.element.addEventListener('mousedown', this.handleClick)
+        this.element.addEventListener('mousemove', event => {
+            if(!this.isSelecting) return;
+            const {offsetX, offsetY} = event
+            const lastSelectedCell = this.root.getCellByCoords(offsetX, offsetY)
+            if(this.root.selection.selectedRange) {
+                this.root.selection.selectedRange.to = lastSelectedCell
+            }
+        })
+        this.element.addEventListener('mouseup', () => {
+            this.isSelecting = false
+            
+            console.log(this.root.selection)
+        })
+
     }
 
-    handleScroll = () => {
+    private handleClick = (event: MouseEvent) => {
+        const {offsetX, offsetY} = event
+        const clickedCell = this.root.getCellByCoords(offsetX, offsetY)
+        this.isSelecting = true
+        this.root.selection.selectedRange = {
+            from: clickedCell,
+            to: clickedCell
+        }
+        this.root.selection.selectedCell =  clickedCell
+
+        this.root.renderSheet()
+    }
+
+    private handleScroll = () => {
         const rect = this.getViewportBoundlingRect()
         this.root.viewport.updateValues(rect)
 
         this.root.renderSheet()
     }
 
-    getViewportBoundlingRect(): ViewportRect {
+    public getViewportBoundlingRect(): ViewportRect {
         const { scrollTop, scrollLeft } = this.element
         const { height, width } = this.element.getBoundingClientRect()
         const bottom = scrollTop + height
@@ -49,7 +80,7 @@ export class Scroller {
         }
     }
 
-    buildComponent() {
+    private buildComponent() {
         const scroller = document.createElement('div')
         const verticalScroller = document.createElement('div')
         const horizontalScroller = document.createElement('div')
@@ -74,14 +105,14 @@ export class Scroller {
         return { scroller, verticalScroller, horizontalScroller }
     }
 
-    getActualHeight() {
+    private getActualHeight() {
         return this.root.config.rows.reduce((acc, curr) => {
             acc += curr.height
             return acc
         }, 0)
     }
 
-    getActualWidth() {
+    private getActualWidth() {
         return this.root.config.columns.reduce((acc, curr) => {
             acc += curr.width
             return acc
@@ -96,11 +127,11 @@ export class Scroller {
         this.setScrollerWidth(totalWidth)
     }
 
-    setScrollerHeight(height: number) {
+    private setScrollerHeight(height: number) {
         this.verticalScroller.style.height = height + 'px'
     }
 
-    setScrollerWidth(width: number) {
+    private setScrollerWidth(width: number) {
         this.horizontalScroller.style.width = width + 'px'
     }
 }

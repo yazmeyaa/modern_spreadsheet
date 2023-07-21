@@ -27,6 +27,26 @@ export class Sheet {
 
     }
 
+    getCellByCoords(x: number, y: number): Position {
+        let row = 0;
+        let height = 0
+        while(height <= y) {
+            height += this.root.config.rows[row].height
+            if(height >= y) break;
+            row++;
+        }
+
+        let col = 0;
+        let width = 0;
+        while(width <= x) {
+            width += this.root.config.columns[col].width
+            if(width >= x) break;
+            col++;
+        }
+
+        return new Position(row, col)
+    }
+
     renderCell(position: Position) {
         const {column, row} = position
         this.root.data[row][column].render(this.root)

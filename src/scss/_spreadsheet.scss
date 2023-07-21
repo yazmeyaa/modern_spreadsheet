@@ -1,3 +1,5 @@
+
+
 .content {
     position: absolute;
     top: 0;
@@ -5,7 +7,9 @@
 }
 
 .spreadsheet_container {
+    position: relative;
     isolation: isolate;
+    border: 2px solid black;
 }
 
 .sheet{

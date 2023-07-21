@@ -58,9 +58,6 @@ export class Sheet {
         const lastRowIdx = this.root.viewport.lastRow + 3
         const firstColIdx = this.root.viewport.firstCol
 
-
-        let rowsCount = 0
-
         for(let row = firstRowIdx; row <= lastRowIdx; row++) {
 
             for(let col = firstColIdx; col <= lastColIdx; col++ ) {
@@ -69,7 +66,6 @@ export class Sheet {
                 this.renderCell({column: col, row})
             }
 
-            rowsCount++;
         }
 
     }

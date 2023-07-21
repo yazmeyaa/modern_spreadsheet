@@ -31,26 +31,42 @@ export class Scroller {
         this.element.addEventListener('scroll', this.handleScroll)
 
         this.element.addEventListener('mousedown', this.handleClick)
-        this.element.addEventListener('mousemove', event => {
-            if (!this.isSelecting) return;
-            const { offsetX, offsetY } = event
-            const lastSelectedCell = this.root.getCellByCoords(offsetX, offsetY)
-            if (this.root.selection.selectedRange) {
-                this.root.selection.selectedRange.to = lastSelectedCell
-            }
-            this.root.renderSheet()
-        })
-        this.element.addEventListener('mouseup', () => {
-            this.isSelecting = false
-            this.root.renderSheet()
-        })
-        this.element.addEventListener('dblclick', event => {
-            event.preventDefault();
-            const position = this.root.getCellByCoords(event.offsetX, event.offsetY)
-            this.root.showEditor(position)
-        })
+        this.element.addEventListener('mousemove', this.handleMouseMove)
+        this.element.addEventListener('mouseup', this.handleMouseUp)
+        this.element.addEventListener('dblclick', this.handleDoubleClick)
 
         this.element.addEventListener('keydown', this.handleKeydown)
+    }
+
+    private handleMouseMove = (event: MouseEvent) => {
+        if (!this.isSelecting) return;
+        const { offsetX, offsetY } = event
+        const lastSelectedCell = this.root.getCellByCoords(offsetX, offsetY)
+        if (this.root.selection.selectedRange) {
+            this.root.selection.selectedRange.to = lastSelectedCell
+        }
+        this.root.renderSheet()
+    }
+
+    private handleMouseUp = () => {
+        this.isSelecting = false
+
+        if (this.root.selection.selectedRange) {
+            if (
+                (this.root.selection.selectedRange.from.row === this.root.selection.selectedRange.to.row) &&
+                (this.root.selection.selectedRange.from.column === this.root.selection.selectedRange.to.column)
+            ) {
+                this.root.selection.selectedRange = null
+            }
+        }
+
+        this.root.renderSheet()
+    }
+    
+    private handleDoubleClick = (event: MouseEvent) => {
+        event.preventDefault();
+        const position = this.root.getCellByCoords(event.offsetX, event.offsetY)
+        this.root.showEditor(position)
     }
 
     private handleKeydown = (event: KeyboardEvent) => {
@@ -92,9 +108,14 @@ export class Scroller {
             }
         }
 
-        if(event.key === 'F2') {
-            if(!this.root.selection.selectedCell) return;
-            this.root.showEditor(this.root.selection.selectedCell)    
+        if (event.key === 'F2') {
+            if (!this.root.selection.selectedCell) return;
+            this.root.showEditor(this.root.selection.selectedCell)
+        }
+
+        if (event.key === 'Delete') {
+            this.root.deleteSelectedCellsValues()
+            this.root.renderSheet()
         }
     }
 

@@ -6,7 +6,7 @@ import { Table } from "./components/table";
 import { Toolbar } from "./components/toolbar";
 import { Cell, CellConstructorProps, Position } from "./modules/cell";
 import { Config, ViewProperties } from "./modules/config";
-import { Selection } from "./modules/selection";
+import { RangeSelectionType, Selection } from "./modules/selection";
 import { Styles } from "./modules/styles";
 import { Viewport } from "./modules/viewport";
 import './scss/main.scss'
@@ -44,10 +44,10 @@ export class Spreadsheet {
 
     constructor(target: string | HTMLElement, props?: SpreadsheetConstructorProperties) {
         const config = createSampleConfig(750, 750)
-        if(props?.view) {
+        if (props?.view) {
             config.view = props.view
         }
-        
+
         this.config = new Config(config)
         this.sheet = new Sheet(this)
         const data = createSampleData(750, 750)
@@ -108,17 +108,53 @@ export class Spreadsheet {
     }
 
     getCell(position: Position): Cell {
-        const {column, row} = position
+        const { column, row } = position
         return this.data[row][column]
     }
 
     changeCellValues(position: Position, values: Partial<Omit<CellConstructorProps, 'position'>>) {
-        const {column, row} = position
+        const { column, row } = position
 
         this.data[row][column].changeValues(values)
         this.renderCell(row, column)
     }
-    
+
+    applyActionToRange(range: RangeSelectionType, callback: (cell: Cell) => any): void {
+        const fromRow = Math.min(range.from.row, range.to.row)
+        const toRow = Math.max(range.from.row, range.to.row)
+
+        const fromCol = Math.min(range.from.column, range.to.column)
+        const toCol = Math.max(range.from.column, range.to.column)
+
+        for (let row = fromRow; row <= toRow; row++) {
+            for (let col = fromCol; col <= toCol; col++) {
+                const cell = this.data[row][col]
+                callback(cell)
+            }
+        }
+    }
+
+    deleteSelectedCellsValues() {
+        if (this.selection.selectedRange !== null) {
+
+            this.applyActionToRange(this.selection.selectedRange, cell => {
+                this.changeCellValues(cell.position, {
+                    displayValue: '',
+                    resultValue: '',
+                    value: ''
+                })
+            })
+
+        } else {
+            if (!this.selection.selectedCell) return;
+            this.changeCellValues(this.selection.selectedCell, {
+                displayValue: '',
+                resultValue: '',
+                value: ''
+            })
+        }
+    }
+
     showEditor(position: Position) {
         this.editor.show(position)
     }

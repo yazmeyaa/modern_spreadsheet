@@ -62,7 +62,7 @@ export class Scroller {
 
         this.root.renderSheet()
     }
-    
+
     private handleDoubleClick = (event: MouseEvent) => {
         event.preventDefault();
         const position = this.root.getCellByCoords(event.offsetX, event.offsetY)
@@ -70,10 +70,10 @@ export class Scroller {
     }
 
     private handleKeydown = (event: KeyboardEvent) => {
-        event.preventDefault()
         console.log(event.key)
         //* Navigation
         if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
+            event.preventDefault()
             this.root.selection.selectedRange = null
             switch (event.key) {
                 case 'ArrowLeft': {
@@ -109,11 +109,13 @@ export class Scroller {
         }
 
         if (event.key === 'F2') {
+            event.preventDefault()
             if (!this.root.selection.selectedCell) return;
             this.root.showEditor(this.root.selection.selectedCell)
         }
 
         if (event.key === 'Delete') {
+            event.preventDefault()
             this.root.deleteSelectedCellsValues()
             this.root.renderSheet()
         }

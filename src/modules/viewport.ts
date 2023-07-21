@@ -51,8 +51,6 @@ export class Viewport {
         this.lastRow = this.getLastRow()
         this.firstCol = this.getFirstCol()
         this.lastCol = this.getLastCol()
-
-        console.log({ first: this.firstCol, last: this.lastCol })
     }
 
     /** Get index of first row in viewport */

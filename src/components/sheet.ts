@@ -58,7 +58,6 @@ export class Sheet {
         const lastRowIdx = this.root.viewport.lastRow + 3
         const firstColIdx = this.root.viewport.firstCol
 
-        console.log()
 
         let rowsCount = 0
 
@@ -73,7 +72,6 @@ export class Sheet {
             rowsCount++;
         }
 
-        console.log(`Rendered ${rowsCount} rows!`)
     }
 
 }

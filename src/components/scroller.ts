@@ -37,16 +37,22 @@ export class Scroller {
             if(this.root.selection.selectedRange) {
                 this.root.selection.selectedRange.to = lastSelectedCell
             }
+            this.root.renderSheet()
         })
         this.element.addEventListener('mouseup', () => {
             this.isSelecting = false
-            
-            console.log(this.root.selection)
+            this.root.renderSheet()
+        })
+        this.element.addEventListener('dblclick', event => {
+            event.preventDefault();
+            const position = this.root.getCellByCoords(event.offsetX, event.offsetY)
+            this.root.showEditor(position)
         })
 
     }
 
     private handleClick = (event: MouseEvent) => {
+        if(event.button !== 0) return; // Left mouse button
         const {offsetX, offsetY} = event
         const clickedCell = this.root.getCellByCoords(offsetX, offsetY)
         this.isSelecting = true

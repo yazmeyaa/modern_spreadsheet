@@ -4,7 +4,7 @@ import { Scroller } from "./components/scroller";
 import { Sheet } from "./components/sheet";
 import { Table } from "./components/table";
 import { Toolbar } from "./components/toolbar";
-import { Cell } from "./modules/cell";
+import { Cell, CellConstructorProps, Position } from "./modules/cell";
 import { Config, ViewProperties } from "./modules/config";
 import { Selection } from "./modules/selection";
 import { Styles } from "./modules/styles";
@@ -99,6 +99,22 @@ export class Spreadsheet {
 
     getCellByCoords(x: number, y: number) {
         return this.sheet.getCellByCoords(x, y)
+    }
+
+    getCell(position: Position): Cell {
+        const {column, row} = position
+        return this.data[row][column]
+    }
+
+    changeCellValues(position: Position, values: Partial<Omit<CellConstructorProps, 'position'>>) {
+        const {column, row} = position
+
+        this.data[row][column].changeValues(values)
+        this.renderCell(row, column)
+    }
+    
+    showEditor(position: Position) {
+        this.editor.show(position)
     }
 
     renderSheet() {

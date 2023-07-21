@@ -10,14 +10,13 @@
     "preview": "vite preview",
     "predeploy": "npm run dist",
     "deploy": "gh-pages -d dist"
-
   },
   "devDependencies": {
+    "gh-pages": "^5.0.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.0"
   },
   "dependencies": {
-    "gh-pages": "^5.0.0",
     "sass": "^1.63.6"
   }
 }

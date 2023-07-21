@@ -10,6 +10,8 @@
     position: relative;
     isolation: isolate;
     border: 2px solid black;
+
+
 }
 
 .sheet{
@@ -21,6 +23,9 @@
     overflow: scroll;
     box-sizing: border-box;
     transform: translateZ(0);
+    &:focus {
+        outline: none;
+    }
 }
 
 .editor {

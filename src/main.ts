@@ -67,10 +67,12 @@ export class Spreadsheet {
     }
 
     private buildComponent(): void {
+
         const content = document.createElement('div')   //* Abstract
-        content.classList.add('content')
         content.appendChild(this.header.element)
         content.appendChild(this.sheet.element)
+
+        content.classList.add('content')
 
         this.table.element.appendChild(this.toolbar.element)
         this.table.element.appendChild(content)
@@ -95,6 +97,10 @@ export class Spreadsheet {
 
     get viewProps() {
         return this.config.view
+    }
+
+    focusTable() {
+        this.scroller.element.focus()
     }
 
     getCellByCoords(x: number, y: number) {

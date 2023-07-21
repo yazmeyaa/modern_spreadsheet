@@ -59,13 +59,11 @@ export class Sheet {
         const firstColIdx = this.root.viewport.firstCol
 
         for(let row = firstRowIdx; row <= lastRowIdx; row++) {
-
             for(let col = firstColIdx; col <= lastColIdx; col++ ) {
                 if(!this.root.config.columns[col] || !this.root.config.rows[row]) break;  //* Prevent read undefined
 
                 this.renderCell({column: col, row})
             }
-
         }
 
     }

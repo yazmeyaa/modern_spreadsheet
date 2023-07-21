@@ -12,7 +12,7 @@ export class Scroller {
     private verticalScroller: HTMLDivElement
     private horizontalScroller: HTMLDivElement
     private root: Spreadsheet
-    
+
     private isSelecting = false
 
     constructor(root: Spreadsheet) {
@@ -24,6 +24,7 @@ export class Scroller {
 
         this.element.style.height = this.root.config.view.height + 'px'
         this.element.style.width = this.root.config.view.width + 'px'
+        this.element.tabIndex = -1
 
         this.updateScrollerSize()   //* Init size set
 
@@ -31,10 +32,10 @@ export class Scroller {
 
         this.element.addEventListener('mousedown', this.handleClick)
         this.element.addEventListener('mousemove', event => {
-            if(!this.isSelecting) return;
-            const {offsetX, offsetY} = event
+            if (!this.isSelecting) return;
+            const { offsetX, offsetY } = event
             const lastSelectedCell = this.root.getCellByCoords(offsetX, offsetY)
-            if(this.root.selection.selectedRange) {
+            if (this.root.selection.selectedRange) {
                 this.root.selection.selectedRange.to = lastSelectedCell
             }
             this.root.renderSheet()
@@ -49,18 +50,64 @@ export class Scroller {
             this.root.showEditor(position)
         })
 
+        this.element.addEventListener('keydown', this.handleKeydown)
+    }
+
+    private handleKeydown = (event: KeyboardEvent) => {
+        event.preventDefault()
+        console.log(event.key)
+        //* Navigation
+        if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
+            this.root.selection.selectedRange = null
+            switch (event.key) {
+                case 'ArrowLeft': {
+                    if (this.root.selection.selectedCell && this.root.selection.selectedCell.column > 0) {
+                        console.log('tick')
+                        this.root.selection.selectedCell.column -= 1
+                        this.root.renderSheet()
+                    }
+                    break;
+                }
+                case 'ArrowRight': {
+                    if (this.root.selection.selectedCell && this.root.selection.selectedCell.column < this.root.config.columns.length - 1) {
+                        this.root.selection.selectedCell.column += 1
+                        this.root.renderSheet()
+                    }
+                    break;
+                }
+                case 'ArrowUp': {
+                    if (this.root.selection.selectedCell && this.root.selection.selectedCell.row > 0) {
+                        this.root.selection.selectedCell.row -= 1
+                        this.root.renderSheet()
+                    }
+                    break;
+                }
+                case 'ArrowDown': {
+                    if (this.root.selection.selectedCell && this.root.selection.selectedCell.row < this.root.config.rows.length - 1) {
+                        this.root.selection.selectedCell.row += 1
+                        this.root.renderSheet()
+                    }
+                    break;
+                }
+            }
+        }
+
+        if(event.key === 'F2') {
+            if(!this.root.selection.selectedCell) return;
+            this.root.showEditor(this.root.selection.selectedCell)    
+        }
     }
 
     private handleClick = (event: MouseEvent) => {
-        if(event.button !== 0) return; // Left mouse button
-        const {offsetX, offsetY} = event
+        if (event.button !== 0) return; // Left mouse button
+        const { offsetX, offsetY } = event
         const clickedCell = this.root.getCellByCoords(offsetX, offsetY)
         this.isSelecting = true
         this.root.selection.selectedRange = {
             from: clickedCell,
             to: clickedCell
         }
-        this.root.selection.selectedCell =  clickedCell
+        this.root.selection.selectedCell = clickedCell
 
         this.root.renderSheet()
     }

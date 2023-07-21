@@ -18,6 +18,9 @@ export class Editor {
         this.element.classList.add('hide')
         this.element.blur()
         window.removeEventListener('click', this.handleClickOutside)
+        this.element.removeEventListener('keydown', this.handleKeydown)
+        
+        this.root.focusTable()
     }
 
     show(position: Position) {

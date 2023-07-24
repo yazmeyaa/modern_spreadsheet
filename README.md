@@ -7,10 +7,11 @@
 <span>Basic usage</span>
 
 ```js
-import { Spreadsheet } from 'spreadsheet
-const target = document.querySelector('#spreadsheet_container')
-const spreadsheetInstance = new Spreadsheet(target)
+import { Spreadsheet } from 'modern_spreadsheet'
+import 'modern_spreadsheet/style.css'   // <= this is required
+
+const target = document.getElementById('spreadsheet')
+
+const sheet = new Spreadsheet(target)
 ```
 </div>
-
-<a href="https://yazmeyaa.github.io/modern_spreadsheet/" target="_blank">Demo</a>

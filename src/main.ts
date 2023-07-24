@@ -248,22 +248,3 @@ export class Spreadsheet {
         return config
     }
 }
-
-const spreadsheet = new Spreadsheet('#spreadsheet', {
-    view: {
-        height: 768,
-        width: 1366
-    },
-})
-
-const data = createSampleData(45, 45, true)
-
-spreadsheet.changeCellValues({column: 2, row: 2}, {
-    displayValue: 'Loading...',
-    resultValue: 'Loading...',
-    value: 'Loading...'
-})
-
-setTimeout(() => {
-    spreadsheet.loadData(data)
-}, 2000)

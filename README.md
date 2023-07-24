@@ -1,4 +1,4 @@
-# SpreadsheetSpreadsheet
+# Spreadsheet
 
 - <span>High performance spreadsheet based on CanvasAPI.</span>
 - <span>TypeScript supported</span>

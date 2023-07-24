@@ -5,7 +5,7 @@ import { typescriptPaths } from "rollup-plugin-typescript-paths";
 
 
 export default defineConfig({
-    base: '/spreadsheet_2/',
+    base: '/modern_spreadsheet/',
     plugins: [],
     resolve: {},
     server: {

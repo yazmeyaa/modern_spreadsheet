@@ -1,4 +1,4 @@
-# Spreadsheet
+# Modern Spreadsheet
 
 - <span>High performance spreadsheet based on CanvasAPI.</span>
 - <span>TypeScript supported</span>
@@ -13,4 +13,4 @@ const spreadsheetInstance = new Spreadsheet(target)
 ```
 </div>
 
-<a href="https://yazmeyaa.github.io/spreadsheet_2/" target="_blank">Demo</a>
+<a href="https://yazmeyaa.github.io/modern_spreadsheet/" target="_blank">Demo</a>

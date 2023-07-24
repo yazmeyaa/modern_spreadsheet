@@ -22,7 +22,7 @@ export class Sheet {
         this.element = canvas
 
         const ctx = this.element.getContext('2d')
-        if(!ctx) throw new Error('Enable hardware acceleration')
+        if (!ctx) throw new Error('Enable hardware acceleration')
         this.ctx = ctx
 
     }
@@ -30,17 +30,17 @@ export class Sheet {
     getCellByCoords(x: number, y: number): Position {
         let row = 0;
         let height = 0
-        while(height <= y) {
+        while (height <= y) {
             height += this.root.config.rows[row].height
-            if(height >= y) break;
+            if (height >= y) break;
             row++;
         }
 
         let col = 0;
         let width = 0;
-        while(width <= x) {
+        while (width <= x) {
             width += this.root.config.columns[col].width
-            if(width >= x) break;
+            if (width >= x) break;
             col++;
         }
 
@@ -48,7 +48,7 @@ export class Sheet {
     }
 
     renderCell(position: Position) {
-        const {column, row} = position
+        const { column, row } = position
         this.root.data[row][column].render(this.root)
     }
 
@@ -58,11 +58,11 @@ export class Sheet {
         const lastRowIdx = this.root.viewport.lastRow + 3
         const firstColIdx = this.root.viewport.firstCol
 
-        for(let row = firstRowIdx; row <= lastRowIdx; row++) {
-            for(let col = firstColIdx; col <= lastColIdx; col++ ) {
-                if(!this.root.config.columns[col] || !this.root.config.rows[row]) break;  //* Prevent read undefined
+        for (let row = firstRowIdx; row <= lastRowIdx; row++) {
+            for (let col = firstColIdx; col <= lastColIdx; col++) {
+                if (!this.root.config.columns[col] || !this.root.config.rows[row]) break;  //* Prevent read undefined
 
-                this.renderCell({column: col, row})
+                this.renderCell({ column: col, row })
             }
         }
 

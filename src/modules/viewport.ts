@@ -55,49 +55,23 @@ export class Viewport {
 
     /** Get index of first row in viewport */
     private getFirstRow(): number {
-        let rowIdx = 0
-        for (let idx = 0, currHeight = 0; currHeight <= this.top; idx++) {
-            currHeight += this.root.config.rows[idx].height
-            rowIdx = idx
-        }
+        let rowIdx = this.root.cache.getRowByYCoord(this.top)
         return rowIdx
     }
 
     private getLastRow(): number {
-        let rowIdx = this.getFirstRow()
-        let height = this.top
-
-        while (height <= this.bottom) {
-            height += this.root.config.rows[rowIdx].height
-            if (height >= this.bottom) break;
-            rowIdx++;
-        }
-
+        let rowIdx = this.root.cache.getRowByYCoord(this.bottom)
         return rowIdx
     }
 
     private getFirstCol(): number {
-        let colIdx = 0;
-        let currWidth = 0
-
-        while (currWidth <= this.left) {
-            currWidth += this.root.config.columns[colIdx].width
-            if (currWidth >= this.left) break;
-            colIdx += 1
-        }
+        let colIdx = this.root.cache.getColumnByXCoord(this.left)
 
         return colIdx
     }
 
     private getLastCol(): number {
-        let colIdx = this.getFirstCol()
-        let width = this.left
-
-        while (width <= this.right) {
-            width += this.root.config.columns[colIdx].width
-            if (width >= this.right) break;
-            colIdx++;
-        }
+        let colIdx = this.root.cache.getColumnByXCoord(this.right)
 
         return colIdx
     }

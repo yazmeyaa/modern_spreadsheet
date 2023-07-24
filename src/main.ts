@@ -11,6 +11,7 @@ import { Styles } from "./modules/styles";
 import { Viewport } from "./modules/viewport";
 import './scss/main.scss'
 import { createSampleConfig, createSampleData } from "./utils/createData";
+import { Cache, CachedColumn, CachedRow } from "./modules/cache";
 
 /*
  ! Component structure
@@ -41,29 +42,67 @@ export class Spreadsheet {
     public data: Cell[][]
     public viewport: Viewport
     public selection: Selection
+    public cache: Cache
 
     constructor(target: string | HTMLElement, props?: SpreadsheetConstructorProperties) {
-        const config = createSampleConfig(750, 750)
+        const config = createSampleConfig(10000, 600)
         if (props?.view) {
             config.view = props.view
         }
 
         this.config = new Config(config)
         this.sheet = new Sheet(this)
-        const data = createSampleData(750, 750)
+        const data = createSampleData(10000, 600)
         this.table = new Table(this)
         this.scroller = new Scroller(this)
         this.toolbar = new Toolbar(this)
         this.header = new Header(this)
-        this.editor = new Editor(this)
+        this.editor = new Editor(this)  
+        this.cache = this.getInitialCache()
         this.viewport = new Viewport(this, this.scroller.getViewportBoundlingRect())
         this.selection = new Selection()
-
+        
 
         this.data = data
         this.styles = new Styles()
         this.buildComponent()
         this.appendTableToTarget(target)
+    }
+
+    private getInitialCache(): Cache {
+        const cachedCols: CachedColumn[] = []
+        let currentWidth = 0
+        for(let i = 0; i <= this.config.columns.length - 1; i++) {
+            const col = this.config.columns[i]
+            currentWidth += col.width
+            const cacheCol = new CachedColumn({
+                xPos: currentWidth,
+                colIdx: i
+            })
+            cachedCols.push(cacheCol)
+        }
+
+        const cachedRows: CachedRow[] = []
+        let currentHeight = 0
+        for(let i = 0; i <= this.config.rows.length - 1; i++) {
+            const row = this.config.rows[i]
+            currentHeight += row.height
+            const cacheRow = new CachedRow({
+                yPos: currentHeight,
+                rowIdx: i
+            })
+            cachedRows.push(cacheRow)
+        }
+
+        
+        const cache = new Cache({
+            columns: cachedCols,
+            rows: cachedRows
+        })
+        
+        console.log("CACHE: ", cache)
+        console.log("CONFIG: ", this.config)
+        return cache
     }
 
     private buildComponent(): void {

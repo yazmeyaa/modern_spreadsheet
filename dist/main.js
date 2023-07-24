@@ -1,6 +1,6 @@
-var p = Object.defineProperty;
-var y = (r, t, e) => t in r ? p(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
-var o = (r, t, e) => (y(r, typeof t != "symbol" ? t + "" : t, e), e);
+var f = Object.defineProperty;
+var C = (r, t, e) => t in r ? f(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
+var o = (r, t, e) => (C(r, typeof t != "symbol" ? t + "" : t, e), e);
 class w {
   constructor(t, e) {
     o(this, "x");
@@ -22,7 +22,7 @@ class w {
     return s;
   }
 }
-class v {
+class p {
   constructor(t) {
     o(this, "element");
     o(this, "root");
@@ -56,7 +56,7 @@ class v {
     this.element.classList.remove("hide"), this.element.style.top = n - this.root.viewport.top + "px", this.element.style.left = l - this.root.viewport.left + "px", this.element.style.width = s + "px", this.element.style.height = e + "px", this.element.style.display = "block", window.addEventListener("click", this.handleClickOutside), this.element.addEventListener("keydown", this.handleKeydown), this.element.value = i.value, this.element.focus(), this.element.select();
   }
 }
-class S {
+class y {
   constructor(t) {
     o(this, "element");
     o(this, "root");
@@ -65,7 +65,7 @@ class S {
     e.classList.add(), this.element = e;
   }
 }
-class x {
+class v {
   constructor(t) {
     o(this, "element");
     o(this, "verticalScroller");
@@ -160,7 +160,7 @@ class x {
     this.horizontalScroller.style.width = t + "px";
   }
 }
-class R {
+class S {
   constructor(t) {
     o(this, "fontSize", 16);
     o(this, "fontColor", "black");
@@ -171,21 +171,21 @@ class R {
     t && Object.assign(this, t);
   }
 }
-class b {
+class x {
   constructor(t, e) {
     o(this, "row");
     o(this, "column");
     this.row = t, this.column = e;
   }
 }
-class k {
+class R {
   constructor(t) {
     o(this, "value");
     o(this, "displayValue");
     /** This refers to the values ​​​​that were obtained by calculations, for example, after calculating the formula  */
     o(this, "resultValue");
     o(this, "position");
-    o(this, "style", new R());
+    o(this, "style", new S());
     this.value = t.value, this.displayValue = t.displayValue, this.resultValue = t.resultValue, this.position = t.position;
   }
   changeValues(t) {
@@ -205,7 +205,7 @@ class k {
     n -= t.viewport.top, l -= t.viewport.left, i.clearRect(l, n, s, e), i.fillStyle = c || h ? this.style.selectedBackground : this.style.background, i.strokeStyle = "black", i.fillRect(l, n, s - 1, e - 1), i.strokeRect(l, n, s, e), i.fillStyle = c || h ? this.style.selectedFontColor : this.style.fontColor, i.textAlign = "left", i.font = `${this.style.fontSize}px Arial`, i.textBaseline = "middle", i.fillText(this.displayValue, l + 2, n + e / 2, s);
   }
 }
-class E {
+class b {
   constructor(t) {
     o(this, "element");
     o(this, "ctx");
@@ -225,7 +225,7 @@ class E {
     let n = 0, i = 0;
     for (; i <= t && (i += this.root.config.columns[n].width, !(i >= t)); )
       n++;
-    return new b(s, n);
+    return new x(s, n);
   }
   renderCell(t) {
     const { column: e, row: s } = t;
@@ -238,7 +238,7 @@ class E {
         this.renderCell({ column: i, row: n });
   }
 }
-class I {
+class k {
   constructor(t) {
     o(this, "element");
     o(this, "root");
@@ -251,7 +251,7 @@ class I {
     this.element.style.width = s + "px", this.element.style.height = e + "px";
   }
 }
-class V {
+class E {
   constructor(t) {
     o(this, "element");
     o(this, "root");
@@ -271,13 +271,13 @@ class d {
     this.columns = t.columns, this.rows = t.rows, this.view = t.view;
   }
 }
-class L {
+class I {
   constructor() {
     o(this, "selectedCell", null);
     o(this, "selectedRange", null);
   }
 }
-class B {
+class V {
 }
 class u {
   constructor(t, e) {
@@ -332,12 +332,12 @@ class g {
     this.height = t.height, this.title = t.title;
   }
 }
-function f(r, t, e = !1) {
+function L(r, t, e = !1) {
   const s = [];
   for (let l = 0; l <= r; l++) {
     const n = [];
     for (let i = 0; i <= t; i++) {
-      const c = e ? `${l}:${i}` : "", h = new k({
+      const c = e ? `${l}:${i}` : "", h = new R({
         displayValue: c,
         resultValue: c,
         value: c,
@@ -352,7 +352,7 @@ function f(r, t, e = !1) {
   }
   return s;
 }
-function A(r, t) {
+function B(r, t) {
   const e = [];
   for (let n = 0; n <= r; n++) {
     const i = new g({
@@ -378,21 +378,21 @@ function A(r, t) {
     }
   });
 }
-class M {
+class A {
   constructor(t) {
     o(this, "xPos");
     o(this, "colIdx");
     this.xPos = t.xPos, this.colIdx = t.colIdx;
   }
 }
-class T {
+class M {
   constructor(t) {
     o(this, "yPos");
     o(this, "rowIdx");
     this.yPos = t.yPos, this.rowIdx = t.rowIdx;
   }
 }
-class D {
+class T {
   constructor(t) {
     o(this, "columns");
     o(this, "rows");
@@ -417,7 +417,7 @@ class D {
     return e;
   }
 }
-class z {
+class D {
   constructor(t, e) {
     o(this, "table");
     o(this, "scroller");
@@ -431,10 +431,10 @@ class z {
     o(this, "viewport");
     o(this, "selection");
     o(this, "cache");
-    const s = A(500, 500);
-    e != null && e.view && (s.view = e.view), this.config = new d(s), this.sheet = new E(this);
-    const l = f(500, 500);
-    this.table = new I(this), this.scroller = new x(this), this.toolbar = new V(this), this.header = new S(this), this.editor = new v(this), this.cache = this.getInitialCache(), this.viewport = new u(this, this.scroller.getViewportBoundlingRect()), this.selection = new L(), this.data = l, this.styles = new B(), this.buildComponent(), this.appendTableToTarget(t), this.renderSheet();
+    const s = B(500, 500);
+    e != null && e.view && (s.view = e.view), this.config = new d(s), this.sheet = new b(this);
+    const l = L(500, 500);
+    this.table = new k(this), this.scroller = new v(this), this.toolbar = new E(this), this.header = new y(this), this.editor = new p(this), this.cache = this.getInitialCache(), this.viewport = new u(this, this.scroller.getViewportBoundlingRect()), this.selection = new I(), this.data = l, this.styles = new V(), this.buildComponent(), this.appendTableToTarget(t), this.renderSheet();
   }
   getInitialCache() {
     const t = [];
@@ -442,7 +442,7 @@ class z {
     for (let i = 0; i <= this.config.columns.length - 1; i++) {
       const c = this.config.columns[i];
       e += c.width;
-      const h = new M({
+      const h = new A({
         xPos: e,
         colIdx: i
       });
@@ -453,13 +453,13 @@ class z {
     for (let i = 0; i <= this.config.rows.length - 1; i++) {
       const c = this.config.rows[i];
       l += c.height;
-      const h = new T({
+      const h = new M({
         yPos: l,
         rowIdx: i
       });
       s.push(h);
     }
-    const n = new D({
+    const n = new T({
       columns: t,
       rows: s
     });
@@ -558,20 +558,6 @@ class z {
     });
   }
 }
-const C = new z("#spreadsheet", {
-  view: {
-    height: 768,
-    width: 1366
-  }
-}), F = f(45, 45, !0);
-C.changeCellValues({ column: 2, row: 2 }, {
-  displayValue: "Loading...",
-  resultValue: "Loading...",
-  value: "Loading..."
-});
-setTimeout(() => {
-  C.loadData(F);
-}, 2e3);
 export {
-  z as Spreadsheet
+  D as Spreadsheet
 };

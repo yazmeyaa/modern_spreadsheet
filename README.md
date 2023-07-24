@@ -12,3 +12,5 @@ const target = document.querySelector('#spreadsheet_container')
 const spreadsheetInstance = new Spreadsheet(target)
 ```
 </div>
+
+<a href="https://yazmeyaa.github.io/spreadsheet_2/" target="_blank">Demo</a>

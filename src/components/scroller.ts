@@ -70,7 +70,6 @@ export class Scroller {
     }
 
     private handleKeydown = (event: KeyboardEvent) => {
-        console.log(event.key)
         //* Navigation
         if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
             event.preventDefault()
@@ -108,7 +107,7 @@ export class Scroller {
             }
         }
 
-        if (event.key === 'F2') {
+        if (event.key === 'F2' || /^([a-z]|[а-я])$/.test(event.key.toLowerCase())) { //* English and Russian keyboard. Or F2 button
             event.preventDefault()
             if (!this.root.selection.selectedCell) return;
             this.root.showEditor(this.root.selection.selectedCell)

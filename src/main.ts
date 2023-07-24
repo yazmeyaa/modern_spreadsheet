@@ -45,14 +45,14 @@ export class Spreadsheet {
     public cache: Cache
 
     constructor(target: string | HTMLElement, props?: SpreadsheetConstructorProperties) {
-        const config = createSampleConfig(10000, 600)
+        const config = createSampleConfig(2000, 600)
         if (props?.view) {
             config.view = props.view
         }
 
         this.config = new Config(config)
         this.sheet = new Sheet(this)
-        const data = createSampleData(10000, 600)
+        const data = createSampleData(2000, 600)
         this.table = new Table(this)
         this.scroller = new Scroller(this)
         this.toolbar = new Toolbar(this)
@@ -67,6 +67,7 @@ export class Spreadsheet {
         this.styles = new Styles()
         this.buildComponent()
         this.appendTableToTarget(target)
+        this.renderSheet()
     }
 
     private getInitialCache(): Cache {
@@ -211,9 +212,8 @@ export class Spreadsheet {
 
 const spreadsheet = new Spreadsheet('#spreadsheet', {
     view: {
-        height: 600,
-        width: 800
+        height: 768,
+        width: 1366
     },
 })
-spreadsheet.renderSheet()
 console.log(spreadsheet)

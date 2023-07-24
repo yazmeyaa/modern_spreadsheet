@@ -8,6 +8,16 @@ export type CellConstructorProps = {
     position: Position
 }
 
+interface CellStylesConstructorProps {
+    fontSize: number
+    fontColor: string
+    background: string
+    borderColor: string
+
+    selectedBackground: string
+    selectedFontColor: string
+}
+
 export class CellStyles {
     fontSize: number = 16
     fontColor: string = 'black'
@@ -16,6 +26,12 @@ export class CellStyles {
 
     selectedBackground = '#4287f5'
     selectedFontColor = '#ffffff'
+
+    constructor(props?: CellStylesConstructorProps) {
+        if (props) {
+            Object.assign(this, props) // Override default styles
+        }
+    }
 }
 
 export class Position {

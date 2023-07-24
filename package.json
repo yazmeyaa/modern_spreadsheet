@@ -1,22 +1,39 @@
 {
   "name": "spreadsheet",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "exports": {
+    ".": {
+      "import": "./dist/main.js",
+      "require": "./dist/main.cjs.js"
+    }
+  },
+  "main": "./dist/main.cjs.js",
+  "module": "./dist/main.es.js",
+  "typings": "./dist/main.d.ts",
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "homepage": "https://yazmeyaa.github.io/spreadsheet_2",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:watch": "tsc && vite build --watch",
     "preview": "vite preview",
     "predeploy": "npm run dist",
     "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.2",
     "gh-pages": "^5.0.0",
+    "rollup-plugin-typescript-paths": "^1.4.0",
+    "tslib": "^2.6.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.0"
   },
   "dependencies": {
+    "@types/node": "^20.4.4",
     "sass": "^1.63.6"
   }
 }

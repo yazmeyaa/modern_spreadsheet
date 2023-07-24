@@ -12,6 +12,8 @@ import { Viewport } from "./modules/viewport";
 import './scss/main.scss'
 import { createSampleConfig, createSampleData } from "./utils/createData";
 import { Cache, CachedColumn, CachedRow } from "./modules/cache";
+import { Row } from "./modules/row";
+import { Column } from "./modules/column";
 
 /*
  ! Component structure
@@ -57,11 +59,11 @@ export class Spreadsheet {
         this.scroller = new Scroller(this)
         this.toolbar = new Toolbar(this)
         this.header = new Header(this)
-        this.editor = new Editor(this)  
+        this.editor = new Editor(this)
         this.cache = this.getInitialCache()
         this.viewport = new Viewport(this, this.scroller.getViewportBoundlingRect())
         this.selection = new Selection()
-        
+
 
         this.data = data
         this.styles = new Styles()
@@ -73,7 +75,7 @@ export class Spreadsheet {
     private getInitialCache(): Cache {
         const cachedCols: CachedColumn[] = []
         let currentWidth = 0
-        for(let i = 0; i <= this.config.columns.length - 1; i++) {
+        for (let i = 0; i <= this.config.columns.length - 1; i++) {
             const col = this.config.columns[i]
             currentWidth += col.width
             const cacheCol = new CachedColumn({
@@ -85,7 +87,7 @@ export class Spreadsheet {
 
         const cachedRows: CachedRow[] = []
         let currentHeight = 0
-        for(let i = 0; i <= this.config.rows.length - 1; i++) {
+        for (let i = 0; i <= this.config.rows.length - 1; i++) {
             const row = this.config.rows[i]
             currentHeight += row.height
             const cacheRow = new CachedRow({
@@ -95,12 +97,12 @@ export class Spreadsheet {
             cachedRows.push(cacheRow)
         }
 
-        
+
         const cache = new Cache({
             columns: cachedCols,
             rows: cachedRows
         })
-        
+
         console.log("CACHE: ", cache)
         console.log("CONFIG: ", this.config)
         return cache
@@ -206,9 +208,46 @@ export class Spreadsheet {
     renderCell(row: number, col: number) {
         this.data[row][col].render(this)
     }
+
+    public loadData(data: Cell[][]): void {
+        this.data = data
+        this.config = this.makeConfigFromData(data, this.config.view)
+        this.cache = this.getInitialCache()
+        this.scroller.updateScrollerSize()
+        this.viewport = new Viewport(this, this.scroller.getViewportBoundlingRect())
+        this.renderSheet()
+    }
+
+    private makeConfigFromData(data: Cell[][], view: ViewProperties): Config {
+        const lastRowIdx = data.length - 1
+        const lastColIdx = data[0] ? data[0].length : 0
+
+        const rows: Row[] = []
+        for (let row = 0; row < lastRowIdx; row++) {
+            rows.push(new Row({
+                height: 40,
+                title: String(row)
+            }))
+        }
+
+        const columns: Column[] = []
+
+        for (let col = 0; col < lastColIdx; col++) {
+            columns.push(new Column({
+                width: 150,
+                title: String(col)
+            }))
+        }
+
+        const config = new Config({
+            view,
+            rows,
+            columns
+        })
+
+        return config
+    }
 }
-
-
 
 const spreadsheet = new Spreadsheet('#spreadsheet', {
     view: {
@@ -216,4 +255,15 @@ const spreadsheet = new Spreadsheet('#spreadsheet', {
         width: 1366
     },
 })
-console.log(spreadsheet)
+
+const data = createSampleData(45, 45, true)
+
+spreadsheet.changeCellValues({column: 2, row: 2}, {
+    displayValue: 'Loading...',
+    resultValue: 'Loading...',
+    value: 'Loading...'
+})
+
+setTimeout(() => {
+    spreadsheet.loadData(data)
+}, 2000)

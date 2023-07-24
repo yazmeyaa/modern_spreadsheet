@@ -3,13 +3,13 @@ import { Column } from "../modules/column";
 import { Config } from "../modules/config";
 import { Row } from "../modules/row";
 
-export function createSampleData(rows: number, columns: number): Cell[][] {
+export function createSampleData(rows: number, columns: number, fillCellsByCoords: boolean = false): Cell[][] {
     const data: Cell[][] = []
 
     for (let row = 0; row <= rows; row++) {
         const innerRow: Cell[] = []
         for (let col = 0; col <= columns; col++) {
-            const value = `${row}:${col}`
+            const value = fillCellsByCoords ? `${row}:${col}` : ''
 
             const cell = new Cell({
                 displayValue: value,
@@ -31,7 +31,7 @@ export function createSampleData(rows: number, columns: number): Cell[][] {
 export function createSampleConfig(rows: number, columns: number): Config {
 
     const rowsArr: Row[] = []
-    for(let i = 0; i <= rows; i++) {
+    for (let i = 0; i <= rows; i++) {
         const rowItem = new Row({
             height: 40,
             title: String(i)
@@ -40,7 +40,7 @@ export function createSampleConfig(rows: number, columns: number): Config {
     }
 
     const colsArr: Column[] = []
-    for(let i = 0; i <= columns; i++) {
+    for (let i = 0; i <= columns; i++) {
         const colItem = new Column({
             title: String(i),
             width: 150
@@ -69,5 +69,5 @@ export function makeSpreadsheetConfigAndData(rows: number, columns: number): Spr
     const data = createSampleData(rows, columns)
     const config = createSampleConfig(rows, columns)
 
-    return {data, config}
+    return { data, config }
 }

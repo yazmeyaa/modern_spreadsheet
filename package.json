@@ -1,13 +1,13 @@
 {
   "name": "modern_spreadsheet",
   "private": false,
-  "version": "0.0.17",
+  "version": "0.0.18",
   "exports": {
     ".": {
       "import": "./dist/main.js",
       "require": "./dist/main.cjs.js"
     },
-    "./dist/style.css": {
+    "./style.css": {
       "import": "./dist/style.css",
       "require": "./dist/style.css"
     }

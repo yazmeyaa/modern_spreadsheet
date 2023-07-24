@@ -45,14 +45,14 @@ export class Spreadsheet {
     public cache: Cache
 
     constructor(target: string | HTMLElement, props?: SpreadsheetConstructorProperties) {
-        const config = createSampleConfig(2000, 600)
+        const config = createSampleConfig(500, 500)
         if (props?.view) {
             config.view = props.view
         }
 
         this.config = new Config(config)
         this.sheet = new Sheet(this)
-        const data = createSampleData(2000, 600)
+        const data = createSampleData(500, 500)
         this.table = new Table(this)
         this.scroller = new Scroller(this)
         this.toolbar = new Toolbar(this)

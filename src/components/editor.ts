@@ -38,6 +38,7 @@ export class Editor {
         this.element.addEventListener('keydown', this.handleKeydown)
         this.element.value = cell.value
         this.element.focus()
+        this.element.select()
     }
 
     handleKeydown = (event: KeyboardEvent) =>  {

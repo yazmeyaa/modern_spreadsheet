@@ -25,6 +25,7 @@ export class Scroller {
 
     this.element.style.height = this.root.config.view.height + "px";
     this.element.style.width = this.root.config.view.width + "px";
+    this.element.style.top = this.root.columnsBarHeight + 'px'
     this.element.tabIndex = -1;
 
     this.updateScrollerSize(); //* Init size set
@@ -47,6 +48,7 @@ export class Scroller {
       this.root.selection.selectedRange.to = lastSelectedCell;
     }
     this.root.renderSheet();
+    this.root.renderColumnsBar();
   };
 
   private handleMouseUp = () => {
@@ -55,15 +57,16 @@ export class Scroller {
     if (this.root.selection.selectedRange) {
       if (
         this.root.selection.selectedRange.from.row ===
-          this.root.selection.selectedRange.to.row &&
+        this.root.selection.selectedRange.to.row &&
         this.root.selection.selectedRange.from.column ===
-          this.root.selection.selectedRange.to.column
+        this.root.selection.selectedRange.to.column
       ) {
         this.root.selection.selectedRange = null;
       }
     }
 
     this.root.renderSheet();
+    this.root.renderColumnsBar();
   };
 
   private handleDoubleClick = (event: MouseEvent) => {
@@ -96,7 +99,7 @@ export class Scroller {
           if (
             this.root.selection.selectedCell &&
             this.root.selection.selectedCell.column <
-              this.root.config.columns.length - 1
+            this.root.config.columns.length - 1
           ) {
             this.root.selection.selectedCell.column += 1;
             this.root.renderSheet();
@@ -117,7 +120,7 @@ export class Scroller {
           if (
             this.root.selection.selectedCell &&
             this.root.selection.selectedCell.row <
-              this.root.config.rows.length - 1
+            this.root.config.rows.length - 1
           ) {
             this.root.selection.selectedCell.row += 1;
             this.root.renderSheet();
@@ -162,6 +165,7 @@ export class Scroller {
     this.root.selection.selectedCell = clickedCell;
 
     this.root.renderSheet();
+    this.root.renderColumnsBar()
   };
 
   private handleScroll = () => {
@@ -169,6 +173,7 @@ export class Scroller {
     this.root.viewport.updateValues(rect);
 
     this.root.renderSheet();
+    this.root.renderColumnsBar()
   };
 
   public getViewportBoundlingRect(): ViewportRect {

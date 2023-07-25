@@ -6,9 +6,6 @@ const loadButton = document.querySelector("#load_button");
 if (!saveButton || !loadButton) throw new Error("LOST");
 
 const sheet = new Spreadsheet("#spreadsheet");
-const sheet2 = new Spreadsheet("#spreadsheet_2");
-
-console.log(sheet2);
 
 function saveDataToLS() {
   const serializableData = sheet.serializeData();
@@ -35,3 +32,19 @@ sheet.changeCellStyles(
     selectedFontColor: "black",
   },
 );
+
+
+setTimeout(() => {
+  const text = 'Test123'
+
+  const cellPosition = {
+    column: 1,
+    row: 1
+  }
+
+  sheet.changeCellValues(cellPosition, {
+    displayValue: text,
+    resultValue: text,
+    value: text
+  })
+}, 4000)

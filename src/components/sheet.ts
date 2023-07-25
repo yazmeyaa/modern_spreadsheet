@@ -18,6 +18,7 @@ export class Sheet {
     canvas.width = this.root.config.view.width;
     canvas.style.width = this.root.config.view.width + "px";
     canvas.style.height = this.root.config.view.height + "px";
+    canvas.style.left = '0px'
 
     this.element = canvas;
 

@@ -41,4 +41,4 @@ function loadData() {
 - Selected cell depends cells highlight
 - Async formulas support
 - Mutlisheets (?)
--
+- Copy & Paste support

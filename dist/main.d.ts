@@ -1,4 +1,4 @@
-import { Cell, CellConstructorProps, Position } from "./modules/cell";
+import { Cell, CellConstructorProps, Position, SerializableCell } from "./modules/cell";
 import { Config, ViewProperties } from "./modules/config";
 import { RangeSelectionType, Selection } from "./modules/selection";
 import { Styles } from "./modules/styles";
@@ -37,8 +37,9 @@ export default class Spreadsheet {
     showEditor(position: Position): void;
     renderSheet(): void;
     renderCell(row: number, col: number): void;
-    loadData(data: Cell[][]): Spreadsheet;
+    loadData(data: Cell[][] | SerializableCell[][]): Spreadsheet;
     private makeConfigFromData;
+    serializeData(): SerializableCell[][];
 }
 export * from './modules/cache';
 export * from './modules/cell';

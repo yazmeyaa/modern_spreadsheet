@@ -22,7 +22,7 @@ class w {
     return s;
   }
 }
-class S {
+class v {
   constructor(t) {
     o(this, "element");
     o(this, "root");
@@ -56,7 +56,7 @@ class S {
     this.element.classList.remove("hide"), this.element.style.top = n - this.root.viewport.top + "px", this.element.style.left = l - this.root.viewport.left + "px", this.element.style.width = s + "px", this.element.style.height = e + "px", this.element.style.display = "block", window.addEventListener("click", this.handleClickOutside), this.element.addEventListener("keydown", this.handleKeydown), this.element.value = i.value, this.element.focus(), this.element.select();
   }
 }
-class v {
+class S {
   constructor(t) {
     o(this, "element");
     o(this, "root");
@@ -182,11 +182,30 @@ class k {
   constructor(t) {
     o(this, "value");
     o(this, "displayValue");
+    o(this, "resultValue");
+    o(this, "position");
+    o(this, "style");
+    this.value = t.value, this.displayValue = t.displayValue, this.resultValue = t.resultValue, this.position = t.position, this.style = t.style;
+  }
+}
+class g {
+  constructor(t) {
+    o(this, "value");
+    o(this, "displayValue");
     /** This refers to the values ​​​​that were obtained by calculations, for example, after calculating the formula  */
     o(this, "resultValue");
     o(this, "position");
     o(this, "style", new R());
     this.value = t.value, this.displayValue = t.displayValue, this.resultValue = t.resultValue, this.position = t.position;
+  }
+  getSerializableCell() {
+    return new k({
+      displayValue: this.displayValue,
+      position: this.position,
+      resultValue: this.resultValue,
+      style: this.style,
+      value: this.value
+    });
   }
   changeValues(t) {
     Object.assign(this, t);
@@ -205,7 +224,7 @@ class k {
     n -= t.viewport.top, l -= t.viewport.left, i.clearRect(l, n, s, e), i.fillStyle = c || h ? this.style.selectedBackground : this.style.background, i.strokeStyle = "black", i.fillRect(l, n, s - 1, e - 1), i.strokeRect(l, n, s, e), i.fillStyle = c || h ? this.style.selectedFontColor : this.style.fontColor, i.textAlign = "left", i.font = `${this.style.fontSize}px Arial`, i.textBaseline = "middle", i.fillText(this.displayValue, l + 2, n + e / 2);
   }
 }
-class E {
+class V {
   constructor(t) {
     o(this, "element");
     o(this, "ctx");
@@ -238,7 +257,7 @@ class E {
         this.renderCell({ column: i, row: n });
   }
 }
-class I {
+class E {
   constructor(t) {
     o(this, "element");
     o(this, "root");
@@ -251,7 +270,7 @@ class I {
     this.element.style.width = s + "px", this.element.style.height = e + "px";
   }
 }
-class V {
+class I {
   constructor(t) {
     o(this, "element");
     o(this, "root");
@@ -277,7 +296,7 @@ class L {
     o(this, "selectedRange", null);
   }
 }
-class B {
+class A {
 }
 class u {
   constructor(t, e) {
@@ -325,19 +344,19 @@ class m {
     this.width = t.width, this.title = t.title;
   }
 }
-class g {
+class f {
   constructor(t) {
     o(this, "height");
     o(this, "title");
     this.height = t.height, this.title = t.title;
   }
 }
-function f(r, t, e = !1) {
+function C(r, t, e = !1) {
   const s = [];
   for (let l = 0; l <= r; l++) {
     const n = [];
     for (let i = 0; i <= t; i++) {
-      const c = e ? `${l}:${i}` : "", h = new k({
+      const c = e ? `${l}:${i}` : "", h = new g({
         displayValue: c,
         resultValue: c,
         value: c,
@@ -352,10 +371,10 @@ function f(r, t, e = !1) {
   }
   return s;
 }
-function C(r, t) {
+function B(r, t) {
   const e = [];
   for (let n = 0; n <= r; n++) {
-    const i = new g({
+    const i = new f({
       height: 40,
       title: String(n)
     });
@@ -378,25 +397,25 @@ function C(r, t) {
     }
   });
 }
-function z(r, t) {
-  const e = f(r, t), s = C(r, t);
+function F(r, t) {
+  const e = C(r, t), s = B(r, t);
   return { data: e, config: s };
 }
-class A {
+class z {
   constructor(t) {
     o(this, "xPos");
     o(this, "colIdx");
     this.xPos = t.xPos, this.colIdx = t.colIdx;
   }
 }
-class M {
+class D {
   constructor(t) {
     o(this, "yPos");
     o(this, "rowIdx");
     this.yPos = t.yPos, this.rowIdx = t.rowIdx;
   }
 }
-class D {
+class M {
   constructor(t) {
     o(this, "columns");
     o(this, "rows");
@@ -421,7 +440,7 @@ class D {
     return e;
   }
 }
-class F {
+class P {
   constructor(t, e) {
     o(this, "table");
     o(this, "scroller");
@@ -435,10 +454,8 @@ class F {
     o(this, "viewport");
     o(this, "selection");
     o(this, "cache");
-    const s = C(500, 500);
-    e != null && e.view && (s.view = e.view), this.config = new d(s), this.sheet = new E(this);
-    const l = f(500, 500);
-    this.table = new I(this), this.scroller = new x(this), this.toolbar = new V(this), this.header = new v(this), this.editor = new S(this), this.cache = this.getInitialCache(), this.viewport = new u(this, this.scroller.getViewportBoundlingRect()), this.selection = new L(), this.data = l, this.styles = new B(), this.buildComponent(), this.appendTableToTarget(t), this.renderSheet();
+    const s = C(40, 40), l = this.makeConfigFromData(s, (e == null ? void 0 : e.view) ?? { height: 600, width: 800 });
+    e != null && e.view && (l.view = e.view), this.config = new d(l), this.sheet = new V(this), this.table = new E(this), this.scroller = new x(this), this.toolbar = new I(this), this.header = new S(this), this.editor = new v(this), this.cache = this.getInitialCache(), this.viewport = new u(this, this.scroller.getViewportBoundlingRect()), this.selection = new L(), this.data = s, this.styles = new A(), this.buildComponent(), this.appendTableToTarget(t), this.renderSheet();
   }
   getInitialCache() {
     const t = [];
@@ -446,7 +463,7 @@ class F {
     for (let i = 0; i <= this.config.columns.length - 1; i++) {
       const c = this.config.columns[i];
       e += c.width;
-      const h = new A({
+      const h = new z({
         xPos: e,
         colIdx: i
       });
@@ -457,13 +474,13 @@ class F {
     for (let i = 0; i <= this.config.rows.length - 1; i++) {
       const c = this.config.rows[i];
       l += c.height;
-      const h = new M({
+      const h = new D({
         yPos: l,
         rowIdx: i
       });
       s.push(h);
     }
-    const n = new D({
+    const n = new M({
       columns: t,
       rows: s
     });
@@ -540,12 +557,28 @@ class F {
     this.data[t][e].render(this);
   }
   loadData(t) {
-    return this.data = t, this.config = this.makeConfigFromData(t, this.config.view), this.cache = this.getInitialCache(), this.scroller.updateScrollerSize(), this.viewport = new u(this, this.scroller.getViewportBoundlingRect()), this.renderSheet(), this;
+    const e = t.length, s = t[0] ? this.data[0].length : 0;
+    this.data = [];
+    const l = [];
+    for (let n = 0; n < e; n++) {
+      const i = [];
+      for (let c = 0; c < s; c++) {
+        const h = t[n][c];
+        i.push(new g({
+          displayValue: h.displayValue,
+          position: h.position,
+          resultValue: h.resultValue,
+          value: h.value
+        }));
+      }
+      l.push(i);
+    }
+    return this.data = l, this.selection.selectedCell = null, this.selection.selectedRange = null, this.config = this.makeConfigFromData(l, this.config.view), this.cache = this.getInitialCache(), this.scroller.updateScrollerSize(), this.viewport = new u(this, this.scroller.getViewportBoundlingRect()), this.renderSheet(), this;
   }
   makeConfigFromData(t, e) {
     const s = t.length - 1, l = t[0] ? t[0].length : 0, n = [];
     for (let h = 0; h < s; h++)
-      n.push(new g({
+      n.push(new f({
         height: 40,
         title: String(h)
       }));
@@ -561,24 +594,35 @@ class F {
       columns: i
     });
   }
+  serializeData() {
+    const t = this.data.length, e = this.data[0] ? this.data[0].length : 0, s = [];
+    for (let l = 0; l < t; l++) {
+      const n = [];
+      for (let i = 0; i < e; i++)
+        n.push(this.data[l][i].getSerializableCell());
+      s.push(n);
+    }
+    return s;
+  }
 }
 export {
-  D as Cache,
-  A as CachedColumn,
-  M as CachedRow,
-  k as Cell,
+  M as Cache,
+  z as CachedColumn,
+  D as CachedRow,
+  g as Cell,
   R as CellStyles,
   m as Column,
   d as Config,
   b as Position,
   w as RenderBox,
-  g as Row,
+  f as Row,
   L as Selection,
-  B as Styles,
+  k as SerializableCell,
+  A as Styles,
   u as Viewport,
-  C as createSampleConfig,
-  f as createSampleData,
-  F as default,
-  z as makeSpreadsheetConfigAndData
+  B as createSampleConfig,
+  C as createSampleData,
+  P as default,
+  F as makeSpreadsheetConfigAndData
 };
 //# sourceMappingURL=main.js.map

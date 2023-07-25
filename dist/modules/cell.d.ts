@@ -27,6 +27,14 @@ export declare class Position {
     column: number;
     constructor(row: number, column: number);
 }
+export declare class SerializableCell {
+    value: string;
+    displayValue: string;
+    resultValue: string;
+    position: Position;
+    style: CellStyles;
+    constructor(props: SerializableCell | SerializableCell);
+}
 export declare class Cell {
     value: string;
     displayValue: string;
@@ -35,6 +43,7 @@ export declare class Cell {
     position: Position;
     style: CellStyles;
     constructor(props: CellConstructorProps);
+    getSerializableCell(): SerializableCell;
     changeValues(values: Partial<Omit<CellConstructorProps, 'position'>>): void;
     private isCellInRange;
     render(root: Spreadsheet): void;

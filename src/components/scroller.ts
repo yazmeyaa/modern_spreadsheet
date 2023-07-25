@@ -26,6 +26,7 @@ export class Scroller {
     this.element.style.height = this.root.config.view.height + "px";
     this.element.style.width = this.root.config.view.width + "px";
     this.element.style.top = this.root.columnsBarHeight + 'px'
+    this.element.style.left = this.root.rowsBarWidth + 'px'
     this.element.tabIndex = -1;
 
     this.updateScrollerSize(); //* Init size set
@@ -49,6 +50,7 @@ export class Scroller {
     }
     this.root.renderSheet();
     this.root.renderColumnsBar();
+    this.root.renderRowsBar();
   };
 
   private handleMouseUp = () => {
@@ -67,6 +69,7 @@ export class Scroller {
 
     this.root.renderSheet();
     this.root.renderColumnsBar();
+    this.root.renderRowsBar();
   };
 
   private handleDoubleClick = (event: MouseEvent) => {
@@ -166,7 +169,8 @@ export class Scroller {
 
     this.root.renderSheet();
     this.root.renderColumnsBar()
-  };
+
+this.root.renderRowsBar();  };
 
   private handleScroll = () => {
     const rect = this.getViewportBoundlingRect();
@@ -174,7 +178,8 @@ export class Scroller {
 
     this.root.renderSheet();
     this.root.renderColumnsBar()
-  };
+
+this.root.renderRowsBar();  };
 
   public getViewportBoundlingRect(): ViewportRect {
     const { scrollTop, scrollLeft } = this.element;

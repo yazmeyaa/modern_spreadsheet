@@ -5,7 +5,7 @@ export class ColumnsBar {
     private root: Spreadsheet
     public height: number = 32
     public width: number
-    private resizerWidth = 2
+    private resizerWidth = 1
     ctx: CanvasRenderingContext2D
 
     constructor(root: Spreadsheet) {
@@ -21,15 +21,19 @@ export class ColumnsBar {
     private createElement(): HTMLCanvasElement {
         const element = document.createElement('canvas')
         element.style.position = 'absolute'
-        element.style.top = '0'
-        element.style.left = '0'
         element.style.height = this.height + 'px'
         element.style.width = this.root.viewProps.width + 'px'
         element.style.display = 'block'
 
+
         element.width = this.root.viewProps.width
         element.height = this.height
         return element
+    }
+
+    public setElementPosition(top: number, left: number) { 
+        this.element.style.top = top + 'px'
+        this.element.style.left = left + 'px'
     }
 
     private isColumnSelected(column: number): boolean {
@@ -43,6 +47,18 @@ export class ColumnsBar {
             return inRange
         }
         return false
+    }
+
+    private getYCoordWithOffset(renderBox: RenderBox): number {
+        const {y} = renderBox
+
+        return y + this.root.toolbarHeight
+    }
+
+    private getXCoordWithOffset(renderBox: RenderBox): number {
+        const {x} = renderBox
+
+        return x
     }
 
     private renderText(column: number, renderBox: RenderBox) {
@@ -69,7 +85,6 @@ export class ColumnsBar {
         this.ctx.lineWidth = this.resizerWidth
         this.ctx.fillRect(x - this.root.viewport.left - 1, 1, width - 1, this.height - 1)
         this.ctx.strokeRect(x - this.root.viewport.left, 0, width, this.height)
-
     }
 
     private renderSingleColumn(column: number) {

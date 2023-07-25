@@ -24,6 +24,8 @@ export class RowsBar {
         element.style.height = this.root.viewProps.height + 'px'
         element.style.width = this.width + 'px'
         element.style.display = 'block'
+        element.style.borderTop = '1px solid black'
+        // element.style.boxSizing = 'border-box'
 
 
         element.width = this.width
@@ -51,13 +53,13 @@ export class RowsBar {
 
 
     private renderText(row: number, renderBox: RenderBox) {
-        const { y, height  } = renderBox
+        const { y, height } = renderBox
 
         this.ctx.fillStyle = 'black'
-        this.ctx.textAlign = 'left'
+        this.ctx.textAlign = 'center'
         this.ctx.textBaseline = 'middle'
         this.ctx.font = '16px Arial'
-        this.ctx.fillText(this.root.config.rows[row].title, 0 + 2, y - this.root.viewport.top + height / 2)
+        this.ctx.fillText(this.root.config.rows[row].title, this.width / 2, y - this.root.viewport.top + height / 2)
     }
 
     private renderRect(column: number, renderBox: RenderBox) {
@@ -69,8 +71,11 @@ export class RowsBar {
         this.ctx.fillStyle = isRowSeleted ? this.root.styles.cells.selectedBackground : 'white'
         this.ctx.strokeStyle = 'black'
         this.ctx.lineWidth = this.resizerHeight
-        this.ctx.fillRect(0 + 1, y - this.root.viewport.top, this.width + 1, height)
-        this.ctx.strokeRect(0, y - this.root.viewport.top, this.width - 1, height)
+
+        const specialY = y - this.root.viewport.top
+
+        this.ctx.fillRect(0, specialY - 1, this.width, height )
+        this.ctx.strokeRect(0, specialY - 1, this.width, height )
     }
 
     private renderSingleRow(row: number) {
@@ -87,9 +92,17 @@ export class RowsBar {
         const lastRowIdx = this.root.viewport.lastRow + 3;
         const firstRowIdx = this.root.viewport.firstRow;
 
-        for (let col = firstRowIdx; col <= lastRowIdx; col++) {
-            this.renderSingleRow(col)
-            console.log(123)
+        this.ctx.beginPath();
+        this.ctx.moveTo(0, 0);
+        this.ctx.strokeStyle = 'black';
+        this.ctx.lineWidth = 16;
+        this.ctx.lineTo(35, 0);
+        this.ctx.closePath();
+        this.ctx.stroke();
+        
+        for (let row = firstRowIdx; row <= lastRowIdx; row++) {
+            if(!this.root.config.rows[row]) break;
+            this.renderSingleRow(row)
         }
     }
 

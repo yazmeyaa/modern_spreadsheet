@@ -21,30 +21,3 @@ function loadDataFromLS() {
 
 saveButton.addEventListener("click", saveDataToLS);
 loadButton.addEventListener("click", loadDataFromLS);
-sheet.changeCellStyles(
-  { column: 1, row: 1 },
-  {
-    background: "black",
-    borderColor: "white",
-    fontColor: "white",
-    fontSize: 20,
-    selectedBackground: "green",
-    selectedFontColor: "black",
-  },
-);
-
-
-setTimeout(() => {
-  const text = 'Test123'
-
-  const cellPosition = {
-    column: 1,
-    row: 1
-  }
-
-  sheet.changeCellValues(cellPosition, {
-    displayValue: text,
-    resultValue: text,
-    value: text
-  })
-}, 4000)

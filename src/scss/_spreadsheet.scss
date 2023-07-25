@@ -1,38 +1,38 @@
 $css_prefix: "modern_sc_";
 
 .#{$css_prefix}content {
-    position: absolute;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .#{$css_prefix}spreadsheet_container {
-    position: relative;
-    isolation: isolate;
-    border: 2px solid black;
+  position: relative;
+  isolation: isolate;
+  border: 2px solid black;
 }
 
-.#{$css_prefix}sheet{
-    display: block;
-    contain: strict;
+.#{$css_prefix}sheet {
+  display: block;
+  contain: strict;
 }
 
 .#{$css_prefix}scroller {
-    overflow: scroll;
-    box-sizing: border-box;
-    transform: translateZ(0);
-    &:focus {
-        outline: none;
-    }
+  overflow: scroll;
+  box-sizing: border-box;
+  transform: translateZ(0);
+  &:focus {
+    outline: none;
+  }
 }
 
 .#{$css_prefix}editor {
-    position: absolute;
-    box-sizing: border-box;
-    font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
+  position: absolute;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .#{$css_prefix}hide {
-    visibility: hidden;
+  visibility: hidden;
 }

@@ -36,12 +36,19 @@
     "build:watch": "tsc && vite build --watch",
     "preview": "vite preview",
     "predeploy": "npm run dist",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.2",
     "@types/node": "^20.4.4",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^8.8.0",
     "gh-pages": "^5.0.0",
+    "prettier": "3.0.0",
     "rollup-plugin-typescript-paths": "^1.4.0",
     "sass": "^1.63.6",
     "tslib": "^2.6.0",

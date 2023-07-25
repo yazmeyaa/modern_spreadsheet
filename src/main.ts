@@ -4,7 +4,7 @@ import { Scroller } from "./components/scroller";
 import { Sheet } from "./components/sheet";
 import { Table } from "./components/table";
 import { Toolbar } from "./components/toolbar";
-import { Cell, CellConstructorProps, Position, SerializableCell } from "./modules/cell";
+import { Cell, CellConstructorProps, CellStyles, Position, SerializableCell } from "./modules/cell";
 import { Config, ViewProperties } from "./modules/config";
 import { RangeSelectionType, Selection } from "./modules/selection";
 import { Styles } from "./modules/styles";
@@ -31,6 +31,8 @@ interface SpreadsheetConstructorProperties {
     config?: Omit<Config, 'view'>   // Not optional.
     view?: ViewProperties
 }
+
+export const CSS_PREFIX = "modern_sc_"
 
 export default class Spreadsheet {
     private table: Table
@@ -115,7 +117,7 @@ export default class Spreadsheet {
         content.appendChild(this.header.element)
         content.appendChild(this.sheet.element)
 
-        content.classList.add('content')
+        content.classList.add(CSS_PREFIX + 'content')
 
         this.table.element.appendChild(this.toolbar.element)
         this.table.element.appendChild(content)
@@ -175,6 +177,12 @@ export default class Spreadsheet {
         this.renderCell(row, column)
     }
 
+    changeCellStyles(position: Position, styles: CellStyles) {
+        const { column, row } = position
+        this.data[row][column].changeStyles(styles)
+        this.renderCell(row, column)
+    }
+
     applyActionToRange(range: RangeSelectionType, callback: (cell: Cell) => any): void {
         const fromRow = Math.min(range.from.row, range.to.row)
         const toRow = Math.max(range.from.row, range.to.row)
@@ -211,8 +219,8 @@ export default class Spreadsheet {
         }
     }
 
-    showEditor(position: Position) {
-        this.editor.show(position)
+    showEditor(position: Position, initialString?: string) {
+        this.editor.show(position, initialString)
     }
 
     renderSheet() {
@@ -238,7 +246,8 @@ export default class Spreadsheet {
                     displayValue: cell.displayValue,
                     position: cell.position,
                     resultValue: cell.resultValue,
-                    value: cell.value
+                    value: cell.value,
+                    style: cell.style
                 }))
             }
             formattedData.push(innerRow)

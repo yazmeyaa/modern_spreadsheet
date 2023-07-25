@@ -1,25 +1,23 @@
+$css_prefix: "modern_sc_";
 
-
-.content {
+.#{$css_prefix}content {
     position: absolute;
     top: 0;
     left: 0;
 }
 
-.spreadsheet_container {
+.#{$css_prefix}spreadsheet_container {
     position: relative;
     isolation: isolate;
     border: 2px solid black;
-
-
 }
 
-.sheet{
+.#{$css_prefix}sheet{
     display: block;
     contain: strict;
 }
 
-.scroller {
+.#{$css_prefix}scroller {
     overflow: scroll;
     box-sizing: border-box;
     transform: translateZ(0);
@@ -28,13 +26,13 @@
     }
 }
 
-.editor {
+.#{$css_prefix}editor {
     position: absolute;
     box-sizing: border-box;
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.hide {
+.#{$css_prefix}hide {
     visibility: hidden;
 }

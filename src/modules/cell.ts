@@ -6,6 +6,7 @@ export type CellConstructorProps = {
     displayValue: string
     resultValue: string
     position: Position
+    style: CellStyles | null
 }
 
 interface CellStylesConstructorProps {
@@ -48,7 +49,7 @@ export class SerializableCell {
     displayValue: string
     resultValue: string
     position: Position
-    style: CellStyles
+    style: CellStyles | null
     constructor(props: SerializableCell | SerializableCell) {
         this.value = props.value
         this.displayValue = props.displayValue
@@ -59,18 +60,21 @@ export class SerializableCell {
 }
 
 export class Cell {
+    /** True value (data) */
     value: string
+    /** Value to render */
     displayValue: string
     /** This refers to the values ​​​​that were obtained by calculations, for example, after calculating the formula  */
     resultValue: string
     position: Position
-    style: CellStyles = new CellStyles()
+    style: CellStyles | null = null
 
     constructor(props: CellConstructorProps) {
         this.value = props.value
         this.displayValue = props.displayValue
         this.resultValue = props.resultValue
         this.position = props.position
+        this.style = props.style
     }
 
     public getSerializableCell(): SerializableCell {
@@ -82,6 +86,10 @@ export class Cell {
             value: this.value
         })
         return cell
+    }
+
+    changeStyles(styles: CellStyles) {
+        this.style = styles
     }
 
     changeValues(values: Partial<Omit<CellConstructorProps, 'position'>>) {
@@ -109,15 +117,17 @@ export class Cell {
         y -= root.viewport.top
         x -= root.viewport.left
 
+        const styles = this.style ?? root.styles.cells
+
         ctx.clearRect(x, y, width, height)
-        ctx.fillStyle = isCellSelected || isCellInRange ? this.style.selectedBackground : this.style.background
+        ctx.fillStyle = isCellSelected || isCellInRange ? styles.selectedBackground : styles.background
         ctx.strokeStyle = 'black'
         ctx.fillRect(x, y, width - 1, height - 1)
         ctx.strokeRect(x, y, width, height)
 
-        ctx.fillStyle = isCellSelected || isCellInRange ? this.style.selectedFontColor : this.style.fontColor
+        ctx.fillStyle = isCellSelected || isCellInRange ? styles.selectedFontColor : styles.fontColor
         ctx.textAlign = 'left'
-        ctx.font = `${this.style.fontSize}px Arial`
+        ctx.font = `${styles.fontSize}px Arial`
         ctx.textBaseline = 'middle'
         ctx.fillText(this.displayValue, x + 2, y + height / 2)
     }

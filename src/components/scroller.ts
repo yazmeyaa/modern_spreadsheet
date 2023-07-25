@@ -1,4 +1,4 @@
-import Spreadsheet from "../main"
+import Spreadsheet, { CSS_PREFIX } from "../main"
 
 export interface ViewportRect {
     top: number
@@ -107,11 +107,15 @@ export class Scroller {
                 }
             }
         }
+        const keysRegex = /^([a-z]|[а-я])$/
         if (!event.metaKey && !event.ctrlKey) { //* Prevent handle shortcutrs
-            if (event.key === 'F2' || /^([a-z]|[а-я])$/.test(event.key.toLowerCase())) { //* English and Russian keyboard. Or F2 button
+            const isPressedLetterKey = keysRegex.test(event.key.toLowerCase()) 
+
+            if (event.key === 'F2' || isPressedLetterKey) { //* English and Russian keyboard. Or F2 button
                 event.preventDefault()
                 if (!this.root.selection.selectedCell) return;
-                this.root.showEditor(this.root.selection.selectedCell)
+                
+                this.root.showEditor(this.root.selection.selectedCell, isPressedLetterKey ? event.key : undefined)
             }
         }
 
@@ -177,7 +181,7 @@ export class Scroller {
         this.verticalScroller = verticalScroller
         this.horizontalScroller = horizontalScroller
         scroller.appendChild(groupScrollers)
-        scroller.classList.add('scroller')
+        scroller.classList.add(CSS_PREFIX + 'scroller')
 
         return { scroller, verticalScroller, horizontalScroller }
     }

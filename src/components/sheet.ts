@@ -1,4 +1,4 @@
-import Spreadsheet from "../main"
+import Spreadsheet, { CSS_PREFIX } from "../main"
 import { Position } from "../modules/cell"
 
 /**
@@ -11,7 +11,7 @@ export class Sheet {
     constructor(root: Spreadsheet) {
         this.root = root
         const canvas = document.createElement('canvas')
-        canvas.classList.add('sheet')
+        canvas.classList.add(CSS_PREFIX + 'sheet')
 
         //* Set up canvas sizes based on provided root config
         canvas.height = this.root.config.view.height

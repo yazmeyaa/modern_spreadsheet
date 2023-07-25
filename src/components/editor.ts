@@ -1,4 +1,4 @@
-import Spreadsheet from "../main";
+import Spreadsheet, { CSS_PREFIX } from "../main";
 import { Position } from "../modules/cell";
 import { RenderBox } from "../modules/renderBox";
 
@@ -8,7 +8,7 @@ export class Editor {
     constructor(root: Spreadsheet) {
         this.root = root
         const element = document.createElement('input')
-        element.classList.add('editor')
+        element.classList.add(CSS_PREFIX + 'editor')
         this.element = element
         this.hide()
     }
@@ -19,11 +19,11 @@ export class Editor {
         this.element.blur()
         window.removeEventListener('click', this.handleClickOutside)
         this.element.removeEventListener('keydown', this.handleKeydown)
-        
+
         this.root.focusTable()
     }
 
-    show(position: Position) {
+    show(position: Position, initialString?: string) {
         const { height, width, x, y } = new RenderBox(this.root.config, position);
         const cell = this.root.getCell(position)
         this.element.classList.remove('hide')
@@ -36,15 +36,17 @@ export class Editor {
 
         window.addEventListener('click', this.handleClickOutside)
         this.element.addEventListener('keydown', this.handleKeydown)
-        this.element.value = cell.value
+        this.element.value = initialString ? initialString : cell.value
         this.element.focus()
-        this.element.select()
+        if (!initialString) this.element.select()
+
+
     }
 
-    handleKeydown = (event: KeyboardEvent) =>  {
-        const {key} = event
-        
-        switch(key) {
+    handleKeydown = (event: KeyboardEvent) => {
+        const { key } = event
+
+        switch (key) {
             case 'Escape': {
                 this.hide();
                 break;

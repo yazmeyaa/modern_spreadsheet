@@ -1,4 +1,4 @@
-import Spreadsheet from "../main"
+import Spreadsheet, { CSS_PREFIX } from "../main"
 
 export class Toolbar {
     element: HTMLDivElement
@@ -6,7 +6,7 @@ export class Toolbar {
     constructor(root: Spreadsheet) {
         this.root = root
         const toolbarElement = document.createElement('div')
-        toolbarElement.classList.add('toolbar')
+        toolbarElement.classList.add(CSS_PREFIX + 'toolbar')
         this.element = toolbarElement
     }
 }

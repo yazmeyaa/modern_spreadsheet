@@ -1,7 +1,7 @@
-var v = Object.defineProperty;
-var S = (r, t, e) => t in r ? v(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
-var s = (r, t, e) => (S(r, typeof t != "symbol" ? t + "" : t, e), e);
-class m {
+var R = Object.defineProperty;
+var v = (n, t, e) => t in n ? R(n, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : n[t] = e;
+var s = (n, t, e) => (v(n, typeof t != "symbol" ? t + "" : t, e), e);
+class w {
   constructor(t, e) {
     s(this, "x");
     s(this, "y");
@@ -11,18 +11,18 @@ class m {
   }
   getXCoord(t, e) {
     let o = 0;
-    for (let l = 0; l < t; l++)
-      o += e.columns[l].width;
+    for (let i = 0; i < t; i++)
+      o += e.columns[i].width;
     return o;
   }
   getYCoord(t, e) {
     let o = 0;
-    for (let l = 0; l < t; l++)
-      o += e.rows[l].height;
+    for (let i = 0; i < t; i++)
+      o += e.rows[i].height;
     return o;
   }
 }
-class x {
+class S {
   constructor(t) {
     s(this, "element");
     s(this, "root");
@@ -46,23 +46,14 @@ class x {
     });
     this.root = t;
     const e = document.createElement("input");
-    e.classList.add(d + "editor"), this.element = e, this.hide();
+    e.classList.add(a + "editor"), this.element = e, this.hide();
   }
   hide() {
     this.element.style.display = "none", this.element.classList.add("hide"), this.element.blur(), window.removeEventListener("click", this.handleClickOutside), this.element.removeEventListener("keydown", this.handleKeydown), this.root.focusTable();
   }
   show(t, e) {
-    const { height: o, width: l, x: n, y: i } = new m(this.root.config, t), c = this.root.getCell(t);
-    this.element.classList.remove("hide"), this.element.style.top = i - this.root.viewport.top + "px", this.element.style.left = n - this.root.viewport.left + "px", this.element.style.width = l + "px", this.element.style.height = o + "px", this.element.style.display = "block", window.addEventListener("click", this.handleClickOutside), this.element.addEventListener("keydown", this.handleKeydown), this.element.value = e || c.value, this.element.focus(), e || this.element.select();
-  }
-}
-class R {
-  constructor(t) {
-    s(this, "element");
-    s(this, "root");
-    this.root = t;
-    const e = document.createElement("header");
-    e.classList.add(), this.element = e;
+    const { height: o, width: i, x: r, y: l } = new w(this.root.config, t), h = this.root.getCell(t);
+    this.element.classList.remove("hide"), this.element.style.top = l - this.root.viewport.top + this.root.columnsBarHeight + "px", this.element.style.left = r - this.root.viewport.left + this.root.rowsBarWidth + "px", this.element.style.width = i + "px", this.element.style.height = o + "px", this.element.style.display = "block", window.addEventListener("click", this.handleClickOutside), this.element.addEventListener("keydown", this.handleKeydown), this.element.value = e || h.value, this.element.focus(), e || this.element.select();
   }
 }
 class b {
@@ -75,11 +66,11 @@ class b {
     s(this, "handleMouseMove", (t) => {
       if (!this.isSelecting)
         return;
-      const { offsetX: e, offsetY: o } = t, l = this.root.getCellByCoords(e, o);
-      this.root.selection.selectedRange && (this.root.selection.selectedRange.to = l), this.root.renderSheet();
+      const { offsetX: e, offsetY: o } = t, i = this.root.getCellByCoords(e, o);
+      this.root.selection.selectedRange && (this.root.selection.selectedRange.to = i), this.root.renderSheet(), this.root.renderColumnsBar(), this.root.renderRowsBar();
     });
     s(this, "handleMouseUp", () => {
-      this.isSelecting = !1, this.root.selection.selectedRange && this.root.selection.selectedRange.from.row === this.root.selection.selectedRange.to.row && this.root.selection.selectedRange.from.column === this.root.selection.selectedRange.to.column && (this.root.selection.selectedRange = null), this.root.renderSheet();
+      this.isSelecting = !1, this.root.selection.selectedRange && this.root.selection.selectedRange.from.row === this.root.selection.selectedRange.to.row && this.root.selection.selectedRange.from.column === this.root.selection.selectedRange.to.column && (this.root.selection.selectedRange = null), this.root.renderSheet(), this.root.renderColumnsBar(), this.root.renderRowsBar();
     });
     s(this, "handleDoubleClick", (t) => {
       t.preventDefault();
@@ -120,32 +111,32 @@ class b {
     s(this, "handleClick", (t) => {
       if (t.button !== 0)
         return;
-      const { offsetX: e, offsetY: o } = t, l = this.root.getCellByCoords(e, o);
+      const { offsetX: e, offsetY: o } = t, i = this.root.getCellByCoords(e, o);
       this.isSelecting = !0, this.root.selection.selectedRange = {
-        from: l,
-        to: l
-      }, this.root.selection.selectedCell = l, this.root.renderSheet();
+        from: i,
+        to: i
+      }, this.root.selection.selectedCell = i, this.root.renderSheet(), this.root.renderColumnsBar(), this.root.renderRowsBar();
     });
     s(this, "handleScroll", () => {
       const t = this.getViewportBoundlingRect();
-      this.root.viewport.updateValues(t), this.root.renderSheet();
+      this.root.viewport.updateValues(t), this.root.renderSheet(), this.root.renderColumnsBar(), this.root.renderRowsBar();
     });
     this.root = t;
-    const { horizontalScroller: e, scroller: o, verticalScroller: l } = this.buildComponent();
-    this.element = o, this.verticalScroller = l, this.horizontalScroller = e, this.element.style.height = this.root.config.view.height + "px", this.element.style.width = this.root.config.view.width + "px", this.element.tabIndex = -1, this.updateScrollerSize(), this.element.addEventListener("scroll", this.handleScroll), this.element.addEventListener("mousedown", this.handleClick), this.element.addEventListener("mousemove", this.handleMouseMove), this.element.addEventListener("mouseup", this.handleMouseUp), this.element.addEventListener("dblclick", this.handleDoubleClick), this.element.addEventListener("keydown", this.handleKeydown);
+    const { horizontalScroller: e, scroller: o, verticalScroller: i } = this.buildComponent();
+    this.element = o, this.verticalScroller = i, this.horizontalScroller = e, this.element.style.height = this.root.config.view.height + "px", this.element.style.width = this.root.config.view.width + "px", this.element.style.top = this.root.columnsBarHeight + "px", this.element.style.left = this.root.rowsBarWidth + "px", this.element.tabIndex = -1, this.updateScrollerSize(), this.element.addEventListener("scroll", this.handleScroll), this.element.addEventListener("mousedown", this.handleClick), this.element.addEventListener("mousemove", this.handleMouseMove), this.element.addEventListener("mouseup", this.handleMouseUp), this.element.addEventListener("dblclick", this.handleDoubleClick), this.element.addEventListener("keydown", this.handleKeydown);
   }
   getViewportBoundlingRect() {
-    const { scrollTop: t, scrollLeft: e } = this.element, { height: o, width: l } = this.element.getBoundingClientRect(), n = t + o, i = e + l;
+    const { scrollTop: t, scrollLeft: e } = this.element, { height: o, width: i } = this.element.getBoundingClientRect(), r = t + o, l = e + i;
     return {
       top: t,
       left: e,
-      bottom: n,
-      right: i
+      bottom: r,
+      right: l
     };
   }
   buildComponent() {
-    const t = document.createElement("div"), e = document.createElement("div"), o = document.createElement("div"), l = document.createElement("div"), n = document.createElement("div");
-    return e.style.width = "0px", e.style.pointerEvents = "none", o.style.pointerEvents = "none", l.style.display = "flex", n.appendChild(e), n.appendChild(o), l.appendChild(n), this.verticalScroller = e, this.horizontalScroller = o, t.appendChild(l), t.classList.add(d + "scroller"), { scroller: t, verticalScroller: e, horizontalScroller: o };
+    const t = document.createElement("div"), e = document.createElement("div"), o = document.createElement("div"), i = document.createElement("div"), r = document.createElement("div");
+    return e.style.width = "0px", e.style.pointerEvents = "none", o.style.pointerEvents = "none", i.style.display = "flex", r.appendChild(e), r.appendChild(o), i.appendChild(r), this.verticalScroller = e, this.horizontalScroller = o, t.appendChild(i), t.classList.add(a + "scroller"), { scroller: t, verticalScroller: e, horizontalScroller: o };
   }
   getActualHeight() {
     return this.root.config.rows.reduce((t, e) => (t += e.height, t), 0);
@@ -164,7 +155,7 @@ class b {
     this.horizontalScroller.style.width = t + "px";
   }
 }
-class k {
+class B {
   constructor(t) {
     s(this, "fontSize", 16);
     s(this, "fontColor", "black");
@@ -175,7 +166,7 @@ class k {
     t && Object.assign(this, t);
   }
 }
-class V {
+class k {
   constructor(t, e) {
     s(this, "row");
     s(this, "column");
@@ -192,13 +183,13 @@ class E {
     this.value = t.value, this.displayValue = t.displayValue, this.resultValue = t.resultValue, this.position = t.position, this.style = t.style;
   }
 }
-class f {
+class C {
   constructor(t) {
     /** True value (data) */
     s(this, "value");
     /** Value to render */
     s(this, "displayValue");
-    /** This refers to the values ​​​​that were obtained by calculations, for example, after calculating the formula  */
+    /** This refers to the values that were obtained by calculations, for example, after calculating the formula  */
     s(this, "resultValue");
     s(this, "position");
     s(this, "style", null);
@@ -220,77 +211,79 @@ class f {
     Object.assign(this, t);
   }
   isCellInRange(t) {
-    const { column: e, row: o } = this.position, { selectedRange: l } = t.selection;
-    if (!l)
+    const { column: e, row: o } = this.position, { selectedRange: i } = t.selection;
+    if (!i)
       return !1;
-    const n = o >= Math.min(l.from.row, l.to.row) && o <= Math.max(l.to.row, l.from.row);
-    return e >= Math.min(l.from.column, l.to.column) && e <= Math.max(l.to.column, l.from.column) && n;
+    const r = o >= Math.min(i.from.row, i.to.row) && o <= Math.max(i.to.row, i.from.row);
+    return e >= Math.min(i.from.column, i.to.column) && e <= Math.max(i.to.column, i.from.column) && r;
   }
   render(t) {
-    var w;
-    let { height: e, width: o, x: l, y: n } = new m(t.config, this.position);
-    const { ctx: i } = t, c = ((w = t.selection.selectedCell) == null ? void 0 : w.row) === this.position.row && t.selection.selectedCell.column === this.position.column, h = this.isCellInRange(t);
-    n -= t.viewport.top, l -= t.viewport.left;
-    const a = this.style ?? t.styles.cells;
-    i.clearRect(l, n, o, e), i.fillStyle = c || h ? a.selectedBackground : a.background, i.strokeStyle = "black", i.fillRect(l, n, o - 1, e - 1), i.strokeRect(l, n, o, e), i.fillStyle = c || h ? a.selectedFontColor : a.fontColor, i.textAlign = "left", i.font = `${a.fontSize}px Arial`, i.textBaseline = "middle", i.fillText(this.displayValue, l + 2, n + e / 2);
+    var g;
+    const e = new w(t.config, this.position);
+    let { x: o, y: i } = e;
+    const { height: r, width: l } = e, { ctx: h } = t, c = ((g = t.selection.selectedCell) == null ? void 0 : g.row) === this.position.row && t.selection.selectedCell.column === this.position.column, u = this.isCellInRange(t);
+    i -= t.viewport.top, o -= t.viewport.left;
+    const d = this.style ?? t.styles.cells;
+    h.clearRect(o, i, l, r), h.fillStyle = c || u ? d.selectedBackground : d.background, h.strokeStyle = "black", h.fillRect(o, i, l - 1, r - 1), h.strokeRect(o, i, l, r), h.fillStyle = c || u ? d.selectedFontColor : d.fontColor, h.textAlign = "left", h.font = `${d.fontSize}px Arial`, h.textBaseline = "middle", h.fillText(this.displayValue, o + 2, i + r / 2);
   }
 }
-class I {
+class V {
   constructor(t) {
     s(this, "element");
     s(this, "ctx");
     s(this, "root");
     this.root = t;
     const e = document.createElement("canvas");
-    e.classList.add(d + "sheet"), e.height = this.root.config.view.height, e.width = this.root.config.view.width, e.style.width = this.root.config.view.width + "px", e.style.height = this.root.config.view.height + "px", this.element = e;
+    e.classList.add(a + "sheet"), e.height = this.root.config.view.height, e.width = this.root.config.view.width, e.style.width = this.root.config.view.width + "px", e.style.height = this.root.config.view.height + "px", e.style.left = "0px", this.element = e;
     const o = this.element.getContext("2d");
     if (!o)
       throw new Error("Enable hardware acceleration");
     this.ctx = o;
   }
   getCellByCoords(t, e) {
-    let o = 0, l = 0;
-    for (; l <= e && (l += this.root.config.rows[o].height, !(l >= e)); )
+    let o = 0, i = 0;
+    for (; i <= e && (i += this.root.config.rows[o].height, !(i >= e)); )
       o++;
-    let n = 0, i = 0;
-    for (; i <= t && (i += this.root.config.columns[n].width, !(i >= t)); )
-      n++;
-    return new V(o, n);
+    let r = 0, l = 0;
+    for (; l <= t && (l += this.root.config.columns[r].width, !(l >= t)); )
+      r++;
+    return new k(o, r);
   }
   renderCell(t) {
     const { column: e, row: o } = t;
     this.root.data[o][e].render(this.root);
   }
   renderSheet() {
-    const t = this.root.viewport.firstRow, e = this.root.viewport.lastCol + 3, o = this.root.viewport.lastRow + 3, l = this.root.viewport.firstCol;
-    for (let n = t; n <= o; n++)
-      for (let i = l; i <= e && !(!this.root.config.columns[i] || !this.root.config.rows[n]); i++)
-        this.renderCell({ column: i, row: n });
+    const t = this.root.viewport.firstRow, e = this.root.viewport.lastCol + 3, o = this.root.viewport.lastRow + 3, i = this.root.viewport.firstCol;
+    for (let r = t; r <= o; r++)
+      for (let l = i; l <= e && !(!this.root.config.columns[l] || !this.root.config.rows[r]); l++)
+        this.renderCell({ column: l, row: r });
+  }
+}
+class I {
+  constructor(t) {
+    s(this, "element");
+    s(this, "root");
+    this.root = t;
+    const e = document.createElement("div");
+    e.classList.add(a + "spreadsheet_container"), this.element = e, this.changeElementSizes(this.root.viewProps);
+  }
+  changeElementSizes(t) {
+    const { height: e, width: o } = t;
+    this.element.style.width = o + this.root.rowsBarWidth + "px", this.element.style.height = e + this.root.columnsBarHeight + "px";
   }
 }
 class L {
   constructor(t) {
     s(this, "element");
     s(this, "root");
+    s(this, "height", 0);
     this.root = t;
     const e = document.createElement("div");
-    e.classList.add(d + "spreadsheet_container"), this.element = e, this.changeElementSizes(this.root.viewProps);
-  }
-  changeElementSizes(t) {
-    const { height: e, width: o } = t;
-    this.element.style.width = o + "px", this.element.style.height = e + "px";
+    e.classList.add(a + "toolbar"), this.element = e;
   }
 }
-class A {
-  constructor(t) {
-    s(this, "element");
-    s(this, "root");
-    this.root = t;
-    const e = document.createElement("div");
-    e.classList.add(d + "toolbar"), this.element = e;
-  }
-}
-class u {
+class m {
   constructor(t) {
     s(this, "rows");
     s(this, "columns");
@@ -301,19 +294,19 @@ class u {
     this.columns = t.columns, this.rows = t.rows, this.view = t.view;
   }
 }
-class B {
+class P {
   constructor() {
     s(this, "selectedCell", null);
     s(this, "selectedRange", null);
   }
 }
-class z {
+class T {
   constructor() {
     s(this, "cells");
-    this.cells = new k();
+    this.cells = new B();
   }
 }
-class g {
+class f {
   constructor(t, e) {
     s(this, "root");
     s(this, "top");
@@ -352,59 +345,59 @@ class g {
     return this.root.cache.getColumnByXCoord(this.right);
   }
 }
-class C {
+class x {
   constructor(t) {
     s(this, "width");
     s(this, "title");
     this.width = t.width, this.title = t.title;
   }
 }
-class y {
+class p {
   constructor(t) {
     s(this, "height");
     s(this, "title");
     this.height = t.height, this.title = t.title;
   }
 }
-function p(r, t, e = !1) {
+function y(n, t, e = !1) {
   const o = [];
-  for (let l = 0; l <= r; l++) {
-    const n = [];
-    for (let i = 0; i <= t; i++) {
-      const c = e ? `${l}:${i}` : "", h = new f({
-        displayValue: c,
-        resultValue: c,
-        value: c,
+  for (let i = 0; i <= n; i++) {
+    const r = [];
+    for (let l = 0; l <= t; l++) {
+      const h = e ? `${i}:${l}` : "", c = new C({
+        displayValue: h,
+        resultValue: h,
+        value: h,
         position: {
-          column: i,
-          row: l
+          column: l,
+          row: i
         },
         style: null
       });
-      n.push(h);
+      r.push(c);
     }
-    o.push(n);
+    o.push(r);
   }
   return o;
 }
-function D(r, t) {
+function A(n, t) {
   const e = [];
-  for (let n = 0; n <= r; n++) {
-    const i = new y({
+  for (let r = 0; r <= n; r++) {
+    const l = new p({
       height: 40,
-      title: String(n)
+      title: String(r)
     });
-    e.push(i);
+    e.push(l);
   }
   const o = [];
-  for (let n = 0; n <= t; n++) {
-    const i = new C({
-      title: String(n),
+  for (let r = 0; r <= t; r++) {
+    const l = new x({
+      title: String(r),
       width: 150
     });
-    o.push(i);
+    o.push(l);
   }
-  return new u({
+  return new m({
     columns: o,
     rows: e,
     view: {
@@ -413,8 +406,8 @@ function D(r, t) {
     }
   });
 }
-function H(r, t) {
-  const e = p(r, t), o = D(r, t);
+function X(n, t) {
+  const e = y(n, t), o = A(n, t);
   return { data: e, config: o };
 }
 class M {
@@ -424,14 +417,14 @@ class M {
     this.xPos = t.xPos, this.colIdx = t.colIdx;
   }
 }
-class F {
+class z {
   constructor(t) {
     s(this, "yPos");
     s(this, "rowIdx");
     this.yPos = t.yPos, this.rowIdx = t.rowIdx;
   }
 }
-class T {
+class D {
   constructor(t) {
     s(this, "columns");
     s(this, "rows");
@@ -456,13 +449,120 @@ class T {
     return e;
   }
 }
-const d = "modern_sc_";
-class X {
+class H {
+  constructor(t) {
+    s(this, "element");
+    s(this, "root");
+    s(this, "height", 32);
+    s(this, "width");
+    // private resizerWidth = 1;
+    s(this, "ctx");
+    this.root = t, this.element = this.createElement();
+    const e = this.element.getContext("2d");
+    if (!e)
+      throw new Error("Enable hardware acceleration");
+    this.ctx = e, this.width = this.root.viewProps.width;
+  }
+  createElement() {
+    const t = document.createElement("canvas");
+    return t.style.position = "absolute", t.style.height = this.height + "px", t.style.width = this.root.viewProps.width + "px", t.style.display = "block", t.style.borderLeft = "1px solid black", t.width = this.root.viewProps.width, t.height = this.height, t;
+  }
+  setElementPosition(t, e) {
+    this.element.style.top = t + "px", this.element.style.left = e + "px";
+  }
+  isColumnSelected(t) {
+    const { selectedCell: e, selectedRange: o } = this.root.selection;
+    return e && e.column === t ? !0 : o ? t >= Math.min(o.from.column, o.to.column) && t <= Math.max(o.from.column, o.to.column) : !1;
+  }
+  // private getYCoordWithOffset(renderBox: RenderBox): number {
+  //     const {y} = renderBox
+  //     return y + this.root.toolbarHeight
+  // }
+  // private getXCoordWithOffset(renderBox: RenderBox): number {
+  //     const {x} = renderBox
+  //     return x
+  // }
+  renderText(t, e) {
+    const { width: o, x: i } = e;
+    this.ctx.fillStyle = "black", this.ctx.textAlign = "center", this.ctx.textBaseline = "middle", this.ctx.font = "16px Arial", this.ctx.fillText(this.root.config.columns[t].title, i + o / 2 - this.root.viewport.left, 0 + this.height / 2);
+  }
+  renderRect(t, e) {
+    const { width: o, x: i } = e, r = this.isColumnSelected(t);
+    this.ctx.fillStyle = r ? this.root.styles.cells.selectedBackground : "white", this.ctx.strokeStyle = "black", this.ctx.lineWidth = 1;
+    const l = i - this.root.viewport.left;
+    this.ctx.fillRect(l - 1, 0, o, this.height), this.ctx.strokeRect(l - 1, 0, o, this.height);
+  }
+  renderSingleColumn(t) {
+    const e = new w(this.root.config, {
+      row: 0,
+      column: t
+    });
+    this.renderRect(t, e), this.renderText(t, e);
+  }
+  renderBar() {
+    const t = this.root.viewport.lastCol + 3, e = this.root.viewport.firstCol;
+    this.ctx.beginPath(), this.ctx.strokeStyle = "black", this.ctx.lineWidth = 1, this.ctx.moveTo(0, 0), this.ctx.lineTo(0, this.height), this.ctx.closePath(), this.ctx.stroke();
+    for (let o = e; o <= t && this.root.config.columns[o]; o++)
+      this.renderSingleColumn(o);
+  }
+}
+class F {
+  constructor(t) {
+    s(this, "element");
+    s(this, "ctx");
+    s(this, "root");
+    s(this, "width", 30);
+    s(this, "height");
+    s(this, "resizerHeight", 1);
+    this.root = t, this.element = this.createElement();
+    const e = this.element.getContext("2d");
+    if (!e)
+      throw new Error("Enable hardware acceleration");
+    this.ctx = e, this.height = this.root.viewProps.height;
+  }
+  createElement() {
+    const t = document.createElement("canvas");
+    return t.style.position = "absolute", t.style.height = this.root.viewProps.height + "px", t.style.width = this.width + "px", t.style.display = "block", t.style.borderTop = "1px solid black", t.width = this.width, t.height = this.root.viewProps.height, t;
+  }
+  setElementPosition(t, e) {
+    this.element.style.top = t + "px", this.element.style.left = e + "px";
+  }
+  isRowSelected(t) {
+    const { selectedCell: e, selectedRange: o } = this.root.selection;
+    return e && e.row === t ? !0 : o ? t >= Math.min(o.from.row, o.to.row) && t <= Math.max(o.from.row, o.to.row) : !1;
+  }
+  renderText(t, e) {
+    const { y: o, height: i } = e;
+    this.ctx.fillStyle = "black", this.ctx.textAlign = "center", this.ctx.textBaseline = "middle", this.ctx.font = "16px Arial", this.ctx.fillText(this.root.config.rows[t].title, this.width / 2, o - this.root.viewport.top + i / 2);
+  }
+  renderRect(t, e) {
+    const { y: o, height: i } = e, r = this.isRowSelected(t);
+    this.ctx.fillStyle = r ? this.root.styles.cells.selectedBackground : "white", this.ctx.strokeStyle = "black", this.ctx.lineWidth = this.resizerHeight;
+    const l = o - this.root.viewport.top;
+    this.ctx.fillRect(0, l - 1, this.width, i), this.ctx.strokeRect(0, l - 1, this.width, i);
+  }
+  renderSingleRow(t) {
+    const e = new w(this.root.config, {
+      column: 0,
+      row: t
+    });
+    this.renderRect(t, e), this.renderText(t, e);
+  }
+  renderBar() {
+    const t = this.root.viewport.lastRow + 3, e = this.root.viewport.firstRow;
+    this.ctx.beginPath(), this.ctx.moveTo(0, 0), this.ctx.strokeStyle = "black", this.ctx.lineWidth = 16, this.ctx.lineTo(35, 0), this.ctx.closePath(), this.ctx.stroke();
+    for (let o = e; o <= t && this.root.config.rows[o]; o++)
+      this.renderSingleRow(o);
+  }
+}
+const a = "modern_sc_";
+class Y {
   constructor(t, e) {
     s(this, "table");
     s(this, "scroller");
     s(this, "toolbar");
-    s(this, "header");
+    s(this, "rowsBar");
+    s(this, "columnsBar");
     s(this, "sheet");
     s(this, "editor");
     s(this, "styles");
@@ -471,41 +571,52 @@ class X {
     s(this, "viewport");
     s(this, "selection");
     s(this, "cache");
-    const o = p(40, 40), l = this.makeConfigFromData(o, (e == null ? void 0 : e.view) ?? { height: 600, width: 800 });
-    e != null && e.view && (l.view = e.view), this.config = new u(l), this.sheet = new I(this), this.table = new L(this), this.scroller = new b(this), this.toolbar = new A(this), this.header = new R(this), this.editor = new x(this), this.cache = this.getInitialCache(), this.viewport = new g(this, this.scroller.getViewportBoundlingRect()), this.selection = new B(), this.data = o, this.styles = new z(), this.buildComponent(), this.appendTableToTarget(t), this.renderSheet();
+    const o = y(40, 40), i = this.makeConfigFromData(o, (e == null ? void 0 : e.view) ?? { height: 600, width: 800 });
+    e != null && e.view && (i.view = e.view), this.config = new m(i), this.rowsBar = new F(this), this.columnsBar = new H(this), this.sheet = new V(this), this.table = new I(this), this.scroller = new b(this), this.toolbar = new L(this), this.editor = new S(this), this.cache = this.getInitialCache(), this.viewport = new f(this, this.scroller.getViewportBoundlingRect()), this.selection = new P(), this.data = o, this.styles = new T(), this.buildComponent(), this.setElementsPositions(), this.appendTableToTarget(t), this.renderSheet(), this.renderColumnsBar(), this.renderRowsBar();
+  }
+  setRowsBarPosition() {
+    const t = this.columnsBar.height + this.toolbar.height, e = 0;
+    this.rowsBar.setElementPosition(t, e);
+  }
+  setColumnsBarPosition() {
+    const t = this.toolbar.height, e = this.rowsBar.width;
+    console.log(t, e), this.columnsBar.setElementPosition(t, e);
+  }
+  setElementsPositions() {
+    this.setRowsBarPosition(), this.setColumnsBarPosition();
   }
   getInitialCache() {
     const t = [];
     let e = 0;
-    for (let i = 0; i <= this.config.columns.length - 1; i++) {
-      const c = this.config.columns[i];
-      e += c.width;
-      const h = new M({
+    for (let l = 0; l <= this.config.columns.length - 1; l++) {
+      const h = this.config.columns[l];
+      e += h.width;
+      const c = new M({
         xPos: e,
-        colIdx: i
+        colIdx: l
       });
-      t.push(h);
+      t.push(c);
     }
     const o = [];
-    let l = 0;
-    for (let i = 0; i <= this.config.rows.length - 1; i++) {
-      const c = this.config.rows[i];
-      l += c.height;
-      const h = new F({
-        yPos: l,
-        rowIdx: i
+    let i = 0;
+    for (let l = 0; l <= this.config.rows.length - 1; l++) {
+      const h = this.config.rows[l];
+      i += h.height;
+      const c = new z({
+        yPos: i,
+        rowIdx: l
       });
-      o.push(h);
+      o.push(c);
     }
-    const n = new T({
+    const r = new D({
       columns: t,
       rows: o
     });
-    return console.log("CACHE: ", n), console.log("CONFIG: ", this.config), n;
+    return console.log("CACHE: ", r), console.log("CONFIG: ", this.config), r;
   }
   buildComponent() {
     const t = document.createElement("div");
-    t.appendChild(this.header.element), t.appendChild(this.sheet.element), t.classList.add(d + "content"), this.table.element.appendChild(this.toolbar.element), this.table.element.appendChild(t), this.table.element.appendChild(this.scroller.element), this.table.element.append(this.editor.element);
+    t.style.top = this.columnsBarHeight + "px", t.style.left = this.rowsBarWidth + "px", t.appendChild(this.sheet.element), t.classList.add(a + "content"), this.table.element.appendChild(this.toolbar.element), this.table.element.appendChild(this.rowsBar.element), this.table.element.appendChild(this.columnsBar.element), this.table.element.appendChild(t), this.table.element.appendChild(this.scroller.element), this.table.element.append(this.editor.element);
   }
   /**Destroy spreadsheet DOM element.
    *
@@ -534,6 +645,15 @@ class X {
   get viewProps() {
     return this.config.view;
   }
+  get columnsBarHeight() {
+    return this.columnsBar.height;
+  }
+  get rowsBarWidth() {
+    return this.rowsBar.width;
+  }
+  get toolbarHeight() {
+    return this.toolbar.height;
+  }
   /** Focusing on interactive part of spreadsheet */
   focusTable() {
     this.scroller.element.focus();
@@ -546,19 +666,19 @@ class X {
     return this.data[o][e];
   }
   changeCellValues(t, e) {
-    const { column: o, row: l } = t;
-    this.data[l][o].changeValues(e), this.renderCell(l, o);
+    const { column: o, row: i } = t;
+    this.data[i][o].changeValues(e), this.renderCell(i, o);
   }
   changeCellStyles(t, e) {
-    const { column: o, row: l } = t;
-    this.data[l][o].changeStyles(e), this.renderCell(l, o);
+    const { column: o, row: i } = t;
+    this.data[i][o].changeStyles(e), this.renderCell(i, o);
   }
   applyActionToRange(t, e) {
-    const o = Math.min(t.from.row, t.to.row), l = Math.max(t.from.row, t.to.row), n = Math.min(t.from.column, t.to.column), i = Math.max(t.from.column, t.to.column);
-    for (let c = o; c <= l; c++)
-      for (let h = n; h <= i; h++) {
-        const a = this.data[c][h];
-        e(a);
+    const o = Math.min(t.from.row, t.to.row), i = Math.max(t.from.row, t.to.row), r = Math.min(t.from.column, t.to.column), l = Math.max(t.from.column, t.to.column);
+    for (let h = o; h <= i; h++)
+      for (let c = r; c <= l; c++) {
+        const u = this.data[h][c];
+        e(u);
       }
   }
   deleteSelectedCellsValues() {
@@ -586,78 +706,84 @@ class X {
   renderSheet() {
     this.sheet.renderSheet();
   }
+  renderColumnsBar() {
+    this.columnsBar.renderBar();
+  }
+  renderRowsBar() {
+    this.rowsBar.renderBar();
+  }
   renderCell(t, e) {
     this.data[t][e].render(this);
   }
   loadData(t) {
     const e = t.length, o = t[0] ? this.data[0].length : 0;
     this.data = [];
-    const l = [];
-    for (let n = 0; n < e; n++) {
-      const i = [];
-      for (let c = 0; c < o; c++) {
-        const h = t[n][c];
-        i.push(new f({
-          displayValue: h.displayValue,
-          position: h.position,
-          resultValue: h.resultValue,
-          value: h.value,
-          style: h.style
+    const i = [];
+    for (let r = 0; r < e; r++) {
+      const l = [];
+      for (let h = 0; h < o; h++) {
+        const c = t[r][h];
+        l.push(new C({
+          displayValue: c.displayValue,
+          position: c.position,
+          resultValue: c.resultValue,
+          value: c.value,
+          style: c.style
         }));
       }
-      l.push(i);
+      i.push(l);
     }
-    return this.data = l, this.selection.selectedCell = null, this.selection.selectedRange = null, this.config = this.makeConfigFromData(l, this.config.view), this.cache = this.getInitialCache(), this.scroller.updateScrollerSize(), this.viewport = new g(this, this.scroller.getViewportBoundlingRect()), this.renderSheet(), this;
+    return this.data = i, this.selection.selectedCell = null, this.selection.selectedRange = null, this.config = this.makeConfigFromData(i, this.config.view), this.cache = this.getInitialCache(), this.scroller.updateScrollerSize(), this.viewport = new f(this, this.scroller.getViewportBoundlingRect()), this.renderSheet(), this;
   }
   makeConfigFromData(t, e) {
-    const o = t.length - 1, l = t[0] ? t[0].length : 0, n = [];
-    for (let h = 0; h < o; h++)
-      n.push(new y({
+    const o = t.length - 1, i = t[0] ? t[0].length : 0, r = [];
+    for (let c = 0; c < o; c++)
+      r.push(new p({
         height: 40,
-        title: String(h)
+        title: String(c)
       }));
-    const i = [];
-    for (let h = 0; h < l; h++)
-      i.push(new C({
+    const l = [];
+    for (let c = 0; c < i; c++)
+      l.push(new x({
         width: 150,
-        title: String(h)
+        title: String(c)
       }));
-    return new u({
+    return new m({
       view: e,
-      rows: n,
-      columns: i
+      rows: r,
+      columns: l
     });
   }
   serializeData() {
     const t = this.data.length, e = this.data[0] ? this.data[0].length : 0, o = [];
-    for (let l = 0; l < t; l++) {
-      const n = [];
-      for (let i = 0; i < e; i++)
-        n.push(this.data[l][i].getSerializableCell());
-      o.push(n);
+    for (let i = 0; i < t; i++) {
+      const r = [];
+      for (let l = 0; l < e; l++)
+        r.push(this.data[i][l].getSerializableCell());
+      o.push(r);
     }
     return o;
   }
 }
 export {
-  d as CSS_PREFIX,
-  T as Cache,
+  a as CSS_PREFIX,
+  D as Cache,
   M as CachedColumn,
-  F as CachedRow,
-  f as Cell,
-  k as CellStyles,
-  C as Column,
-  u as Config,
-  V as Position,
-  m as RenderBox,
-  y as Row,
-  B as Selection,
+  z as CachedRow,
+  C as Cell,
+  B as CellStyles,
+  x as Column,
+  m as Config,
+  k as Position,
+  w as RenderBox,
+  p as Row,
+  P as Selection,
   E as SerializableCell,
-  z as Styles,
-  g as Viewport,
-  D as createSampleConfig,
-  p as createSampleData,
-  X as default,
-  H as makeSpreadsheetConfigAndData
+  T as Styles,
+  f as Viewport,
+  A as createSampleConfig,
+  y as createSampleData,
+  Y as default,
+  X as makeSpreadsheetConfigAndData
 };
 //# sourceMappingURL=main.js.map

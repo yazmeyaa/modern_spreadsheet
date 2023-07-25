@@ -5,7 +5,7 @@ export class ColumnsBar {
   private root: Spreadsheet;
   public height: number = 32;
   public width: number;
-  private resizerWidth = 1;
+  // private resizerWidth = 1;
   ctx: CanvasRenderingContext2D;
 
   constructor(root: Spreadsheet) {

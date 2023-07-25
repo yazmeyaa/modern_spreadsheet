@@ -41,14 +41,14 @@ export declare class Cell {
     value: string;
     /** Value to render */
     displayValue: string;
-    /** This refers to the values ​​​​that were obtained by calculations, for example, after calculating the formula  */
+    /** This refers to the values that were obtained by calculations, for example, after calculating the formula  */
     resultValue: string;
     position: Position;
     style: CellStyles | null;
     constructor(props: CellConstructorProps);
     getSerializableCell(): SerializableCell;
     changeStyles(styles: CellStyles): void;
-    changeValues(values: Partial<Omit<CellConstructorProps, 'position'>>): void;
+    changeValues(values: Partial<Omit<CellConstructorProps, "position">>): void;
     private isCellInRange;
     render(root: Spreadsheet): void;
 }

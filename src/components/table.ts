@@ -17,6 +17,6 @@ export class Table {
   changeElementSizes(sizes: ViewProperties) {
     const { height, width } = sizes;
     this.element.style.width = width + "px";
-    this.element.style.height = height + "px";
+    this.element.style.height = height + this.root.columnsBarHeight + "px";
   }
 }

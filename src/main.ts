@@ -1,5 +1,4 @@
 import { Editor } from "./components/editor";
-import { Header } from "./components/header";
 import { Scroller } from "./components/scroller";
 import { Sheet } from "./components/sheet";
 import { Table } from "./components/table";
@@ -20,6 +19,7 @@ import { createSampleData } from "./utils/createData";
 import { Cache, CachedColumn, CachedRow } from "./modules/cache";
 import { Row } from "./modules/row";
 import { Column } from "./modules/column";
+import { ColumnsBar } from "./components/columnsBar";
 
 /*
  ! Component structure
@@ -44,7 +44,7 @@ export default class Spreadsheet {
   private table: Table;
   private scroller: Scroller;
   private toolbar: Toolbar;
-  private header: Header;
+  private columnsBar: ColumnsBar
   private sheet: Sheet;
   private editor: Editor;
   public styles: Styles;
@@ -68,12 +68,12 @@ export default class Spreadsheet {
     }
 
     this.config = new Config(config);
-    this.sheet = new Sheet(this);
 
+    this.columnsBar = new ColumnsBar(this)
+    this.sheet = new Sheet(this);
     this.table = new Table(this);
     this.scroller = new Scroller(this);
     this.toolbar = new Toolbar(this);
-    this.header = new Header(this);
     this.editor = new Editor(this);
     this.cache = this.getInitialCache();
     this.viewport = new Viewport(
@@ -87,6 +87,7 @@ export default class Spreadsheet {
     this.buildComponent();
     this.appendTableToTarget(target);
     this.renderSheet();
+    this.renderColumnsBar()
   }
 
   private getInitialCache(): Cache {
@@ -126,12 +127,14 @@ export default class Spreadsheet {
 
   private buildComponent(): void {
     const content = document.createElement("div"); //* Abstract
-    content.appendChild(this.header.element);
+    content.style.top = this.columnsBarHeight + 'px'
+
     content.appendChild(this.sheet.element);
 
     content.classList.add(CSS_PREFIX + "content");
 
     this.table.element.appendChild(this.toolbar.element);
+    this.table.element.appendChild(this.columnsBar.element)
     this.table.element.appendChild(content);
     this.table.element.appendChild(this.scroller.element);
     this.table.element.append(this.editor.element);
@@ -169,6 +172,10 @@ export default class Spreadsheet {
 
   get viewProps() {
     return this.config.view;
+  }
+
+  get columnsBarHeight() {
+    return this.columnsBar.height
   }
 
   /** Focusing on interactive part of spreadsheet */
@@ -244,6 +251,10 @@ export default class Spreadsheet {
 
   renderSheet() {
     this.sheet.renderSheet();
+  }
+
+  renderColumnsBar() {
+    this.columnsBar.renderBar()
   }
 
   renderCell(row: number, col: number) {

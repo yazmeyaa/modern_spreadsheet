@@ -70,7 +70,7 @@ export class RowsBar {
         this.ctx.strokeStyle = 'black'
         this.ctx.lineWidth = this.resizerHeight
         this.ctx.fillRect(0 + 1, y - this.root.viewport.top, this.width + 1, height)
-        this.ctx.strokeRect(0 + 1, y - this.root.viewport.top, this.width - 1, height)
+        this.ctx.strokeRect(0, y - this.root.viewport.top, this.width - 1, height)
     }
 
     private renderSingleRow(row: number) {

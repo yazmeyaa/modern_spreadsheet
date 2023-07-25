@@ -10,7 +10,7 @@ import { RangeSelectionType, Selection } from "./modules/selection";
 import { Styles } from "./modules/styles";
 import { Viewport } from "./modules/viewport";
 import './scss/main.scss'
-import { createSampleConfig, createSampleData } from "./utils/createData";
+import { createSampleData } from "./utils/createData";
 import { Cache, CachedColumn, CachedRow } from "./modules/cache";
 import { Row } from "./modules/row";
 import { Column } from "./modules/column";

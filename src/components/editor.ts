@@ -29,7 +29,7 @@ export class Editor {
     this.element.classList.remove("hide");
 
     this.element.style.top = y - this.root.viewport.top + this.root.columnsBarHeight + "px";
-    this.element.style.left = x - this.root.viewport.left + "px";
+    this.element.style.left = x - this.root.viewport.left + this.root.rowsBarWidth + "px";
     this.element.style.width = width + "px";
     this.element.style.height = height + "px";
     this.element.style.display = "block";

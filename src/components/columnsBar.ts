@@ -83,7 +83,7 @@ export class ColumnsBar {
         this.ctx.fillStyle = isColSelected ? this.root.styles.cells.selectedBackground : 'white'
         this.ctx.strokeStyle = 'black'
         this.ctx.lineWidth = this.resizerWidth
-        this.ctx.fillRect(x - this.root.viewport.left - 1, 1, width - 1, this.height - 1)
+        this.ctx.fillRect(x - this.root.viewport.left + 1, 1, width - 1, this.height - 1)
         this.ctx.strokeRect(x - this.root.viewport.left, 0, width, this.height)
     }
 

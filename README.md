@@ -10,7 +10,7 @@
   Basic usage
 
 ```js
-import { Spreadsheet } from  'modern_spreadsheet'
+import Spreadsheet from  'modern_spreadsheet'
 
 import  'modern_spreadsheet/style.css'  // <= this is required
 

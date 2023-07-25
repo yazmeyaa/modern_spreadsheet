@@ -114,8 +114,8 @@ export class Cell {
 
   render(root: Spreadsheet) {
     const renderBox = new RenderBox(root.config, this.position);
-    let {x, y} = renderBox
-    const {height, width} = renderBox
+    let { x, y } = renderBox;
+    const { height, width } = renderBox;
     const { ctx } = root;
 
     const isCellSelected =

@@ -6,7 +6,7 @@ export class RenderBox {
   y: number;
   width: number;
   height: number;
-  
+
   constructor(config: Config, cellPosition: Position) {
     this.x = this.getXCoord(cellPosition.column, config);
     this.y = this.getYCoord(cellPosition.row, config);

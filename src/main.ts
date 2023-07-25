@@ -45,8 +45,8 @@ export default class Spreadsheet {
   private table: Table;
   private scroller: Scroller;
   private toolbar: Toolbar;
-  private rowsBar: RowsBar
-  private columnsBar: ColumnsBar
+  private rowsBar: RowsBar;
+  private columnsBar: ColumnsBar;
   private sheet: Sheet;
   private editor: Editor;
   public styles: Styles;
@@ -71,8 +71,8 @@ export default class Spreadsheet {
 
     this.config = new Config(config);
 
-    this.rowsBar = new RowsBar(this)
-    this.columnsBar = new ColumnsBar(this)
+    this.rowsBar = new RowsBar(this);
+    this.columnsBar = new ColumnsBar(this);
     this.sheet = new Sheet(this);
     this.table = new Table(this);
     this.scroller = new Scroller(this);
@@ -88,28 +88,28 @@ export default class Spreadsheet {
     this.data = data;
     this.styles = new Styles();
     this.buildComponent();
-    this.setElementsPositions()
+    this.setElementsPositions();
     this.appendTableToTarget(target);
     this.renderSheet();
-    this.renderColumnsBar()
-    this.renderRowsBar()
+    this.renderColumnsBar();
+    this.renderRowsBar();
   }
 
   private setRowsBarPosition() {
-    const top = this.columnsBar.height + this.toolbar.height
-    const left = 0
-    this.rowsBar.setElementPosition(top, left)
+    const top = this.columnsBar.height + this.toolbar.height;
+    const left = 0;
+    this.rowsBar.setElementPosition(top, left);
   }
   private setColumnsBarPosition() {
-    const top = this.toolbar.height
-    const left = this.rowsBar.width
-    console.log(top,left)
-    this.columnsBar.setElementPosition(top, left)
+    const top = this.toolbar.height;
+    const left = this.rowsBar.width;
+    console.log(top, left);
+    this.columnsBar.setElementPosition(top, left);
   }
 
   private setElementsPositions() {
-    this.setRowsBarPosition()
-    this.setColumnsBarPosition()
+    this.setRowsBarPosition();
+    this.setColumnsBarPosition();
   }
 
   private getInitialCache(): Cache {
@@ -149,16 +149,16 @@ export default class Spreadsheet {
 
   private buildComponent(): void {
     const content = document.createElement("div"); //* Abstract
-    content.style.top = this.columnsBarHeight + 'px'
-    content.style.left = this.rowsBarWidth + 'px'
+    content.style.top = this.columnsBarHeight + "px";
+    content.style.left = this.rowsBarWidth + "px";
 
     content.appendChild(this.sheet.element);
 
     content.classList.add(CSS_PREFIX + "content");
 
     this.table.element.appendChild(this.toolbar.element);
-    this.table.element.appendChild(this.rowsBar.element)
-    this.table.element.appendChild(this.columnsBar.element)
+    this.table.element.appendChild(this.rowsBar.element);
+    this.table.element.appendChild(this.columnsBar.element);
     this.table.element.appendChild(content);
     this.table.element.appendChild(this.scroller.element);
     this.table.element.append(this.editor.element);
@@ -199,15 +199,15 @@ export default class Spreadsheet {
   }
 
   get columnsBarHeight() {
-    return this.columnsBar.height
+    return this.columnsBar.height;
   }
 
   get rowsBarWidth() {
-    return this.rowsBar.width
+    return this.rowsBar.width;
   }
 
   get toolbarHeight() {
-    return this.toolbar.height
+    return this.toolbar.height;
   }
 
   /** Focusing on interactive part of spreadsheet */
@@ -286,11 +286,11 @@ export default class Spreadsheet {
   }
 
   renderColumnsBar() {
-    this.columnsBar.renderBar()
+    this.columnsBar.renderBar();
   }
 
   renderRowsBar() {
-    this.rowsBar.renderBar()
+    this.rowsBar.renderBar();
   }
 
   renderCell(row: number, col: number) {

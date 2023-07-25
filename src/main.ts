@@ -32,7 +32,7 @@ interface SpreadsheetConstructorProperties {
     view?: ViewProperties
 }
 
-export class Spreadsheet {
+export default class Spreadsheet {
     private table: Table
     private scroller: Scroller
     private toolbar: Toolbar
@@ -209,13 +209,15 @@ export class Spreadsheet {
         this.data[row][col].render(this)
     }
 
-    public loadData(data: Cell[][]): void {
+    public loadData(data: Cell[][]): Spreadsheet {
         this.data = data
         this.config = this.makeConfigFromData(data, this.config.view)
         this.cache = this.getInitialCache()
         this.scroller.updateScrollerSize()
         this.viewport = new Viewport(this, this.scroller.getViewportBoundlingRect())
         this.renderSheet()
+
+        return this
     }
 
     private makeConfigFromData(data: Cell[][], view: ViewProperties): Config {
@@ -248,3 +250,15 @@ export class Spreadsheet {
         return config
     }
 }
+
+export * from './modules/cache'
+export * from './modules/cell'
+export * from './modules/column'
+export * from './modules/config'
+export * from './modules/renderBox'
+export * from './modules/row'
+export * from './modules/selection'
+export * from './modules/styles'
+export * from './modules/viewport'
+
+export * from './utils/createData'

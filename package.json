@@ -1,7 +1,7 @@
 {
   "name": "modern_spreadsheet",
   "private": false,
-  "version": "0.0.18",
+  "version": "0.0.19",
   "exports": {
     ".": {
       "import": "./dist/main.js",
@@ -25,7 +25,10 @@
     "type": "git",
     "url": "https://github.com/yazmeyaa/modern_spreadsheet"
   },
-  "keywords": ["spreadsheet", "table"],
+  "keywords": [
+    "spreadsheet",
+    "table"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -36,14 +39,12 @@
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.2",
+    "@types/node": "^20.4.4",
     "gh-pages": "^5.0.0",
     "rollup-plugin-typescript-paths": "^1.4.0",
+    "sass": "^1.63.6",
     "tslib": "^2.6.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.0"
-  },
-  "dependencies": {
-    "@types/node": "^20.4.4",
-    "sass": "^1.63.6"
   }
 }

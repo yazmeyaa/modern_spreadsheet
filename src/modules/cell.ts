@@ -93,6 +93,6 @@ export class Cell {
         ctx.textAlign = 'left'
         ctx.font = `${this.style.fontSize}px Arial`
         ctx.textBaseline = 'middle'
-        ctx.fillText(this.displayValue, x + 2, y + height / 2, width)
+        ctx.fillText(this.displayValue, x + 2, y + height / 2)
     }
 }

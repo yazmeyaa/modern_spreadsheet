@@ -202,7 +202,7 @@ class R {
     var a;
     let { height: e, width: s, x: l, y: n } = new w(t.config, this.position);
     const { ctx: i } = t, c = ((a = t.selection.selectedCell) == null ? void 0 : a.row) === this.position.row && t.selection.selectedCell.column === this.position.column, h = this.isCellInRange(t);
-    n -= t.viewport.top, l -= t.viewport.left, i.clearRect(l, n, s, e), i.fillStyle = c || h ? this.style.selectedBackground : this.style.background, i.strokeStyle = "black", i.fillRect(l, n, s - 1, e - 1), i.strokeRect(l, n, s, e), i.fillStyle = c || h ? this.style.selectedFontColor : this.style.fontColor, i.textAlign = "left", i.font = `${this.style.fontSize}px Arial`, i.textBaseline = "middle", i.fillText(this.displayValue, l + 2, n + e / 2, s);
+    n -= t.viewport.top, l -= t.viewport.left, i.clearRect(l, n, s, e), i.fillStyle = c || h ? this.style.selectedBackground : this.style.background, i.strokeStyle = "black", i.fillRect(l, n, s - 1, e - 1), i.strokeRect(l, n, s, e), i.fillStyle = c || h ? this.style.selectedFontColor : this.style.fontColor, i.textAlign = "left", i.font = `${this.style.fontSize}px Arial`, i.textBaseline = "middle", i.fillText(this.displayValue, l + 2, n + e / 2);
   }
 }
 class b {
@@ -561,3 +561,4 @@ class D {
 export {
   D as Spreadsheet
 };
+//# sourceMappingURL=main.js.map

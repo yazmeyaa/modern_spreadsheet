@@ -60,7 +60,7 @@ export function createSampleConfig(rows: number, columns: number): Config {
     return config
 }
 
-type SpreadsheetConfigAndDataReturnType = {
+export type SpreadsheetConfigAndDataReturnType = {
     config: Config,
     data: Cell[][]
 }

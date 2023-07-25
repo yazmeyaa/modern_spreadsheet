@@ -6,6 +6,9 @@ const loadButton = document.querySelector('#load_button')
 if(!saveButton || !loadButton) throw new Error("LOST")
 
 const sheet = new Spreadsheet('#spreadsheet')
+const sheet2 = new Spreadsheet('#spreadsheet_2')
+
+console.log(sheet2)
 
 function saveDataToLS() {
     const serializableData = sheet.serializeData()

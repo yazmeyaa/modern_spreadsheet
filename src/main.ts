@@ -123,6 +123,14 @@ export default class Spreadsheet {
         this.table.element.append(this.editor.element)
     }
 
+    /**Destroy spreadsheet DOM element.
+     * 
+     * May be usefull when need to rerender component.
+     */
+    public destroy() {
+        this.table.element.remove()
+    }
+
     private appendTableToTarget(target: string | HTMLElement) {
         if (typeof target === 'string') {
             const element = document.querySelector(target)
@@ -134,6 +142,10 @@ export default class Spreadsheet {
         }
     }
 
+    /** Canvas rendering context 2D. 
+     * 
+     * Abble to draw on canvas with default CanvasAPI methods
+     */
     get ctx() {
         return this.sheet.ctx
     }
@@ -142,6 +154,7 @@ export default class Spreadsheet {
         return this.config.view
     }
 
+    /** Focusing on interactive part of spreadsheet */
     focusTable() {
         this.scroller.element.focus()
     }

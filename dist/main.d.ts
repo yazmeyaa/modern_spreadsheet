@@ -1,4 +1,4 @@
-import { Cell, CellConstructorProps, Position, SerializableCell } from "./modules/cell";
+import { Cell, CellConstructorProps, CellStyles, Position, SerializableCell } from "./modules/cell";
 import { Config, ViewProperties } from "./modules/config";
 import { RangeSelectionType, Selection } from "./modules/selection";
 import { Styles } from "./modules/styles";
@@ -9,6 +9,7 @@ interface SpreadsheetConstructorProperties {
     config?: Omit<Config, 'view'>;
     view?: ViewProperties;
 }
+export declare const CSS_PREFIX = "modern_sc_";
 export default class Spreadsheet {
     private table;
     private scroller;
@@ -42,9 +43,10 @@ export default class Spreadsheet {
     getCellByCoords(x: number, y: number): Position;
     getCell(position: Position): Cell;
     changeCellValues(position: Position, values: Partial<Omit<CellConstructorProps, 'position'>>): void;
+    changeCellStyles(position: Position, styles: CellStyles): void;
     applyActionToRange(range: RangeSelectionType, callback: (cell: Cell) => any): void;
     deleteSelectedCellsValues(): void;
-    showEditor(position: Position): void;
+    showEditor(position: Position, initialString?: string): void;
     renderSheet(): void;
     renderCell(row: number, col: number): void;
     loadData(data: Cell[][] | SerializableCell[][]): Spreadsheet;

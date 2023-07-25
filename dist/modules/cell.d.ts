@@ -4,6 +4,7 @@ export type CellConstructorProps = {
     displayValue: string;
     resultValue: string;
     position: Position;
+    style: CellStyles | null;
 };
 interface CellStylesConstructorProps {
     fontSize: number;
@@ -32,18 +33,21 @@ export declare class SerializableCell {
     displayValue: string;
     resultValue: string;
     position: Position;
-    style: CellStyles;
+    style: CellStyles | null;
     constructor(props: SerializableCell | SerializableCell);
 }
 export declare class Cell {
+    /** True value (data) */
     value: string;
+    /** Value to render */
     displayValue: string;
     /** This refers to the values ​​​​that were obtained by calculations, for example, after calculating the formula  */
     resultValue: string;
     position: Position;
-    style: CellStyles;
+    style: CellStyles | null;
     constructor(props: CellConstructorProps);
     getSerializableCell(): SerializableCell;
+    changeStyles(styles: CellStyles): void;
     changeValues(values: Partial<Omit<CellConstructorProps, 'position'>>): void;
     private isCellInRange;
     render(root: Spreadsheet): void;

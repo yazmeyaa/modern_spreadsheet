@@ -18,7 +18,8 @@ export function createSampleData(rows: number, columns: number, fillCellsByCoord
                 position: {
                     column: col,
                     row: row
-                }
+                },
+                style: null
             })
 
             innerRow.push(cell)

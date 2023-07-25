@@ -5,7 +5,7 @@ export declare class Editor {
     root: Spreadsheet;
     constructor(root: Spreadsheet);
     hide(): void;
-    show(position: Position): void;
+    show(position: Position, initialString?: string): void;
     handleKeydown: (event: KeyboardEvent) => void;
     handleClickOutside: (event: MouseEvent) => void;
 }

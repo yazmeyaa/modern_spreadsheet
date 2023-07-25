@@ -25,9 +25,19 @@ export default class Spreadsheet {
     constructor(target: string | HTMLElement, props?: SpreadsheetConstructorProperties);
     private getInitialCache;
     private buildComponent;
+    /**Destroy spreadsheet DOM element.
+     *
+     * May be usefull when need to rerender component.
+     */
+    destroy(): void;
     private appendTableToTarget;
+    /** Canvas rendering context 2D.
+     *
+     * Abble to draw on canvas with default CanvasAPI methods
+     */
     get ctx(): CanvasRenderingContext2D;
     get viewProps(): ViewProperties;
+    /** Focusing on interactive part of spreadsheet */
     focusTable(): void;
     getCellByCoords(x: number, y: number): Position;
     getCell(position: Position): Cell;

@@ -1,6 +1,6 @@
-var p = Object.defineProperty;
-var y = (r, t, e) => t in r ? p(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
-var o = (r, t, e) => (y(r, typeof t != "symbol" ? t + "" : t, e), e);
+var y = Object.defineProperty;
+var p = (r, t, e) => t in r ? y(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
+var o = (r, t, e) => (p(r, typeof t != "symbol" ? t + "" : t, e), e);
 class w {
   constructor(t, e) {
     o(this, "x");
@@ -490,6 +490,13 @@ class P {
     const t = document.createElement("div");
     t.appendChild(this.header.element), t.appendChild(this.sheet.element), t.classList.add("content"), this.table.element.appendChild(this.toolbar.element), this.table.element.appendChild(t), this.table.element.appendChild(this.scroller.element), this.table.element.append(this.editor.element);
   }
+  /**Destroy spreadsheet DOM element.
+   *
+   * May be usefull when need to rerender component.
+   */
+  destroy() {
+    this.table.element.remove();
+  }
   appendTableToTarget(t) {
     if (typeof t == "string") {
       const e = document.querySelector(t);
@@ -500,12 +507,17 @@ class P {
     }
     t instanceof HTMLElement && t.append(this.table.element);
   }
+  /** Canvas rendering context 2D.
+   *
+   * Abble to draw on canvas with default CanvasAPI methods
+   */
   get ctx() {
     return this.sheet.ctx;
   }
   get viewProps() {
     return this.config.view;
   }
+  /** Focusing on interactive part of spreadsheet */
   focusTable() {
     this.scroller.element.focus();
   }

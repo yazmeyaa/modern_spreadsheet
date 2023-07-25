@@ -9,7 +9,7 @@ interface SpreadsheetConstructorProperties {
     config?: Omit<Config, 'view'>;
     view?: ViewProperties;
 }
-export declare class Spreadsheet {
+export default class Spreadsheet {
     private table;
     private scroller;
     private toolbar;
@@ -37,7 +37,16 @@ export declare class Spreadsheet {
     showEditor(position: Position): void;
     renderSheet(): void;
     renderCell(row: number, col: number): void;
-    loadData(data: Cell[][]): void;
+    loadData(data: Cell[][]): Spreadsheet;
     private makeConfigFromData;
 }
-export {};
+export * from './modules/cache';
+export * from './modules/cell';
+export * from './modules/column';
+export * from './modules/config';
+export * from './modules/renderBox';
+export * from './modules/row';
+export * from './modules/selection';
+export * from './modules/styles';
+export * from './modules/viewport';
+export * from './utils/createData';

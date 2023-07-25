@@ -1,4 +1,4 @@
-import { Spreadsheet } from "../main"
+import Spreadsheet from "../main"
 import { RenderBox } from "./renderBox"
 
 export type CellConstructorProps = {
@@ -43,6 +43,21 @@ export class Position {
     }
 }
 
+export class SerializableCell {
+    value: string
+    displayValue: string
+    resultValue: string
+    position: Position
+    style: CellStyles
+    constructor(props: SerializableCell | SerializableCell) {
+        this.value = props.value
+        this.displayValue = props.displayValue
+        this.resultValue = props.resultValue
+        this.position = props.position
+        this.style = props.style
+    }
+}
+
 export class Cell {
     value: string
     displayValue: string
@@ -56,6 +71,17 @@ export class Cell {
         this.displayValue = props.displayValue
         this.resultValue = props.resultValue
         this.position = props.position
+    }
+
+    public getSerializableCell(): SerializableCell {
+        const cell:SerializableCell = new SerializableCell({
+            displayValue: this.displayValue,
+            position: this.position,
+            resultValue: this.resultValue,
+            style: this.style,
+            value: this.value
+        })
+        return cell
     }
 
     changeValues(values: Partial<Omit<CellConstructorProps, 'position'>>) {

@@ -1,4 +1,4 @@
-import { Spreadsheet } from "../main"
+import Spreadsheet from "../main"
 import { ViewProperties } from "../modules/config"
 
 /** Base (root) component */

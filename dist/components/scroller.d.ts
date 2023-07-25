@@ -1,4 +1,4 @@
-import { Spreadsheet } from "../main";
+import Spreadsheet from "../main";
 export interface ViewportRect {
     top: number;
     left: number;

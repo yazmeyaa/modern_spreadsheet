@@ -1,4 +1,4 @@
-import { Spreadsheet } from "../main";
+import Spreadsheet from "../main";
 export type CellConstructorProps = {
     value: string;
     displayValue: string;

@@ -4,7 +4,7 @@ import { Scroller } from "./components/scroller";
 import { Sheet } from "./components/sheet";
 import { Table } from "./components/table";
 import { Toolbar } from "./components/toolbar";
-import { Cell, CellConstructorProps, Position } from "./modules/cell";
+import { Cell, CellConstructorProps, Position, SerializableCell } from "./modules/cell";
 import { Config, ViewProperties } from "./modules/config";
 import { RangeSelectionType, Selection } from "./modules/selection";
 import { Styles } from "./modules/styles";
@@ -47,14 +47,15 @@ export default class Spreadsheet {
     public cache: Cache
 
     constructor(target: string | HTMLElement, props?: SpreadsheetConstructorProperties) {
-        const config = createSampleConfig(500, 500)
+        const data = createSampleData(40, 40)
+        const config = this.makeConfigFromData(data, props?.view ?? { height: 600, width: 800 })
         if (props?.view) {
             config.view = props.view
         }
 
         this.config = new Config(config)
         this.sheet = new Sheet(this)
-        const data = createSampleData(500, 500)
+
         this.table = new Table(this)
         this.scroller = new Scroller(this)
         this.toolbar = new Toolbar(this)
@@ -209,9 +210,32 @@ export default class Spreadsheet {
         this.data[row][col].render(this)
     }
 
-    public loadData(data: Cell[][]): Spreadsheet {
-        this.data = data
-        this.config = this.makeConfigFromData(data, this.config.view)
+    public loadData(data: Cell[][] | SerializableCell[][]): Spreadsheet {
+        const rowsLength = data.length
+        const colsLength = data[0] ? this.data[0].length : 0
+        this.data = []
+
+        const formattedData: Cell[][] = []
+
+        for (let row = 0; row < rowsLength; row++) {
+            const innerRow: Cell[] = []
+            for (let col = 0; col < colsLength; col++) {
+                const cell = data[row][col]
+                innerRow.push(new Cell({
+                    displayValue: cell.displayValue,
+                    position: cell.position,
+                    resultValue: cell.resultValue,
+                    value: cell.value
+                }))
+            }
+            formattedData.push(innerRow)
+        }
+
+        this.data = formattedData
+
+        this.selection.selectedCell = null
+        this.selection.selectedRange = null
+        this.config = this.makeConfigFromData(formattedData, this.config.view)
         this.cache = this.getInitialCache()
         this.scroller.updateScrollerSize()
         this.viewport = new Viewport(this, this.scroller.getViewportBoundlingRect())
@@ -248,6 +272,23 @@ export default class Spreadsheet {
         })
 
         return config
+    }
+
+    public serializeData(): SerializableCell[][] {
+        const rowsLength = this.data.length
+        const colsLength = this.data[0] ? this.data[0].length : 0
+
+        const cellsArray: SerializableCell[][] = []
+
+        for (let row = 0; row < rowsLength; row++) {
+            const innerRow: SerializableCell[] = []
+            for (let col = 0; col < colsLength; col++) {
+                innerRow.push(this.data[row][col].getSerializableCell())
+            }
+            cellsArray.push(innerRow)
+        }
+
+        return cellsArray
     }
 }
 

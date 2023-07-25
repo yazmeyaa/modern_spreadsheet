@@ -1,5 +1,23 @@
-import Spreadsheet, { createSampleData,  } from './main'
+import Spreadsheet from './main'
 
-const sheet = new Spreadsheet('#spreadsheet').loadData(createSampleData(20, 20, true))
+const saveButton = document.querySelector('#save_button')
+const loadButton = document.querySelector('#load_button')
 
-console.log(sheet)
+if(!saveButton || !loadButton) throw new Error("LOST")
+
+const sheet = new Spreadsheet('#spreadsheet')
+
+function saveDataToLS() {
+    const serializableData = sheet.serializeData()
+    localStorage.setItem('sheet', JSON.stringify(serializableData))
+}
+
+function loadDataFromLS() {
+    const data = localStorage.getItem('sheet')
+    if(!data) return
+    const json = JSON.parse(data)
+    sheet.loadData(json)
+}
+
+saveButton.addEventListener('click', saveDataToLS)
+loadButton.addEventListener('click', loadDataFromLS)

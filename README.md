@@ -14,4 +14,7 @@ const target = document.getElementById('spreadsheet')
 
 const sheet = new Spreadsheet(target)
 ```
+
+<span>Load data</span>
+
 </div>

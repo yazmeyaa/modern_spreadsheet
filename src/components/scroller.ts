@@ -43,7 +43,7 @@ export class Scroller {
   }
 
   public setSelectingMode(mode: boolean) {
-    this.isSelecting = mode
+    this.isSelecting = mode;
   }
 
   private handleMouseMove = (event: MouseEvent) => {
@@ -51,37 +51,42 @@ export class Scroller {
     const { offsetX, offsetY } = event;
     const lastSelectedCell = this.root.getCellByCoords(offsetX, offsetY);
 
-    let isRangeChanged = false
+    let isRangeChanged = false;
 
     if (this.root.selection.selectedRange) {
-      isRangeChanged = !checkEqualCellSelections(this.root.selection.selectedRange.to, lastSelectedCell)
+      isRangeChanged = !checkEqualCellSelections(
+        this.root.selection.selectedRange.to,
+        lastSelectedCell,
+      );
 
       if (isRangeChanged) {
         this.root.selection.selectedRange.to = lastSelectedCell;
         this.root.events.dispatch({
           type: EventTypes.SELECTION_CHANGE,
           selection: this.root.selection,
-          enableCallback: true
-        })
+          enableCallback: true,
+        });
       }
     }
-
   };
 
   private handleMouseUp = () => {
     this.isSelecting = false;
-    const newSelection = {...this.root.selection}
+    const newSelection = { ...this.root.selection };
 
     if (this.root.selection.selectedRange) {
       if (
-        checkEqualCellSelections(this.root.selection.selectedRange.from, this.root.selection.selectedRange.to)
+        checkEqualCellSelections(
+          this.root.selection.selectedRange.from,
+          this.root.selection.selectedRange.to,
+        )
       ) {
         newSelection.selectedRange = null;
         this.root.events.dispatch({
           type: EventTypes.SELECTION_CHANGE,
           selection: newSelection,
-          enableCallback: false
-        })
+          enableCallback: false,
+        });
       }
     }
 
@@ -118,7 +123,7 @@ export class Scroller {
           if (
             this.root.selection.selectedCell &&
             this.root.selection.selectedCell.column <
-            this.root.config.columns.length - 1
+              this.root.config.columns.length - 1
           ) {
             this.root.selection.selectedCell.column += 1;
             // this.root.renderSheet();
@@ -139,7 +144,7 @@ export class Scroller {
           if (
             this.root.selection.selectedCell &&
             this.root.selection.selectedCell.row <
-            this.root.config.rows.length - 1
+              this.root.config.rows.length - 1
           ) {
             this.root.selection.selectedCell.row += 1;
             // this.root.renderSheet();
@@ -150,8 +155,8 @@ export class Scroller {
       this.root.events.dispatch({
         type: EventTypes.SELECTION_CHANGE,
         selection: this.root.selection,
-        enableCallback: true
-      })
+        enableCallback: true,
+      });
     }
 
     //* Start typings
@@ -183,8 +188,8 @@ export class Scroller {
     this.root.events.dispatch({
       type: EventTypes.CELL_CLICK,
       event,
-      scroller: this
-    })
+      scroller: this,
+    });
   };
 
   private handleScroll = () => {

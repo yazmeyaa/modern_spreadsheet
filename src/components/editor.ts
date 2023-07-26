@@ -54,15 +54,15 @@ export class Editor {
       }
       case "Enter": {
         if (!this.root.selection.selectedCell) return;
-        
+
         this.root.events.dispatch({
           type: EventTypes.CELL_CHANGE,
           cell: this.root.getCell(this.root.selection.selectedCell),
           values: {
             value: this.element.value,
             displayValue: this.element.value,
-          }
-        })
+          },
+        });
 
         this.hide();
       }

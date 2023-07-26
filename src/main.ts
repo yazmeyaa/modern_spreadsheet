@@ -10,7 +10,13 @@ import {
   Position,
   SerializableCell,
 } from "./modules/cell";
-import { CellChangeEvent, CellClickEvent, Config, SelectionChangeEvent, ViewProperties } from "./modules/config";
+import {
+  CellChangeEvent,
+  CellClickEvent,
+  Config,
+  SelectionChangeEvent,
+  ViewProperties,
+} from "./modules/config";
 import { RangeSelectionType, Selection } from "./modules/selection";
 import { Styles } from "./modules/styles";
 import { Viewport } from "./modules/viewport";
@@ -37,9 +43,9 @@ import { Events } from "./modules/events";
 
 export interface SpreadsheetConstructorProperties {
   view?: ViewProperties;
-  onCellClick?: CellClickEvent | null
-  onSelectionChange?: SelectionChangeEvent | null
-  onCellChange?: CellChangeEvent | null
+  onCellClick?: CellClickEvent | null;
+  onSelectionChange?: SelectionChangeEvent | null;
+  onCellChange?: CellChangeEvent | null;
 }
 
 export const CSS_PREFIX = "modern_sc_";
@@ -58,7 +64,7 @@ export default class Spreadsheet {
   public viewport: Viewport;
   public selection: Selection;
   public cache: Cache;
-  public events: Events
+  public events: Events;
 
   constructor(
     target: string | HTMLElement,
@@ -75,9 +81,9 @@ export default class Spreadsheet {
 
     this.config = new Config(config);
 
-    this.config.onCellClick = props?.onCellClick ?? null
-    this.config.onSelectonChange = props?.onSelectionChange ?? null
-    this.config.onCellChange = props?.onCellChange ?? null
+    this.config.onCellClick = props?.onCellClick ?? null;
+    this.config.onSelectonChange = props?.onSelectionChange ?? null;
+    this.config.onCellChange = props?.onCellChange ?? null;
 
     this.rowsBar = new RowsBar(this);
     this.columnsBar = new ColumnsBar(this);
@@ -92,8 +98,7 @@ export default class Spreadsheet {
       this.scroller.getViewportBoundlingRect(),
     );
     this.selection = new Selection();
-    this.events = new Events(this)
-
+    this.events = new Events(this);
 
     this.data = data;
     this.styles = new Styles();
@@ -376,7 +381,7 @@ export default class Spreadsheet {
       view,
       rows,
       columns,
-      onCellClick: null
+      onCellClick: null,
     });
 
     return config;

@@ -38,7 +38,8 @@
     "predeploy": "npm run dist",
     "deploy": "gh-pages -d dist",
     "lint": "eslint src --ext .ts",
-    "lint:fix": "eslint src --ext .ts --fix"
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write ./src/**/*.ts"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.2",

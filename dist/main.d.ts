@@ -1,13 +1,16 @@
 import { Cell, CellConstructorProps, CellStyles, Position, SerializableCell } from "./modules/cell";
-import { Config, ViewProperties } from "./modules/config";
+import { CellChangeEvent, CellClickEvent, Config, SelectionChangeEvent, ViewProperties } from "./modules/config";
 import { RangeSelectionType, Selection } from "./modules/selection";
 import { Styles } from "./modules/styles";
 import { Viewport } from "./modules/viewport";
 import "./scss/main.scss";
 import { Cache } from "./modules/cache";
-interface SpreadsheetConstructorProperties {
-    config?: Omit<Config, "view">;
+import { Events } from "./modules/events";
+export interface SpreadsheetConstructorProperties {
     view?: ViewProperties;
+    onCellClick?: CellClickEvent | null;
+    onSelectionChange?: SelectionChangeEvent | null;
+    onCellChange?: CellChangeEvent | null;
 }
 export declare const CSS_PREFIX = "modern_sc_";
 export default class Spreadsheet {
@@ -24,6 +27,7 @@ export default class Spreadsheet {
     viewport: Viewport;
     selection: Selection;
     cache: Cache;
+    events: Events;
     constructor(target: string | HTMLElement, props?: SpreadsheetConstructorProperties);
     private setRowsBarPosition;
     private setColumnsBarPosition;

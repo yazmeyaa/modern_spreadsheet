@@ -12,6 +12,7 @@ export declare class Scroller {
     private root;
     private isSelecting;
     constructor(root: Spreadsheet);
+    setSelectingMode(mode: boolean): void;
     private handleMouseMove;
     private handleMouseUp;
     private handleDoubleClick;

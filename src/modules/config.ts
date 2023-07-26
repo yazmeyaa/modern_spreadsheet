@@ -10,7 +10,11 @@ export interface ViewProperties {
 export type CellClickEvent = (event: MouseEvent, cell: Cell) => void;
 export type SelectionChangeEvent = (selection: Selection) => void;
 export type CellChangeEvent = (cell: Cell) => void;
-export type CopyEvent = (range: RangeSelectionType, data: Cell[][], dataAsString: string) => void
+export type CopyEvent = (
+  range: RangeSelectionType,
+  data: Cell[][],
+  dataAsString: string,
+) => void;
 
 export type ConfigProperties = {
   /** Please, end it with '_' symbol.
@@ -25,7 +29,7 @@ export type ConfigProperties = {
   onCellClick?: CellClickEvent | null;
   onSelectionChange?: SelectionChangeEvent | null;
   onCellChange?: CellChangeEvent | null;
-  onCopy?: CopyEvent | null
+  onCopy?: CopyEvent | null;
 };
 
 export type SheetConfigConstructorProps = {
@@ -44,7 +48,7 @@ export class Config {
   onCellClick: CellClickEvent | null = null;
   onSelectonChange: SelectionChangeEvent | null = null;
   onCellChange: CellChangeEvent | null = null;
-  onCopy: CopyEvent | null
+  onCopy: CopyEvent | null;
 
   constructor(props: ConfigProperties) {
     this.columns = props.columns;
@@ -54,6 +58,6 @@ export class Config {
     this.onCellClick = props.onCellClick ?? null;
     this.onSelectonChange = props.onSelectionChange ?? null;
     this.onCellChange = props.onCellChange ?? null;
-    this.onCopy = props.onCopy ?? null
+    this.onCopy = props.onCopy ?? null;
   }
 }

@@ -40,10 +40,14 @@ export class Scroller {
     this.element.addEventListener("dblclick", this.handleDoubleClick);
 
     this.element.addEventListener("keydown", this.handleKeydown);
-    this.element.addEventListener('paste', (event) => {
+    this.element.addEventListener("paste", (event) => {
       if (!this.root.selection.selectedCell) return;
-      this.root.clipboard.paste(this.root, this.root.selection.selectedCell, event);
-    })
+      this.root.clipboard.paste(
+        this.root,
+        this.root.selection.selectedCell,
+        event,
+      );
+    });
   }
 
   public setSelectingMode(mode: boolean) {
@@ -128,7 +132,7 @@ export class Scroller {
           if (
             this.root.selection.selectedCell &&
             this.root.selection.selectedCell.column <
-            this.root.config.columns.length - 1
+              this.root.config.columns.length - 1
           ) {
             this.root.selection.selectedCell.column += 1;
             // this.root.renderSheet();
@@ -149,7 +153,7 @@ export class Scroller {
           if (
             this.root.selection.selectedCell &&
             this.root.selection.selectedCell.row <
-            this.root.config.rows.length - 1
+              this.root.config.rows.length - 1
           ) {
             this.root.selection.selectedCell.row += 1;
             // this.root.renderSheet();
@@ -192,12 +196,12 @@ export class Scroller {
       console.log(event.code);
       if (event.code === "KeyC") {
         let cells: Cell[][] = undefined!;
-        const selection = new Selection()
+        const selection = new Selection();
 
         if (this.root.selection.selectedRange) {
           const { from, to } = this.root.selection.selectedRange;
 
-          selection.selectedRange = this.root.selection.selectedRange
+          selection.selectedRange = this.root.selection.selectedRange;
 
           const subArrByRows = this.root.data.slice(from.row, to.row + 1);
 
@@ -205,19 +209,17 @@ export class Scroller {
             return row.slice(from.column, to.column + 1);
           });
 
-
-
           cells = [...subArrByCols];
         } else if (this.root.selection.selectedCell) {
           const { column, row } = this.root.selection.selectedCell;
           cells = [[this.root.data[row][column]]];
           selection.selectedRange = {
             from: this.root.selection.selectedCell,
-            to: this.root.selection.selectedCell
-          }
+            to: this.root.selection.selectedCell,
+          };
         } else {
           return;
-        };
+        }
 
         this.root.clipboard.copy(cells, selection.selectedRange);
         return;
@@ -281,7 +283,7 @@ export class Scroller {
     this.verticalScroller = verticalScroller;
     this.horizontalScroller = horizontalScroller;
     scroller.appendChild(groupScrollers);
-    scroller.contentEditable = "false"
+    scroller.contentEditable = "false";
     scroller.classList.add(CSS_PREFIX + "scroller");
 
     return { scroller, verticalScroller, horizontalScroller };

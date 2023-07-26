@@ -5,7 +5,7 @@ export enum EventTypes {
   CELL_CLICK = "CELL_CLICK",
   SELECTION_CHANGE = "CHANGE_SELECTION",
   CELL_CHANGE = "CELL_CHANGE",
-  COPY_CELLS = "COPY_CELLS"
+  COPY_CELLS = "COPY_CELLS",
 }
 
 export type CellClickEvent = {
@@ -29,16 +29,15 @@ export type ChangeCellEvent = {
 export type CopyAction = {
   type: EventTypes.COPY_CELLS;
   range: RangeSelectionType;
-  data: Cell[][]
-  dataAsString: string
-}
+  data: Cell[][];
+  dataAsString: string;
+};
 
 export type ActionTypes =
   | CellClickEvent
   | ChangeSelectionEvent
   | ChangeCellEvent
   | CopyAction;
-
 
 export class Events {
   root: Spreadsheet;
@@ -77,9 +76,9 @@ export class Events {
       }
 
       case EventTypes.COPY_CELLS: {
-        const {data, dataAsString, range} = action
-        this.copy(range, data, dataAsString)
-        break
+        const { data, dataAsString, range } = action;
+        this.copy(range, data, dataAsString);
+        break;
       }
 
       default: {
@@ -121,7 +120,11 @@ export class Events {
     if (enableCallback) this.root.config.onCellChange?.(cell);
   }
 
-  private copy = (range: RangeSelectionType, data: Cell[][], dataAsString: string) => {
+  private copy = (
+    range: RangeSelectionType,
+    data: Cell[][],
+    dataAsString: string,
+  ) => {
     this.root.config.onCopy?.(range, data, dataAsString);
-  }
+  };
 }

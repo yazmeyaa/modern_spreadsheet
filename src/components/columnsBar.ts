@@ -3,7 +3,7 @@ import Spreadsheet, { RenderBox } from "../main";
 export class ColumnsBar {
   public element: HTMLCanvasElement;
   private root: Spreadsheet;
-  public height: number = 32;
+  public height: number = 35;
   public width: number;
   // private resizerWidth = 1;
   ctx: CanvasRenderingContext2D;
@@ -69,7 +69,7 @@ export class ColumnsBar {
     this.ctx.fillStyle = "black";
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
-    this.ctx.font = "16px Arial";
+    this.ctx.font = "12px Arial";
     this.ctx.fillText(
       this.root.config.columns[column].title,
       x + width / 2 - this.root.viewport.left,

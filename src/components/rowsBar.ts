@@ -4,7 +4,7 @@ export class RowsBar {
   element: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
   root: Spreadsheet;
-  width: number = 30;
+  width: number = 35;
   height: number;
   resizerHeight = 1;
   constructor(root: Spreadsheet) {
@@ -56,7 +56,7 @@ export class RowsBar {
     this.ctx.fillStyle = "black";
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
-    this.ctx.font = "16px Arial";
+    this.ctx.font = "12px Arial";
     this.ctx.fillText(
       this.root.config.rows[row].title,
       this.width / 2,

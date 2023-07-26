@@ -1,13 +1,13 @@
 $css_prefix: "modern_sc_";
 
-.#{$css_prefix}content {
-  position: absolute;
-}
-
 .#{$css_prefix}spreadsheet_container {
   position: relative;
   isolation: isolate;
   border: 2px solid black;
+}
+
+.#{$css_prefix}content {
+  position: absolute;
 }
 
 .#{$css_prefix}sheet {
@@ -20,6 +20,7 @@ $css_prefix: "modern_sc_";
   overflow: scroll;
   box-sizing: border-box;
   transform: translateZ(0);
+
   &:focus {
     outline: none;
   }

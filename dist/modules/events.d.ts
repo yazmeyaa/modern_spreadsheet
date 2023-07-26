@@ -1,9 +1,10 @@
 import { Scroller } from "../components/scroller";
-import Spreadsheet, { Cell, CellConstructorProps, Selection } from "../main";
+import Spreadsheet, { Cell, RangeSelectionType, Selection } from "../main";
 export declare enum EventTypes {
     CELL_CLICK = "CELL_CLICK",
     SELECTION_CHANGE = "CHANGE_SELECTION",
-    CELL_CHANGE = "CELL_CHANGE"
+    CELL_CHANGE = "CELL_CHANGE",
+    COPY_CELLS = "COPY_CELLS"
 }
 export type CellClickEvent = {
     type: EventTypes.CELL_CLICK;
@@ -18,9 +19,15 @@ export type ChangeSelectionEvent = {
 export type ChangeCellEvent = {
     type: EventTypes.CELL_CHANGE;
     cell: Cell;
-    values: Partial<Omit<CellConstructorProps, "position">>;
+    enableCallback?: boolean;
 };
-export type ActionTypes = CellClickEvent | ChangeSelectionEvent | ChangeCellEvent;
+export type CopyAction = {
+    type: EventTypes.COPY_CELLS;
+    range: RangeSelectionType;
+    data: Cell[][];
+    dataAsString: string;
+};
+export type ActionTypes = CellClickEvent | ChangeSelectionEvent | ChangeCellEvent | CopyAction;
 export declare class Events {
     root: Spreadsheet;
     constructor(root: Spreadsheet);
@@ -28,4 +35,5 @@ export declare class Events {
     private cellClick;
     private changeSelection;
     private changeCellValues;
+    private copy;
 }

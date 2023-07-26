@@ -1,16 +1,18 @@
 import { Cell, CellConstructorProps, CellStyles, Position, SerializableCell } from "./modules/cell";
-import { CellChangeEvent, CellClickEvent, Config, SelectionChangeEvent, ViewProperties } from "./modules/config";
+import { CellChangeEvent, CellClickEvent, Config, CopyEvent, SelectionChangeEvent, ViewProperties } from "./modules/config";
 import { RangeSelectionType, Selection } from "./modules/selection";
 import { Styles } from "./modules/styles";
 import { Viewport } from "./modules/viewport";
 import "./scss/main.scss";
 import { Cache } from "./modules/cache";
 import { Events } from "./modules/events";
+import { Clipboard } from "./modules/clipboard";
 export interface SpreadsheetConstructorProperties {
     view?: ViewProperties;
     onCellClick?: CellClickEvent | null;
     onSelectionChange?: SelectionChangeEvent | null;
     onCellChange?: CellChangeEvent | null;
+    onCopy?: CopyEvent | null;
 }
 export declare const CSS_PREFIX = "modern_sc_";
 export default class Spreadsheet {
@@ -28,6 +30,7 @@ export default class Spreadsheet {
     selection: Selection;
     cache: Cache;
     events: Events;
+    clipboard: Clipboard;
     constructor(target: string | HTMLElement, props?: SpreadsheetConstructorProperties);
     private setRowsBarPosition;
     private setColumnsBarPosition;
@@ -53,7 +56,7 @@ export default class Spreadsheet {
     focusTable(): void;
     getCellByCoords(x: number, y: number): Position;
     getCell(position: Position): Cell;
-    changeCellValues(position: Position, values: Partial<Omit<CellConstructorProps, "position">>): void;
+    changeCellValues(position: Position, values: Partial<Omit<CellConstructorProps, "position">>, enableCallback?: boolean): void;
     changeCellStyles(position: Position, styles: CellStyles): void;
     applyActionToRange(range: RangeSelectionType, callback: (cell: Cell) => void): void;
     deleteSelectedCellsValues(): void;

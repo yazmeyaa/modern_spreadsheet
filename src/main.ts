@@ -14,6 +14,7 @@ import {
   CellChangeEvent,
   CellClickEvent,
   Config,
+  CopyEvent,
   SelectionChangeEvent,
   ViewProperties,
 } from "./modules/config";
@@ -27,7 +28,8 @@ import { Row } from "./modules/row";
 import { Column } from "./modules/column";
 import { ColumnsBar } from "./components/columnsBar";
 import { RowsBar } from "./components/rowsBar";
-import { Events } from "./modules/events";
+import { EventTypes, Events } from "./modules/events";
+import { Clipboard } from "./modules/clipboard";
 
 /*
  ! Component structure
@@ -46,6 +48,7 @@ export interface SpreadsheetConstructorProperties {
   onCellClick?: CellClickEvent | null;
   onSelectionChange?: SelectionChangeEvent | null;
   onCellChange?: CellChangeEvent | null;
+  onCopy?: CopyEvent | null
 }
 
 export const CSS_PREFIX = "modern_sc_";
@@ -65,6 +68,7 @@ export default class Spreadsheet {
   public selection: Selection;
   public cache: Cache;
   public events: Events;
+  public clipboard: Clipboard;
 
   constructor(
     target: string | HTMLElement,
@@ -84,6 +88,7 @@ export default class Spreadsheet {
     this.config.onCellClick = props?.onCellClick ?? null;
     this.config.onSelectonChange = props?.onSelectionChange ?? null;
     this.config.onCellChange = props?.onCellChange ?? null;
+    this.config.onCopy = props?.onCopy ?? null
 
     this.rowsBar = new RowsBar(this);
     this.columnsBar = new ColumnsBar(this);
@@ -99,6 +104,7 @@ export default class Spreadsheet {
     );
     this.selection = new Selection();
     this.events = new Events(this);
+    this.clipboard = new Clipboard(this);
 
     this.data = data;
     this.styles = new Styles();
@@ -242,10 +248,19 @@ export default class Spreadsheet {
   changeCellValues(
     position: Position,
     values: Partial<Omit<CellConstructorProps, "position">>,
+    enableCallback: boolean = true
   ) {
     const { column, row } = position;
 
+
     this.data[row][column].changeValues(values);
+
+    this.events.dispatch({
+      type: EventTypes.CELL_CHANGE,
+      cell: this.data[row][column],
+      enableCallback: enableCallback
+    })
+
     this.renderCell(row, column);
   }
 

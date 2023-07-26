@@ -1,4 +1,4 @@
-import Spreadsheet, { CSS_PREFIX } from "../main";
+import Spreadsheet, { CSS_PREFIX, Cell, Selection } from "../main";
 import { EventTypes } from "../modules/events";
 import { checkEqualCellSelections } from "../utils/position";
 
@@ -40,6 +40,10 @@ export class Scroller {
     this.element.addEventListener("dblclick", this.handleDoubleClick);
 
     this.element.addEventListener("keydown", this.handleKeydown);
+    this.element.addEventListener('paste', (event) => {
+      if (!this.root.selection.selectedCell) return;
+      this.root.clipboard.paste(this.root, this.root.selection.selectedCell, event);
+    })
   }
 
   public setSelectingMode(mode: boolean) {
@@ -103,6 +107,7 @@ export class Scroller {
 
   private handleKeydown = (event: KeyboardEvent) => {
     //* Navigation
+
     if (
       ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)
     ) {
@@ -123,7 +128,7 @@ export class Scroller {
           if (
             this.root.selection.selectedCell &&
             this.root.selection.selectedCell.column <
-              this.root.config.columns.length - 1
+            this.root.config.columns.length - 1
           ) {
             this.root.selection.selectedCell.column += 1;
             // this.root.renderSheet();
@@ -144,7 +149,7 @@ export class Scroller {
           if (
             this.root.selection.selectedCell &&
             this.root.selection.selectedCell.row <
-              this.root.config.rows.length - 1
+            this.root.config.rows.length - 1
           ) {
             this.root.selection.selectedCell.row += 1;
             // this.root.renderSheet();
@@ -160,7 +165,7 @@ export class Scroller {
     }
 
     //* Start typings
-    const keysRegex = /^([a-z]|[а-я])$/;
+    const keysRegex = /^([a-z]|[а-я]|[0-9])$/;
     if (!event.metaKey && !event.ctrlKey) {
       //* Prevent handle shortcutrs
       const isPressedLetterKey = keysRegex.test(event.key.toLowerCase());
@@ -181,6 +186,46 @@ export class Scroller {
       event.preventDefault();
       this.root.deleteSelectedCellsValues();
       this.root.renderSheet();
+    }
+
+    if (event.metaKey || event.ctrlKey) {
+      console.log(event.code);
+      if (event.code === "KeyC") {
+        let cells: Cell[][] = undefined!;
+        const selection = new Selection()
+
+        if (this.root.selection.selectedRange) {
+          const { from, to } = this.root.selection.selectedRange;
+
+          selection.selectedRange = this.root.selection.selectedRange
+
+          const subArrByRows = this.root.data.slice(from.row, to.row + 1);
+
+          const subArrByCols = subArrByRows.map((row) => {
+            return row.slice(from.column, to.column + 1);
+          });
+
+
+
+          cells = [...subArrByCols];
+        } else if (this.root.selection.selectedCell) {
+          const { column, row } = this.root.selection.selectedCell;
+          cells = [[this.root.data[row][column]]];
+          selection.selectedRange = {
+            from: this.root.selection.selectedCell,
+            to: this.root.selection.selectedCell
+          }
+        } else {
+          return;
+        };
+
+        this.root.clipboard.copy(cells, selection.selectedRange);
+        return;
+      }
+      if (event.code === "KeyV") {
+        // if (!this.root.selection.selectedCell) return;
+        // this.root.clipboard.paste(this.root, this.root.selection.selectedCell);
+      }
     }
   };
 
@@ -236,6 +281,7 @@ export class Scroller {
     this.verticalScroller = verticalScroller;
     this.horizontalScroller = horizontalScroller;
     scroller.appendChild(groupScrollers);
+    scroller.contentEditable = "false"
     scroller.classList.add(CSS_PREFIX + "scroller");
 
     return { scroller, verticalScroller, horizontalScroller };

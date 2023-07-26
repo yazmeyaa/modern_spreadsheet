@@ -1,10 +1,11 @@
 import { Scroller } from "../components/scroller";
-import Spreadsheet, { Cell, CellConstructorProps, Selection } from "../main";
+import Spreadsheet, { Cell, RangeSelectionType, Selection } from "../main";
 
 export enum EventTypes {
   CELL_CLICK = "CELL_CLICK",
   SELECTION_CHANGE = "CHANGE_SELECTION",
   CELL_CHANGE = "CELL_CHANGE",
+  COPY_CELLS = "COPY_CELLS"
 }
 
 export type CellClickEvent = {
@@ -22,13 +23,22 @@ export type ChangeSelectionEvent = {
 export type ChangeCellEvent = {
   type: EventTypes.CELL_CHANGE;
   cell: Cell;
-  values: Partial<Omit<CellConstructorProps, "position">>;
+  enableCallback?: boolean;
 };
+
+export type CopyAction = {
+  type: EventTypes.COPY_CELLS;
+  range: RangeSelectionType;
+  data: Cell[][]
+  dataAsString: string
+}
 
 export type ActionTypes =
   | CellClickEvent
   | ChangeSelectionEvent
-  | ChangeCellEvent;
+  | ChangeCellEvent
+  | CopyAction;
+
 
 export class Events {
   root: Spreadsheet;
@@ -58,12 +68,18 @@ export class Events {
       }
 
       case EventTypes.CELL_CHANGE: {
-        const { cell, values } = action;
+        const { cell, enableCallback } = action;
         //
         //* Here may be side effects
         //
-        this.changeCellValues(cell, values);
+        this.changeCellValues(cell, enableCallback);
         break;
+      }
+
+      case EventTypes.COPY_CELLS: {
+        const {data, dataAsString, range} = action
+        this.copy(range, data, dataAsString)
+        break
       }
 
       default: {
@@ -101,12 +117,11 @@ export class Events {
     this.root.renderRowsBar();
   };
 
-  private changeCellValues(
-    cell: Cell,
-    values: Partial<Omit<CellConstructorProps, "position">>,
-  ) {
-    this.root.changeCellValues(cell.position, values);
+  private changeCellValues(cell: Cell, enableCallback: boolean = true) {
+    if (enableCallback) this.root.config.onCellChange?.(cell);
+  }
 
-    this.root.config.onCellChange?.(cell);
+  private copy = (range: RangeSelectionType, data: Cell[][], dataAsString: string) => {
+    this.root.config.onCopy?.(range, data, dataAsString);
   }
 }

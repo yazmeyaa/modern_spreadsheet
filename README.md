@@ -34,6 +34,7 @@ function loadData() {
 - onCellClick
 - onSelectionChange
 - onCellChange
+- onCopy
 
 ### Using events examples
 ```ts
@@ -41,15 +42,18 @@ import Spreadsheet, { SpreadsheetConstructorProperties } from "./main";
 
 const options: SpreadsheetConstructorProperties = {
   onCellClick: (event, cell) => {
-    console.log('Cell click', event, cell)
+    console.log("Cell click", event, cell);
   },
   onSelectionChange: (selection) => {
-    console.log("Changed selection: ", selection)
+    console.log("Changed selection: ", selection);
   },
-  onCellChange(cell) {
-    console.log("Cell changed: ", cell)
+  onCellChange = (cell) => {
+    console.log("Cell changed: ", cell);
   },
-}
+  onCopy: (range, data, dataAsString) => {
+    console.log("Copy event: ", range, data, dataAsString)
+  }
+};
 
 const sheet = new Spreadsheet("#spreadsheet", options);
 ```
@@ -58,6 +62,7 @@ const sheet = new Spreadsheet("#spreadsheet", options);
 
 - ~~Rows number and columns heading render~~
 - ~~Custom event functions (ex.: onSelectionChange, onCellEdit...). Full list of supported events will available on this page~~
+- ~~Copy & Paste support~~
 - Rows and columns resizing
 - Toolbar
 - Context menu
@@ -65,4 +70,3 @@ const sheet = new Spreadsheet("#spreadsheet", options);
 - Selected cell depends cells highlight
 - Async formulas support
 - Mutlisheets (?)
-- Copy & Paste support

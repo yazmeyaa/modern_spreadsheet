@@ -1,7 +1,7 @@
 import { Cell } from "./cell";
 import { Column } from "./column";
 import { Row } from "./row";
-import { Selection } from "./selection";
+import { RangeSelectionType, Selection } from "./selection";
 
 export interface ViewProperties {
   width: number;
@@ -10,6 +10,7 @@ export interface ViewProperties {
 export type CellClickEvent = (event: MouseEvent, cell: Cell) => void;
 export type SelectionChangeEvent = (selection: Selection) => void;
 export type CellChangeEvent = (cell: Cell) => void;
+export type CopyEvent = (range: RangeSelectionType, data: Cell[][], dataAsString: string) => void
 
 export type ConfigProperties = {
   /** Please, end it with '_' symbol.
@@ -24,6 +25,7 @@ export type ConfigProperties = {
   onCellClick?: CellClickEvent | null;
   onSelectionChange?: SelectionChangeEvent | null;
   onCellChange?: CellChangeEvent | null;
+  onCopy?: CopyEvent | null
 };
 
 export type SheetConfigConstructorProps = {
@@ -39,9 +41,10 @@ export class Config {
     height: 600,
   };
 
-  onCellClick: ((event: MouseEvent, cell: Cell) => void) | null = null;
+  onCellClick: CellClickEvent | null = null;
   onSelectonChange: SelectionChangeEvent | null = null;
   onCellChange: CellChangeEvent | null = null;
+  onCopy: CopyEvent | null
 
   constructor(props: ConfigProperties) {
     this.columns = props.columns;
@@ -51,5 +54,6 @@ export class Config {
     this.onCellClick = props.onCellClick ?? null;
     this.onSelectonChange = props.onSelectionChange ?? null;
     this.onCellChange = props.onCellChange ?? null;
+    this.onCopy = props.onCopy ?? null
   }
 }

@@ -10,6 +10,9 @@ const options: SpreadsheetConstructorProperties = {
   onCellChange(cell) {
     console.log("Cell changed: ", cell);
   },
+  onCopy: (range, data, dataAsString) => {
+    console.log("Copy event: ", range, data, dataAsString)
+  }
 };
 
 const sheet = new Spreadsheet("#spreadsheet", options);

@@ -1,4 +1,6 @@
 import Spreadsheet, { CSS_PREFIX } from "../main";
+import { EventTypes } from "../modules/events";
+import { checkEqualCellSelections } from "../utils/position";
 
 export interface ViewportRect {
   top: number;
@@ -12,7 +14,6 @@ export class Scroller {
   private verticalScroller: HTMLDivElement;
   private horizontalScroller: HTMLDivElement;
   private root: Spreadsheet;
-
   private isSelecting = false;
 
   constructor(root: Spreadsheet) {
@@ -41,29 +42,46 @@ export class Scroller {
     this.element.addEventListener("keydown", this.handleKeydown);
   }
 
+  public setSelectingMode(mode: boolean) {
+    this.isSelecting = mode
+  }
+
   private handleMouseMove = (event: MouseEvent) => {
     if (!this.isSelecting) return;
     const { offsetX, offsetY } = event;
     const lastSelectedCell = this.root.getCellByCoords(offsetX, offsetY);
+
+    let isRangeChanged = false
+
     if (this.root.selection.selectedRange) {
-      this.root.selection.selectedRange.to = lastSelectedCell;
+      isRangeChanged = !checkEqualCellSelections(this.root.selection.selectedRange.to, lastSelectedCell)
+
+      if (isRangeChanged) {
+        this.root.selection.selectedRange.to = lastSelectedCell;
+        this.root.events.dispatch({
+          type: EventTypes.CHANGE_SELECTION,
+          selection: this.root.selection,
+          enableCallback: true
+        })
+      }
     }
-    this.root.renderSheet();
-    this.root.renderColumnsBar();
-    this.root.renderRowsBar();
+
   };
 
   private handleMouseUp = () => {
     this.isSelecting = false;
+    const newSelection = {...this.root.selection}
 
     if (this.root.selection.selectedRange) {
       if (
-        this.root.selection.selectedRange.from.row ===
-          this.root.selection.selectedRange.to.row &&
-        this.root.selection.selectedRange.from.column ===
-          this.root.selection.selectedRange.to.column
+        checkEqualCellSelections(this.root.selection.selectedRange.from, this.root.selection.selectedRange.to)
       ) {
-        this.root.selection.selectedRange = null;
+        newSelection.selectedRange = null;
+        this.root.events.dispatch({
+          type: EventTypes.CHANGE_SELECTION,
+          selection: newSelection,
+          enableCallback: false
+        })
       }
     }
 
@@ -79,7 +97,6 @@ export class Scroller {
   };
 
   private handleKeydown = (event: KeyboardEvent) => {
-    console.log(event);
     //* Navigation
     if (
       ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)
@@ -92,9 +109,8 @@ export class Scroller {
             this.root.selection.selectedCell &&
             this.root.selection.selectedCell.column > 0
           ) {
-            console.log("tick");
             this.root.selection.selectedCell.column -= 1;
-            this.root.renderSheet();
+            // this.root.renderSheet();
           }
           break;
         }
@@ -102,10 +118,10 @@ export class Scroller {
           if (
             this.root.selection.selectedCell &&
             this.root.selection.selectedCell.column <
-              this.root.config.columns.length - 1
+            this.root.config.columns.length - 1
           ) {
             this.root.selection.selectedCell.column += 1;
-            this.root.renderSheet();
+            // this.root.renderSheet();
           }
           break;
         }
@@ -115,7 +131,7 @@ export class Scroller {
             this.root.selection.selectedCell.row > 0
           ) {
             this.root.selection.selectedCell.row -= 1;
-            this.root.renderSheet();
+            // this.root.renderSheet();
           }
           break;
         }
@@ -123,15 +139,22 @@ export class Scroller {
           if (
             this.root.selection.selectedCell &&
             this.root.selection.selectedCell.row <
-              this.root.config.rows.length - 1
+            this.root.config.rows.length - 1
           ) {
             this.root.selection.selectedCell.row += 1;
-            this.root.renderSheet();
+            // this.root.renderSheet();
           }
           break;
         }
       }
+      this.root.events.dispatch({
+        type: EventTypes.CHANGE_SELECTION,
+        selection: this.root.selection,
+        enableCallback: true
+      })
     }
+
+    //* Start typings
     const keysRegex = /^([a-z]|[а-я])$/;
     if (!event.metaKey && !event.ctrlKey) {
       //* Prevent handle shortcutrs
@@ -157,20 +180,11 @@ export class Scroller {
   };
 
   private handleClick = (event: MouseEvent) => {
-    if (event.button !== 0) return; // Left mouse button
-    const { offsetX, offsetY } = event;
-    const clickedCell = this.root.getCellByCoords(offsetX, offsetY);
-    this.isSelecting = true;
-    this.root.selection.selectedRange = {
-      from: clickedCell,
-      to: clickedCell,
-    };
-    this.root.selection.selectedCell = clickedCell;
-
-    this.root.renderSheet();
-    this.root.renderColumnsBar();
-
-    this.root.renderRowsBar();
+    this.root.events.dispatch({
+      type: EventTypes.CELL_CLICK,
+      event,
+      scroller: this
+    })
   };
 
   private handleScroll = () => {

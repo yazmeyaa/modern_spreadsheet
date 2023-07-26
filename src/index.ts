@@ -1,11 +1,16 @@
-import Spreadsheet from "./main";
+import Spreadsheet, { SpreadsheetConstructorProperties } from "./main";
 
-const saveButton = document.querySelector("#save_button");
-const loadButton = document.querySelector("#load_button");
+const options: SpreadsheetConstructorProperties = {
+  onCellClick: (event, cell) => {
+    console.log('Callback from instance', event, cell)
+  },
+  onSelectionChange: (selection) => {
+    console.log("Changed selection: ", selection)
+  }
+}
 
-if (!saveButton || !loadButton) throw new Error("LOST");
+const sheet = new Spreadsheet("#spreadsheet", options);
 
-const sheet = new Spreadsheet("#spreadsheet");
 
 function saveDataToLS() {
   const serializableData = sheet.serializeData();
@@ -18,6 +23,11 @@ function loadDataFromLS() {
   const json = JSON.parse(data);
   sheet.loadData(json);
 }
+
+const saveButton = document.querySelector("#save_button");
+const loadButton = document.querySelector("#load_button");
+
+if (!saveButton || !loadButton) throw new Error("LOST");
 
 saveButton.addEventListener("click", saveDataToLS);
 loadButton.addEventListener("click", loadDataFromLS);

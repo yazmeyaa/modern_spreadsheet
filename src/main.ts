@@ -21,6 +21,7 @@ import { Row } from "./modules/row";
 import { Column } from "./modules/column";
 import { ColumnsBar } from "./components/columnsBar";
 import { RowsBar } from "./components/rowsBar";
+import { Events } from "./modules/events";
 
 /*
  ! Component structure
@@ -34,9 +35,10 @@ import { RowsBar } from "./components/rowsBar";
     </Table>
 */
 
-interface SpreadsheetConstructorProperties {
-  config?: Omit<Config, "view">; // Not optional.
+export interface SpreadsheetConstructorProperties {
   view?: ViewProperties;
+  onCellClick?: ((event: MouseEvent, cell: Cell) => void) | null
+  onSelectionChange?: ((selection: Selection) => void) | null
 }
 
 export const CSS_PREFIX = "modern_sc_";
@@ -55,6 +57,7 @@ export default class Spreadsheet {
   public viewport: Viewport;
   public selection: Selection;
   public cache: Cache;
+  public events: Events
 
   constructor(
     target: string | HTMLElement,
@@ -71,6 +74,9 @@ export default class Spreadsheet {
 
     this.config = new Config(config);
 
+    this.config.onCellClick = props?.onCellClick ?? null
+    this.config.onSelectonChange = props?.onSelectionChange ?? null
+
     this.rowsBar = new RowsBar(this);
     this.columnsBar = new ColumnsBar(this);
     this.sheet = new Sheet(this);
@@ -84,6 +90,8 @@ export default class Spreadsheet {
       this.scroller.getViewportBoundlingRect(),
     );
     this.selection = new Selection();
+    this.events = new Events(this)
+
 
     this.data = data;
     this.styles = new Styles();
@@ -366,6 +374,7 @@ export default class Spreadsheet {
       view,
       rows,
       columns,
+      onCellClick: null
     });
 
     return config;

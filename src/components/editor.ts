@@ -1,5 +1,6 @@
 import Spreadsheet, { CSS_PREFIX } from "../main";
 import { Position } from "../modules/cell";
+import { EventTypes } from "../modules/events";
 import { RenderBox } from "../modules/renderBox";
 
 export class Editor {
@@ -52,10 +53,17 @@ export class Editor {
         break;
       }
       case "Enter": {
-        this.root.changeCellValues(this.root.selection.selectedCell!, {
-          value: this.element.value,
-          displayValue: this.element.value,
-        });
+        if (!this.root.selection.selectedCell) return;
+        
+        this.root.events.dispatch({
+          type: EventTypes.CELL_CHANGE,
+          cell: this.root.getCell(this.root.selection.selectedCell),
+          values: {
+            value: this.element.value,
+            displayValue: this.element.value,
+          }
+        })
+
         this.hide();
       }
     }

@@ -59,7 +59,7 @@ export class Scroller {
       if (isRangeChanged) {
         this.root.selection.selectedRange.to = lastSelectedCell;
         this.root.events.dispatch({
-          type: EventTypes.CHANGE_SELECTION,
+          type: EventTypes.SELECTION_CHANGE,
           selection: this.root.selection,
           enableCallback: true
         })
@@ -78,7 +78,7 @@ export class Scroller {
       ) {
         newSelection.selectedRange = null;
         this.root.events.dispatch({
-          type: EventTypes.CHANGE_SELECTION,
+          type: EventTypes.SELECTION_CHANGE,
           selection: newSelection,
           enableCallback: false
         })
@@ -148,7 +148,7 @@ export class Scroller {
         }
       }
       this.root.events.dispatch({
-        type: EventTypes.CHANGE_SELECTION,
+        type: EventTypes.SELECTION_CHANGE,
         selection: this.root.selection,
         enableCallback: true
       })

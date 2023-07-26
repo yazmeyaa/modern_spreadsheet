@@ -1,9 +1,10 @@
 import { Scroller } from "../components/scroller";
-import Spreadsheet, { Selection } from "../main";
+import Spreadsheet, { Cell, CellConstructorProps, Selection } from "../main";
 
 export enum EventTypes {
     CELL_CLICK = "CELL_CLICK",
-    CHANGE_SELECTION = "CHANGE_SELECTION"
+    SELECTION_CHANGE = "CHANGE_SELECTION",
+    CELL_CHANGE = "CELL_CHANGE"
 }
 
 export type CellClickEvent = {
@@ -13,12 +14,18 @@ export type CellClickEvent = {
 }
 
 export type ChangeSelectionEvent = {
-    type: EventTypes.CHANGE_SELECTION,
+    type: EventTypes.SELECTION_CHANGE,
     selection: Selection
     enableCallback?: boolean
 }
 
-export type ActionTypes = CellClickEvent | ChangeSelectionEvent
+export type ChangeCellEvent = {
+    type: EventTypes.CELL_CHANGE,
+    cell: Cell,
+    values: Partial<Omit<CellConstructorProps, "position">>
+}
+
+export type ActionTypes = CellClickEvent | ChangeSelectionEvent | ChangeCellEvent
 
 export class Events {
 
@@ -32,13 +39,28 @@ export class Events {
         switch (action.type) {
             case EventTypes.CELL_CLICK: {
                 const { event, scroller } = action
+                //
+                //* Here may be side effects
+                //
                 this.cellClick(event, scroller)
                 break;
             }
 
-            case EventTypes.CHANGE_SELECTION: {
+            case EventTypes.SELECTION_CHANGE: {
                 const { selection, enableCallback } = action
+                //
+                //* Here may be side effects
+                //
                 this.changeSelection(selection, enableCallback)
+                break;
+            }
+
+            case EventTypes.CELL_CHANGE: {
+                const { cell, values } = action
+                //
+                //* Here may be side effects
+                //
+                this.changeCellValues(cell, values)
                 break;
             }
 
@@ -77,4 +99,9 @@ export class Events {
         this.root.renderRowsBar();
     }
 
+    private changeCellValues(cell: Cell, values: Partial<Omit<CellConstructorProps, "position">>) {
+        this.root.changeCellValues(cell.position, values)
+
+        this.root.config.onCellChange?.(cell)
+    }
 }

@@ -10,7 +10,7 @@ import {
   Position,
   SerializableCell,
 } from "./modules/cell";
-import { Config, ViewProperties } from "./modules/config";
+import { CellChangeEvent, CellClickEvent, Config, SelectionChangeEvent, ViewProperties } from "./modules/config";
 import { RangeSelectionType, Selection } from "./modules/selection";
 import { Styles } from "./modules/styles";
 import { Viewport } from "./modules/viewport";
@@ -37,8 +37,9 @@ import { Events } from "./modules/events";
 
 export interface SpreadsheetConstructorProperties {
   view?: ViewProperties;
-  onCellClick?: ((event: MouseEvent, cell: Cell) => void) | null
-  onSelectionChange?: ((selection: Selection) => void) | null
+  onCellClick?: CellClickEvent | null
+  onSelectionChange?: SelectionChangeEvent | null
+  onCellChange?: CellChangeEvent | null
 }
 
 export const CSS_PREFIX = "modern_sc_";
@@ -76,6 +77,7 @@ export default class Spreadsheet {
 
     this.config.onCellClick = props?.onCellClick ?? null
     this.config.onSelectonChange = props?.onSelectionChange ?? null
+    this.config.onCellChange = props?.onCellChange ?? null
 
     this.rowsBar = new RowsBar(this);
     this.columnsBar = new ColumnsBar(this);

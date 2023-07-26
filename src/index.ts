@@ -2,11 +2,14 @@ import Spreadsheet, { SpreadsheetConstructorProperties } from "./main";
 
 const options: SpreadsheetConstructorProperties = {
   onCellClick: (event, cell) => {
-    console.log('Callback from instance', event, cell)
+    console.log('Cell click', event, cell)
   },
   onSelectionChange: (selection) => {
     console.log("Changed selection: ", selection)
-  }
+  },
+  onCellChange(cell) {
+    console.log("Cell changed: ", cell)
+  },
 }
 
 const sheet = new Spreadsheet("#spreadsheet", options);

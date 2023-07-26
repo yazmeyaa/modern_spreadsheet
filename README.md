@@ -30,10 +30,34 @@ function loadData() {
 }
 ```
 
+## Supported events
+- onCellClick
+- onSelectionChange
+- onCellChange
+
+### Using events examples
+```ts
+import Spreadsheet, { SpreadsheetConstructorProperties } from "./main";
+
+const options: SpreadsheetConstructorProperties = {
+  onCellClick: (event, cell) => {
+    console.log('Cell click', event, cell)
+  },
+  onSelectionChange: (selection) => {
+    console.log("Changed selection: ", selection)
+  },
+  onCellChange(cell) {
+    console.log("Cell changed: ", cell)
+  },
+}
+
+const sheet = new Spreadsheet("#spreadsheet", options);
+```
+
 ## Roadmap
 
 - ~~Rows number and columns heading render~~
-- Custom event functions (ex.: onSelectionChange, onCellEdit...). Full list of supported events will available on this page
+- ~~Custom event functions (ex.: onSelectionChange, onCellEdit...). Full list of supported events will available on this page~~
 - Rows and columns resizing
 - Toolbar
 - Context menu

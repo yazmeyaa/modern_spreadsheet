@@ -52,7 +52,7 @@ export class Sheet {
     this.root.data[row][column].render(this.root);
   }
 
-  getSelectionRange() {
+  private getSelectionRange() {
     const { selectedCell, selectedRange } = this.root.selection
 
     if (!selectedCell && !selectedRange) return;
@@ -85,7 +85,7 @@ export class Sheet {
     }
   }
 
-  renderSelectionRange(x: number, y: number, width: number, height: number) {
+  private renderSelectionRange(x: number, y: number, width: number, height: number) {
 
     this.ctx.save()
     this.ctx.strokeStyle = '#47d1ff'
@@ -95,6 +95,13 @@ export class Sheet {
     this.ctx.fillRect(x, y, width, height)
     this.ctx.restore()
 
+  }
+
+  renderSelection() {
+    const box = this.getSelectionRange()
+    if (!box) return;
+    const {height, width, x, y} = box
+    this.renderSelectionRange(x, y, width, height)
   }
 
   renderSheet() {
@@ -112,10 +119,7 @@ export class Sheet {
         this.renderCell({ column: col, row });
       }
     }
+    this.renderSelection()
 
-    const box = this.getSelectionRange()
-    if (!box) return;
-    const {height, width, x, y} = box
-    this.renderSelectionRange(x, y, width, height)
   }
 }

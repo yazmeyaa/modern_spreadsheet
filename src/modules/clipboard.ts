@@ -77,7 +77,7 @@ export class Clipboard {
       } catch (err) {
         console.error("Cannot read clipboard. ", err);
       }
-
+      root.renderSheet()
       return;
     }
 

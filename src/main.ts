@@ -315,6 +315,10 @@ export default class Spreadsheet {
     this.sheet.renderSheet();
   }
 
+  renderSelection() {
+    this.sheet.renderSelection();
+  }
+
   renderColumnsBar() {
     this.columnsBar.renderBar();
   }

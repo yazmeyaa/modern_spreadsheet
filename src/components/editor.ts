@@ -66,6 +66,7 @@ export class Editor {
         });
 
         this.hide();
+        this.root.renderSelection()
       }
     }
   };

@@ -44,21 +44,21 @@ export class Cache {
   public getRowByYCoord(y: number): number {
     let rowIdx = 0;
     for (let i = 0; i < this.rows.length; i++) {
-      if (y <= this.rows[i].yPos) {
-        //* Intersection detect
-        rowIdx = i;
+      rowIdx = i
+      if (y <= this.rows[i].yPos) {        //* Intersection detect
         break;
       }
+
     }
+
     return rowIdx;
   }
 
   public getColumnByXCoord(x: number): number {
     let colIdx = 0;
     for (let i = 0; i < this.columns.length; i++) {
-      if (x <= this.columns[i].xPos) {
-        //* Intersection detect
-        colIdx = i;
+      colIdx = i
+      if (x <= this.columns[i].xPos) {        //* Intersection detect
         break;
       }
     }

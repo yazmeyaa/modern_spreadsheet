@@ -331,7 +331,6 @@ export default class Spreadsheet {
   public loadData(data: Cell[][] | SerializableCell[][]): Spreadsheet {
     const rowsLength = data.length;
     const colsLength = data[0] ? data[0].length : 0;
-    console.log("!!FORMATTED DATA", rowsLength, colsLength, data[0])
     this.data = [];
 
     const formattedData: Cell[][] = [];
@@ -353,12 +352,17 @@ export default class Spreadsheet {
       formattedData.push(innerRow);
     }
 
+    const config = this.makeConfigFromData(formattedData, this.config.view);
+    config.onCellChange = this.config.onCellChange
+    config.onCellClick = this.config.onCellClick
+    config.onCopy = this.config.onCopy
+    config.onSelectonChange = this.config.onSelectonChange
+
 
     this.data = formattedData;
-
     this.selection.selectedCell = null;
     this.selection.selectedRange = null;
-    this.config = this.makeConfigFromData(formattedData, this.config.view);
+    this.config = config
     this.cache = this.getInitialCache();
     this.scroller.updateScrollerSize();
     this.viewport = new Viewport(

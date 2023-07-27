@@ -103,10 +103,10 @@ export class Sheet {
     height: number,
   ) {
     this.ctx.save();
-    this.ctx.strokeStyle = "#47d1ff";
+    this.ctx.strokeStyle = "#7da8ff";
     this.ctx.lineWidth = 3;
     this.ctx.strokeRect(x, y, width, height);
-    this.ctx.fillStyle = "#7da8ff50";
+    this.ctx.fillStyle = "#7da8ff35";
     this.ctx.fillRect(x, y, width, height);
     this.ctx.restore();
   }
@@ -123,6 +123,7 @@ export class Sheet {
     const lastColIdx = this.root.viewport.lastCol + 3;
     const lastRowIdx = this.root.viewport.lastRow + 3;
     const firstColIdx = this.root.viewport.firstCol;
+
 
     for (let row = firstRowIdx; row <= lastRowIdx; row++) {
       for (let col = firstColIdx; col <= lastColIdx; col++) {

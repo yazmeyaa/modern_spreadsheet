@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import path from "path";
 import typescript from "@rollup/plugin-typescript";
 import { typescriptPaths } from "rollup-plugin-typescript-paths";
-import { fileURLToPath } from "node:url";
 
 export default defineConfig({
   base: "/modern_spreadsheet/",

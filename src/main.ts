@@ -124,7 +124,6 @@ export default class Spreadsheet {
   private setColumnsBarPosition() {
     const top = this.toolbar.height;
     const left = this.rowsBar.width;
-    console.log(top, left);
     this.columnsBar.setElementPosition(top, left);
   }
 
@@ -163,8 +162,6 @@ export default class Spreadsheet {
       rows: cachedRows,
     });
 
-    console.log("CACHE: ", cache);
-    console.log("CONFIG: ", this.config);
     return cache;
   }
 
@@ -333,11 +330,12 @@ export default class Spreadsheet {
 
   public loadData(data: Cell[][] | SerializableCell[][]): Spreadsheet {
     const rowsLength = data.length;
-    const colsLength = data[0] ? this.data[0].length : 0;
+    const colsLength = data[0] ? data[0].length : 0;
+    console.log("!!FORMATTED DATA", rowsLength, colsLength, data[0])
     this.data = [];
 
     const formattedData: Cell[][] = [];
-
+    // Transform serialized objects to Cells
     for (let row = 0; row < rowsLength; row++) {
       const innerRow: Cell[] = [];
       for (let col = 0; col < colsLength; col++) {
@@ -354,6 +352,7 @@ export default class Spreadsheet {
       }
       formattedData.push(innerRow);
     }
+
 
     this.data = formattedData;
 

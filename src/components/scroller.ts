@@ -193,7 +193,6 @@ export class Scroller {
     }
 
     if (event.metaKey || event.ctrlKey) {
-      console.log(event.code);
       if (event.code === "KeyC") {
         let cells: Cell[][] = undefined!;
         const selection = new Selection();

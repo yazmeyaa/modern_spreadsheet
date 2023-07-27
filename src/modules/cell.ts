@@ -118,28 +118,22 @@ export class Cell {
     const { height, width } = renderBox;
     const { ctx } = root;
 
-    const isCellSelected =
-      root.selection.selectedCell?.row === this.position.row &&
-      root.selection.selectedCell.column === this.position.column;
-    const isCellInRange = this.isCellInRange(root);
+    // const isCellSelected =
+    //   root.selection.selectedCell?.row === this.position.row &&
+    //   root.selection.selectedCell.column === this.position.column;
+    // const isCellInRange = this.isCellInRange(root);
     y -= root.viewport.top;
     x -= root.viewport.left;
 
     const styles = this.style ?? root.styles.cells;
 
     ctx.clearRect(x, y, width, height);
-    ctx.fillStyle =
-      isCellSelected || isCellInRange
-        ? styles.selectedBackground
-        : styles.background;
+    ctx.fillStyle = styles.background;
     ctx.strokeStyle = "black";
     ctx.fillRect(x, y, width - 1, height - 1);
     ctx.strokeRect(x, y, width, height);
 
-    ctx.fillStyle =
-      isCellSelected || isCellInRange
-        ? styles.selectedFontColor
-        : styles.fontColor;
+    ctx.fillStyle = styles.fontColor;
     ctx.textAlign = "left";
     ctx.font = `${styles.fontSize}px Arial`;
     ctx.textBaseline = "middle";

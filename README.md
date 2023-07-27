@@ -1,5 +1,7 @@
 # Modern Spreadsheet
 
+[Spreadsheet preview](https://raw.githubusercontent.com/yazmeyaa/modern_spreadsheet/6dc20f92e769210c076600c7fcfacd4ed528f085/repo_assets/spreadsheet_preview.png?raw=true)
+
 ## Features:
 - High performance spreadsheet based on CanvasAPI.
 - TypeScript supported

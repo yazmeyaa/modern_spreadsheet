@@ -69,9 +69,7 @@ export class RowsBar {
 
     const isRowSeleted = this.isRowSelected(column);
 
-    this.ctx.fillStyle = isRowSeleted
-      ? "#c7ebff"
-      : "white";
+    this.ctx.fillStyle = isRowSeleted ? "#c7ebff" : "white";
     this.ctx.strokeStyle = "black";
     this.ctx.lineWidth = this.resizerHeight;
 

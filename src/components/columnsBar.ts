@@ -82,9 +82,7 @@ export class ColumnsBar {
 
     const isColSelected = this.isColumnSelected(column);
 
-    this.ctx.fillStyle = isColSelected
-      ? "#c7ebff"
-      : "white";
+    this.ctx.fillStyle = isColSelected ? "#c7ebff" : "white";
     this.ctx.strokeStyle = "black";
     this.ctx.lineWidth = 1;
 

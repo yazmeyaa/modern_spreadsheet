@@ -10,5 +10,8 @@ export declare class Sheet {
     constructor(root: Spreadsheet);
     getCellByCoords(x: number, y: number): Position;
     renderCell(position: Position): void;
+    private getSelectionRange;
+    private renderSelectionRange;
+    renderSelection(): void;
     renderSheet(): void;
 }

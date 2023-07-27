@@ -96,21 +96,21 @@ export class Cell {
     Object.assign(this, values);
   }
 
-  private isCellInRange(root: Spreadsheet): boolean {
-    const { column, row } = this.position;
-    const { selectedRange } = root.selection;
+  // private isCellInRange(root: Spreadsheet): boolean {
+  //   const { column, row } = this.position;
+  //   const { selectedRange } = root.selection;
 
-    if (!selectedRange) return false;
+  //   if (!selectedRange) return false;
 
-    const isCellInRow =
-      row >= Math.min(selectedRange.from.row, selectedRange.to.row) &&
-      row <= Math.max(selectedRange.to.row, selectedRange.from.row);
-    const isCellInCol =
-      column >= Math.min(selectedRange.from.column, selectedRange.to.column) &&
-      column <= Math.max(selectedRange.to.column, selectedRange.from.column);
+  //   const isCellInRow =
+  //     row >= Math.min(selectedRange.from.row, selectedRange.to.row) &&
+  //     row <= Math.max(selectedRange.to.row, selectedRange.from.row);
+  //   const isCellInCol =
+  //     column >= Math.min(selectedRange.from.column, selectedRange.to.column) &&
+  //     column <= Math.max(selectedRange.to.column, selectedRange.from.column);
 
-    return isCellInCol && isCellInRow;
-  }
+  //   return isCellInCol && isCellInRow;
+  // }
 
   render(root: Spreadsheet) {
     const renderBox = new RenderBox(root.config, this.position);

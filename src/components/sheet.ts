@@ -53,58 +53,69 @@ export class Sheet {
   }
 
   private getSelectionRange() {
-    const { selectedCell, selectedRange } = this.root.selection
+    const { selectedCell, selectedRange } = this.root.selection;
 
     if (!selectedCell && !selectedRange) return;
     if (selectedRange) {
+      const startRow = Math.min(selectedRange.from.row, selectedRange.to.row);
+      const startCol = Math.min(
+        selectedRange.from.column,
+        selectedRange.to.column,
+      );
+      const lastRow = Math.max(selectedRange.from.row, selectedRange.to.row);
+      const lastCol = Math.max(
+        selectedRange.from.column,
+        selectedRange.to.column,
+      );
 
-      const startRow = Math.min(selectedRange.from.row, selectedRange.to.row)
-      const startCol = Math.min(selectedRange.from.column, selectedRange.to.column)
-      const lastRow = Math.max(selectedRange.from.row, selectedRange.to.row)
-      const lastCol = Math.max(selectedRange.from.column, selectedRange.to.column)
+      const startCellBox = new RenderBox(this.root.config, {
+        row: startRow,
+        column: startCol,
+      });
 
-      const startCellBox = new RenderBox(this.root.config, {row: startRow, column: startCol})
-
-      let width = 0
+      let width = 0;
       for (let col = startCol; col <= lastCol; col++) {
-        width += this.root.config.columns[col].width
+        width += this.root.config.columns[col].width;
       }
 
-      let height = 0
+      let height = 0;
       for (let row = startRow; row <= lastRow; row++) {
-        height += this.root.config.rows[row].height
+        height += this.root.config.rows[row].height;
       }
 
-      const x = startCellBox.x - this.root.viewport.left
-      const y = startCellBox.y - this.root.viewport.top
+      const x = startCellBox.x - this.root.viewport.left;
+      const y = startCellBox.y - this.root.viewport.top;
 
-      return { x, y, height, width }
+      return { x, y, height, width };
     }
     if (!selectedRange && selectedCell) {
-      const box = new RenderBox(this.root.config, selectedCell)
-      box.x -= this.root.viewport.left
-      box.y -= this.root.viewport.top
-      return box
+      const box = new RenderBox(this.root.config, selectedCell);
+      box.x -= this.root.viewport.left;
+      box.y -= this.root.viewport.top;
+      return box;
     }
   }
 
-  private renderSelectionRange(x: number, y: number, width: number, height: number) {
-
-    this.ctx.save()
-    this.ctx.strokeStyle = '#47d1ff'
-    this.ctx.lineWidth = 3
-    this.ctx.strokeRect(x, y, width, height)
-    this.ctx.fillStyle = '#7da8ff50'
-    this.ctx.fillRect(x, y, width, height)
-    this.ctx.restore()
-
+  private renderSelectionRange(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+  ) {
+    this.ctx.save();
+    this.ctx.strokeStyle = "#47d1ff";
+    this.ctx.lineWidth = 3;
+    this.ctx.strokeRect(x, y, width, height);
+    this.ctx.fillStyle = "#7da8ff50";
+    this.ctx.fillRect(x, y, width, height);
+    this.ctx.restore();
   }
 
   renderSelection() {
-    const box = this.getSelectionRange()
+    const box = this.getSelectionRange();
     if (!box) return;
-    const {height, width, x, y} = box
-    this.renderSelectionRange(x, y, width, height)
+    const { height, width, x, y } = box;
+    this.renderSelectionRange(x, y, width, height);
   }
 
   renderSheet() {
@@ -112,7 +123,6 @@ export class Sheet {
     const lastColIdx = this.root.viewport.lastCol + 3;
     const lastRowIdx = this.root.viewport.lastRow + 3;
     const firstColIdx = this.root.viewport.firstCol;
-
 
     for (let row = firstRowIdx; row <= lastRowIdx; row++) {
       for (let col = firstColIdx; col <= lastColIdx; col++) {
@@ -122,7 +132,6 @@ export class Sheet {
         this.renderCell({ column: col, row });
       }
     }
-    this.renderSelection()
-
+    this.renderSelection();
   }
 }

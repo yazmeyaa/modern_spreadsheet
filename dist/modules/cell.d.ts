@@ -49,7 +49,6 @@ export declare class Cell {
     getSerializableCell(): SerializableCell;
     changeStyles(styles: CellStyles): void;
     changeValues(values: Partial<Omit<CellConstructorProps, "position">>): void;
-    private isCellInRange;
     render(root: Spreadsheet): void;
 }
 export {};

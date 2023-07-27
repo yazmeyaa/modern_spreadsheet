@@ -62,6 +62,7 @@ export default class Spreadsheet {
     deleteSelectedCellsValues(): void;
     showEditor(position: Position, initialString?: string): void;
     renderSheet(): void;
+    renderSelection(): void;
     renderColumnsBar(): void;
     renderRowsBar(): void;
     renderCell(row: number, col: number): void;

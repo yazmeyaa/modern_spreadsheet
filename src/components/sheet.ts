@@ -81,7 +81,10 @@ export class Sheet {
       return { x, y, height, width }
     }
     if (!selectedRange && selectedCell) {
-      return new RenderBox(this.root.config, selectedCell)
+      const box = new RenderBox(this.root.config, selectedCell)
+      box.x -= this.root.viewport.left
+      box.y -= this.root.viewport.top
+      return box
     }
   }
 

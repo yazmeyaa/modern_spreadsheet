@@ -70,7 +70,7 @@ export class RowsBar {
     const isRowSeleted = this.isRowSelected(column);
 
     this.ctx.fillStyle = isRowSeleted
-      ? this.root.styles.cells.selectedBackground
+      ? "#c7ebff"
       : "white";
     this.ctx.strokeStyle = "black";
     this.ctx.lineWidth = this.resizerHeight;

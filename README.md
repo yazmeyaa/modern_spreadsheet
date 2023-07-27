@@ -1,9 +1,13 @@
 # Modern Spreadsheet
 
+## Features:
 - High performance spreadsheet based on CanvasAPI.
 - TypeScript supported
+- Native scrolling
+- Customizable
+- Copy & Paste support
 
-## Basic usage
+### Basic usage
 
 ```ts
 import Spreadsheet from "modern_spreadsheet";
@@ -14,7 +18,7 @@ const sheet = new Spreadsheet(target);
 //...
 ```
 
-## Save and load data
+### Save and load data
 
 ```ts
 function saveData() {
@@ -30,7 +34,7 @@ function loadData() {
 }
 ```
 
-## Supported events
+#### Supported events
 - onCellClick
 - onSelectionChange
 - onCellChange
@@ -58,7 +62,7 @@ const options: SpreadsheetConstructorProperties = {
 const sheet = new Spreadsheet("#spreadsheet", options);
 ```
 
-## Roadmap
+### Roadmap
 
 - ~~Rows number and columns heading render~~
 - ~~Custom event functions (ex.: onSelectionChange, onCellEdit...). Full list of supported events will available on this page~~

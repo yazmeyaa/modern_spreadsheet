@@ -169,7 +169,7 @@ export class Scroller {
     }
 
     //* Start typings
-    const keysRegex = /^([a-z]|[а-я]|[0-9])$/;
+    const keysRegex = /^([a-z]|[а-я]|[0-9]|=)$/;
     if (!event.metaKey && !event.ctrlKey) {
       //* Prevent handle shortcutrs
       const isPressedLetterKey = keysRegex.test(event.key.toLowerCase());

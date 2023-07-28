@@ -30,6 +30,7 @@ import { ColumnsBar } from "./components/columnsBar";
 import { RowsBar } from "./components/rowsBar";
 import { EventTypes, Events } from "./modules/events";
 import { Clipboard } from "./modules/clipboard";
+import { FormulaParser } from "./modules/formulaParser";
 
 /*
  ! Component structure
@@ -69,6 +70,7 @@ export default class Spreadsheet {
   public cache: Cache;
   public events: Events;
   public clipboard: Clipboard;
+  public formulaParser: FormulaParser
 
   constructor(
     target: string | HTMLElement,
@@ -105,6 +107,7 @@ export default class Spreadsheet {
     this.selection = new Selection();
     this.events = new Events(this);
     this.clipboard = new Clipboard(this);
+    this.formulaParser = new FormulaParser(this)
 
     this.data = data;
     this.styles = new Styles();

@@ -1,4 +1,5 @@
 import Spreadsheet from "../main";
+import { FormulaParser } from "./formulaParser";
 import { RenderBox } from "./renderBox";
 
 export type CellConstructorProps = {
@@ -69,6 +70,9 @@ export class Cell {
   position: Position;
   style: CellStyles | null = null;
 
+  cellsDependsOnThisCell: Position[] = []
+  dependedFromCells: Position[] = []
+
   constructor(props: CellConstructorProps) {
     this.value = props.value;
     this.displayValue = props.displayValue;
@@ -94,6 +98,15 @@ export class Cell {
 
   changeValues(values: Partial<Omit<CellConstructorProps, "position">>) {
     Object.assign(this, values);
+  }
+
+  evalFormula(parser: FormulaParser) {
+    if (this.value.substring(0, 1) !== '=') return;
+
+    this.resultValue = parser.parser.parse(this.value.slice(1), {
+      col: this.position.column,
+      row: this.position.row
+    })
   }
 
   // private isCellInRange(root: Spreadsheet): boolean {

@@ -39,6 +39,7 @@ export type ActionTypes =
   | ChangeCellEvent
   | CopyAction;
 
+
 export class Events {
   root: Spreadsheet;
 
@@ -46,7 +47,7 @@ export class Events {
     this.root = root;
   }
 
-  dispatch(action: ActionTypes) {
+  async dispatch(action: ActionTypes) {
     switch (action.type) {
       case EventTypes.CELL_CLICK: {
         const { event, scroller } = action;
@@ -68,9 +69,20 @@ export class Events {
 
       case EventTypes.CELL_CHANGE: {
         const { cell, enableCallback } = action;
-        //
-        //* Here may be side effects
-        //
+        if (cell.value.substring(0, 1).startsWith('=')) {
+          try {
+            await cell.evalFormula(this.root.formulaParser)
+            cell.displayValue = cell.resultValue
+            this.root.renderCell(cell.position.row, cell.position.column)
+            this.changeCellValues(cell, enableCallback);
+            return;
+          }
+          catch (err) {
+            console.error(err)
+          }
+        }
+
+        this.root.renderCell(cell.position.row, cell.position.column)
         this.changeCellValues(cell, enableCallback);
         break;
       }

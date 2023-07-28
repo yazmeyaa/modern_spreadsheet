@@ -1,7 +1,7 @@
 {
   "name": "modern_spreadsheet",
   "private": false,
-  "version": "0.0.32",
+  "version": "0.0.33",
   "exports": {
     ".": {
       "import": "./dist/main.js",
@@ -55,5 +55,8 @@
     "tslib": "^2.6.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.0"
+  },
+  "dependencies": {
+    "fast-formula-parser": "^1.0.19"
   }
 }

@@ -1,4 +1,4 @@
-import Spreadsheet, { SpreadsheetConstructorProperties, createSampleData } from "./main";
+import Spreadsheet, { SpreadsheetConstructorProperties } from "./main";
 
 const options: SpreadsheetConstructorProperties = {
   onCellClick: (event, cell) => {
@@ -16,9 +16,6 @@ const options: SpreadsheetConstructorProperties = {
 };
 
 const sheet = new Spreadsheet("#spreadsheet", options);
-
-const data = createSampleData(600, 800, true)
-sheet.loadData(data)
 
 function saveDataToLS() {
   const serializableData = sheet.serializeData();

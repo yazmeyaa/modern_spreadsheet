@@ -33,6 +33,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:HTML": "tsc && cross-env BUILD_BROWSER=true vite build",
     "build:watch": "tsc && vite build --watch",
     "preview": "vite preview",
     "predeploy": "npm run dist",
@@ -46,6 +47,7 @@
     "@types/node": "^20.4.4",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
     "gh-pages": "^5.0.0",
@@ -54,7 +56,8 @@
     "sass": "^1.63.6",
     "tslib": "^2.6.0",
     "typescript": "^5.0.2",
-    "vite": "^4.4.0"
+    "vite": "^4.4.0",
+    "vite-plugin-html": "^3.2.0"
   },
   "dependencies": {
     "fast-formula-parser": "^1.0.19"

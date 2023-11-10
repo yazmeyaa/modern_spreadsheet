@@ -3,12 +3,15 @@ import path from "path";
 import typescript from "@rollup/plugin-typescript";
 import { typescriptPaths } from "rollup-plugin-typescript-paths";
 
-export default defineConfig({
+const BROWSER_MODE = process.env.BUILD_BROWSER === 'true';
+console.log({ BROWSER_MODE });
+
+const libConfig = defineConfig({
   base: "/modern_spreadsheet/",
   plugins: [],
   resolve: {},
   server: {
-    port: 3000,
+    port: 5179,
     open: true,
   },
   build: {
@@ -36,3 +39,23 @@ export default defineConfig({
     },
   },
 });
+
+const browserConfig = defineConfig({
+  base: "/modern_spreadsheet/",
+  resolve: {},
+  build: {
+    manifest: true,
+    minify: true,
+    reportCompressedSize: true,
+    sourcemap: true,
+    lib: {
+      entry: path.resolve(__dirname, 'index.html'),
+      fileName: 'demo',
+      formats: ['es']
+    }
+  }
+})
+
+const config = BROWSER_MODE ? browserConfig : libConfig;
+
+export default config;

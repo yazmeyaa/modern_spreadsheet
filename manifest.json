@@ -1,6 +1,14 @@
 {
+  "index.html": {
+    "file": "demo.js",
+    "imports": [
+      "src/main.ts"
+    ],
+    "isEntry": true,
+    "src": "index.html"
+  },
   "src/main.ts": {
-    "file": "main.cjs",
+    "file": "main.js",
     "isEntry": true,
     "src": "src/main.ts"
   },
